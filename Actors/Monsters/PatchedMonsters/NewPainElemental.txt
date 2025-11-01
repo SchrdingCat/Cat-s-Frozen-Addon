@@ -1,0 +1,38 @@
+ACTOR NewPainElemental : PainElemental1 replaces PainElemental1
+{
+	PainChance "Freeze", 255
+	PainChance "Lightning", 255
+	States
+	{		
+	Pain.Lightning:
+		TNT1 A 0 A_Jump(128, "Nostun")
+		TNT1 A 0 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-4, 4),  random (16, 32), 0, 0)
+		PAIN G 1 A_Pain
+		PAIN GGGGGGGGGGG 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 52), 0, 0, 0, random(0, 360))
+		PAIN G 1 A_Pain
+		PAIN GGGGGGGGGGG 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 52), 0, 0, 0, random(0, 360))
+		PAIN G 1 A_Pain
+		PAIN GGGGGGGGGGG 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 52), 0, 0, 0, random(0, 360))
+		PAIN G 1 A_Pain
+		PAIN GGGGGGGGGGG 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 52), 0, 0, 0, random(0, 360))
+		PAIN G 1 A_Pain
+		Goto See
+	NoStun:	
+		Goto Super::Pain	
+	
+	Death.Lightning:
+	Death.plasma:
+	Death.Plasma2:
+		Goto Super::Death
+			
+	Death.DeathExplosionCard:
+		goto Death.ExplosiveImpact		
+	}	
+}
+
+ACTOR PainElementalDamaged : NewPainElemental
+{
+	Health 40
+	Speed 5
+	-COUNTKILL
+}

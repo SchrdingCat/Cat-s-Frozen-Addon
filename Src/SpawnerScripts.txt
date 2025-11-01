@@ -1,0 +1,201 @@
+#library "SpawnerScripts"
+#include "zcommon.acs"
+
+int GiveTID = -2147483648;
+int GiveID = -2147483648;
+int CFzA_ScientistOption;
+int CFzA_DisableAltShells;
+int CFzA_DisableCryocubus;
+int CFzA_DisableFrostbrain;
+int CFzA_DisableFrostbaron;
+int CFzA_RewardOption;
+int CFzA_InventoryItems;
+int CFzA_StayFrozen;
+int CFzA_RewardRate;
+
+script "RewardRate" (void)
+{
+	CFzA_RewardRate = Random (1, GetCVar("CFzA_RewardRate"));
+	//CFzA_RewardRate = GetCVar("CFzA_RewardRate");
+	GiveInventory("RewardToken", CFzA_RewardRate);
+	delay(1);
+}
+script "ServerCVars_CFzA" ENTER
+{
+	CFzA_ScientistOption = GetCvar("CFzA_ScientistOption");
+	CFzA_DisableAltShells = GetCvar("CFzA_DisableAltShells");
+	CFzA_DisableCryocubus = GetCvar("CFzA_DisableCryocubus");
+	CFzA_DisableFrostbrain = GetCvar("CFzA_DisableFrostbrain");
+	CFzA_DisableFrostbaron = GetCvar("CFzA_DisableFrostbaron");
+	CFzA_RewardOption = GetCvar("CFzA_RewardOption");
+	CFzA_InventoryItems = GetCvar("CFzA_InventoryItems");
+	CFzA_StayFrozen = GetCVar("CFzA_StayFrozen");
+	If(GetCVar("CFzA_StayFrozen")) GiveInventory("StayFrozen", 1);
+	Else TakeInventory("StayFrozen", 1);
+	delay(1);
+}
+
+Function int NextTID (void)
+{
+    for ( ; GiveTID < 0; GiveTID++)
+    {
+        If (!ThingCount (T_NONE, GiveTID))
+            return GiveTID;
+    }
+    return 0;
+}
+Script "SetUserTID" (void)
+{
+	SetUserVariable(0, "user_tid", NextTID ());
+	SetResultValue(NextTID());
+	terminate;
+}
+
+Script "Live_Check" (int tid)
+{
+	int v = 0;
+	If(GetActorProperty(tid, APROP_HEALTH) > 0)
+		v++;
+	SetResultValue(v);
+}
+
+Script "Get_Spawner_Status" (int arg1)
+{
+	int X = GetActorX(arg1);
+	int Y = GetActorY(arg1);
+	int Z = GetActorZ(arg1);
+	SetActorPosition(0, X, Y, Z, 0);
+}
+
+Script "CheckScientist" (VOID)
+{
+	if (ThingCountName("ScientistSpawner",0) == 0 && ThingCountName("Scientist",0) == 0 && CFzA_ScientistOption == 1)  { SetActorState(0,"SpawnScientist"); }
+}
+Script "CheckScientist2" (VOID)
+{
+	if (ThingCountName("Scientist",0) == 0 && CFzA_ScientistOption == 1)  { SetActorState(0,"SpawnScientist"); }
+}
+ script "SpawnScientist5" (VOID)
+ {
+	str class = "ScientistSpawner";
+	 delay(35 * random(200 ,400));   
+     if (ThingCountName("ScientistSpawner",0) == 0 && ThingCountName("Scientist",0) == 0 && CFzA_ScientistOption == 1) 
+		{
+			do
+			 {
+			 delay(1);
+			 SetActivator(0, AAPTR_PLAYER1);
+			 int x = GetActorX(0) + random(-50,50);
+			 int y = GetActorY(0) + random(-50,50);
+			 int z = GetActorZ(0);
+			 int angle = GetActorAngle(0) >> 8;
+			 }
+			until (Spawn(class, x, y, z, 0, angle));
+		}
+ }
+ 
+ 
+ 
+ Script "CFzA_DisableCryocubus" (VOID)
+{
+    CFzA_DisableCryocubus = GetCvar("CFzA_DisableCryocubus");
+	static str spawntype[2] = { "Mancubus", "Cryocubus" };
+    delay(1);
+
+    if (CFzA_DisableCryocubus == 0)
+    {
+        int roll = Random(0, 255); // Generate a number between 0 and 255
+
+        if (roll <= 128)
+        {
+            SetActorState(0, "Mancubus");
+        }
+		else 
+        {
+            SetActorState(0, "Cryocubus");
+        }
+    }
+    else if (CFzA_DisableCryocubus >= 1 && CFzA_DisableCryocubus <= 2)
+    {
+        SetActorState(0, spawnType[CFzA_DisableCryocubus - 1]);
+    }
+}
+
+ Script "CFzA_DisableFrostbrain" (VOID)
+{
+    CFzA_DisableFrostbrain = GetCvar("CFzA_DisableFrostbrain");
+	static str spawntype[2] = { "Cacodemon", "Frostbrain" };
+    delay(1);
+
+    if (CFzA_DisableFrostbrain == 0)
+    {
+        int roll = Random(0, 255); // Generate a number between 0 and 255
+
+        if (roll <= 222)
+        {
+            SetActorState(0, "Cacodemon");
+        }
+		else 
+        {
+            SetActorState(0, "Frostbrain");
+        }
+    }
+    else if (CFzA_DisableFrostbrain >= 1 && CFzA_DisableFrostbrain <= 2)
+    {
+        SetActorState(0, spawnType[CFzA_DisableFrostbrain - 1]);
+    }
+}
+
+ Script "CFzA_DisableFrostBaron" (VOID)
+{
+    CFzA_DisableFrostBaron = GetCvar("CFzA_DisableFrostBaron");
+	static str spawntype[2] = { "BaronOfHell", "FrostBaron" };
+    delay(1);
+
+    if (CFzA_DisableFrostBaron == 0)
+    {
+        int roll = Random(0, 255); // Generate a number between 0 and 255
+
+        if (roll <= 128)
+        {
+            SetActorState(0, "BaronOfHell");
+        }
+		else 
+        {
+            SetActorState(0, "FrostBaron");
+        }
+    }
+    else if (CFzA_DisableFrostBaron >= 1 && CFzA_DisableFrostBaron <= 2)
+    {
+        SetActorState(0, spawnType[CFzA_DisableFrostBaron - 1]);
+    }
+}
+
+
+ Script "CFzA_RewardOption" (VOID)
+{
+    CFzA_RewardOption = GetCvar("CFzA_RewardOption");
+	static str spawntype[4] = {"Standard", "StandardNoCryoASG", "NoAltAmmo", "NoWeaponAmmo" };
+    delay(1);
+
+    SetActorState(0, spawnType[CFzA_RewardOption]);
+}
+
+ Script "CFzA_InventoryItems" (VOID)
+ {
+	CFzA_InventoryItems = GetCvar("CFzA_InventoryItems");
+	static str spawntype[2] = {"RewardLottery2", "InventoryItems" };
+	delay(1);
+
+    SetActorState(0, spawnType[CFzA_InventoryItems]);
+ }
+
+
+ Script "InventoryItemsSupply" (VOID)
+ {
+	CFzA_InventoryItems = GetCvar("CFzA_InventoryItems");
+	static str spawntype[2] = {"Spawn2", "InventorySupply" };
+	delay(1);
+
+    SetActorState(0, spawnType[CFzA_InventoryItems]);
+ }

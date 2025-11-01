@@ -1,0 +1,112 @@
+ACTOR NewMarine_Rifle : Marine_Rifle replaces Marine_Rifle
+{
+	PainChance "Freeze", 255
+	damagefactor "Lightning", 0.0
+	PainChance "Lightning", 0
+	States
+	{	
+		
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("NewFrozenMarine")
+		Stop
+
+	}
+}
+
+ACTOR NewMarine_BFG : Marine_BFG replaces Marine_BFG
+{
+	PainChance "Freeze", 255
+	States
+	{	
+		
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("NewFrozenMarine")
+		Stop
+
+	}
+}
+
+ACTOR NewMarine_Plasmagun : Marine_Plasmagun replaces Marine_Plasmagun
+{
+	PainChance "Freeze", 255
+	States
+	{	
+		
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("NewFrozenMarine")
+		Stop
+
+	}
+}
+ACTOR NewMarine_Minigun : Marine_Minigun replaces Marine_Minigun
+{
+	PainChance "Freeze", 255
+	States
+	{	
+		
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("NewFrozenMarine")
+		Stop
+
+	}
+}
+ACTOR NewMarine_Rocket : Marine_Rocket replaces Marine_Rocket
+{
+	PainChance "Freeze", 255
+	States
+	{	
+		
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("NewFrozenMarine")
+		Stop
+
+	}
+}
+ACTOR NewMarine_Shotgun : Marine_Shotgun replaces Marine_Shotgun
+{
+	PainChance "Freeze", 255
+	States
+	{	
+		
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("NewFrozenMarine")
+		Stop
+
+	}
+}

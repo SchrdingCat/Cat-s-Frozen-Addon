@@ -1,0 +1,84 @@
+ACTOR ScientistInGame : Inventory { Inventory.MaxAmount 1 }
+ACTOR ScientistWaits : Inventory { Inventory.MaxAmount 1 }
+ACTOR ScientistFirstmet : Inventory { Inventory.MaxAmount 1 }
+ACTOR scientinsanetoken : Inventory { Inventory.MaxAmount 1 }
+ACTOR ScienceMonstersHere : Inventory { Inventory.MaxAmount 1 }
+ACTOR MonsterDetected : Inventory { Inventory.MaxAmount 1 }
+ACTOR ScientistGaveQuest : Inventory { Inventory.MaxAmount 1 }
+ACTOR QuestCompleted : Inventory { Inventory.MaxAmount 1 }
+ACTOR Quest1sample : Inventory { Inventory.MaxAmount 10 }
+ACTOR QuestGiven : Inventory { Inventory.MaxAmount 1 }
+
+ACTOR ScientistHere : Powerup
+{ 
+	Inventory.MaxAmount 1 
+	Powerup.Duration 200
+}
+
+ACTOR ScientistSaidWounded : Inventory { Inventory.MaxAmount 1 }
+Actor IceCounter : Inventory {Inventory.MaxAmount 4}
+Actor NumberOfAlliesScientist : Inventory {Inventory.MaxAmount 1}
+Actor AllCounter : Inventory {Inventory.MaxAmount 7}
+actor SWITCHbloodsamplemsg : Inventory {Inventory.MaxAmount 1}
+actor UnabletoWaitAgain : Inventory {Inventory.MaxAmount 1}
+actor HasBeenKicked : Inventory {Inventory.MaxAmount 3}
+actor RewardToken : Inventory {Inventory.MaxAmount 10}
+actor GiftCoupon : Inventory {Inventory.MaxAmount 10}
+actor SwitchRockets : bd_Token {}
+actor SwitchShells : bd_Token {}
+actor CryoFatality : bd_Token {}
+actor FrostBaronFatality : bd_Token {}
+actor HasPyroSSG : bd_Token {}
+actor HasGoldSSG : bd_Token {}
+actor HasCryoSSG : bd_Token {}
+actor HasNormalSSG : bd_Token {}
+actor HasPyroSG : bd_Token {}
+actor HasGoldSG : bd_Token {}
+actor HasCryoSG : bd_Token {}
+actor HasNormalSG : bd_Token {}
+actor IsPlayingFrozenAddon : bd_Token {}
+actor OptionScientist : bd_Token {}
+actor FellowScientist : Inventory { Inventory.MaxAmount 1 }
+actor HasLaserSight : bd_Token {}
+actor ElectroModPistol : bd_Token {}
+actor LaserSightModule : bd_Token {}
+actor NeverSelectedModPistol : bd_Token {}
+actor StayFrozen : bd_Token {}
+
+
+actor WarpTimer : Inventory
+{
+Inventory.maxamount 200
++INVENTORY.UNDROPPABLE
+}
+
+Actor HasFreezerWeapon: Inventory
+
+
+{
+inventory.maxamount 1
+}
+
+ACTOR FreezerIsUnloaded : Inventory { Inventory.MaxAmount 1 }
+
+Actor IsSlowed: Inventory
+{
+inventory.maxamount 1
+}
+
+Actor FreezenadeSelected: Inventory
+{
+inventory.maxamount 1
+}
+
+actor CryoCharging : bd_Token {}
+
+ACTOR NeverSelectedCryo : bd_Token {}
+
+ACTOR HasUnloadedCryo : HasUnloaded {}
+
+ACTOR DevicePlaced : bd_Token {}
+
+Actor PistolSpecial : bd_Token {}
+
+//Actor ExecuteDownedSoulHarvester : ExecuteDownedEnemy {}

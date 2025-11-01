@@ -1,0 +1,682 @@
+object BlueExplosionFlareSpawner
+{
+    frame L2NB { light EXPLOSIONFLASH }
+}
+
+PointLight CryocubusLanzaHielo
+{
+	color 0.1 0.1 0.125
+	size 56
+	offset 0 0 0
+}
+
+Object CryocubusLanzaHielo
+{
+	Frame HUMO { Light CryocubusLanzaHielo }
+}
+BrightMap Sprite 5NWCJ0
+{
+    Map "Sprites/Weapons/SnowCaster/Brightmaps/5NW6J0.png"
+	DisableFullBright
+}
+BrightMap Sprite 5NWCK0
+{
+    Map "Sprites/Weapons/SnowCaster/Brightmaps/5NW6K0.png"
+	DisableFullBright
+}
+BrightMap Sprite 5NWCL0
+{
+    Map "Sprites/Weapons/SnowCaster/Brightmaps/5NW6L0.png"
+	DisableFullBright
+}
+BrightMap Sprite 5NWCM0
+{
+    Map "Sprites/Weapons/SnowCaster/Brightmaps/5NW6M0.png"
+	DisableFullBright
+}
+BrightMap Sprite 5NWCN0
+{
+    Map "Sprites/Weapons/SnowCaster/Brightmaps/5NW6N0.png"
+	DisableFullBright
+}
+//////////////////
+BrightMap Sprite CYGWJ0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWJ0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWI0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWI0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWH0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWH0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFR0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFR0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFQ0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFQ0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFP0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFP0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFO0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFO0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFN0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFN0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFM0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFM0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFL0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFL0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFK0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFK0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFJ0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFJ0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFI0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFI0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFH0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFH0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFD0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFD0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFC0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFC0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFB0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFB0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGFA0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GFA0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWW0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWW0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWV0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWV0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWU0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWU0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWT0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWT0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWS0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWS0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWR0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWR0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWQ0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWQ0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWP0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWP0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWO0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWO0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWN0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWN0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWM0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWM0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWL0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWL0.png"
+	DisableFullBright
+}
+BrightMap Sprite CYGWK0
+{
+    Map "Sprites/Weapons/CryoRifle/Brightmaps/64GWK0.png"
+	DisableFullBright
+}
+
+
+BrightMap Sprite CRYRA0
+{
+    Map "Sprites/Weapons/CryoRifle/CRYRB0.png"
+	DisableFullBright
+}
+
+BrightMap Sprite FZB1A1
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXA1.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1B1
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXB1.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1C1
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXC1.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1E1
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXE1.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1F1
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXF1.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1A2A8
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXA2A8.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1B2B8
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXB2B8.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1C2C8
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXC2C8.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1E2E8
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXE2E8.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1F2F8
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXF2F8.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1A3A7
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXA3A7.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1B3B7
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXB3B7.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1C3C7
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXC3C7.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1E3E7
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXE3E7.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1F3F7
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXF3F7.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1A4A6
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXA4A6.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1B4B6
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXB4B6.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1C4C6
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXC4C6.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1E4E6
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXE4E6.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1F4F6
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXF4F6.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1A5
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXA5.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1B5
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXB5.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1C5
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXC5.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1E5
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXE5.png"
+	DisableFullBright
+}
+BrightMap Sprite FZB1F5
+{
+    Map "Sprites/Monsters/Freezebot/brightmaps/FZBXF5.png"
+	DisableFullBright
+}
+
+
+BrightMap Sprite FRZRA0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRZXA0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRZRB0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRZXB0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRZRC0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRZXC0.png"
+	DisableFullBright
+}
+BrightMap Sprite FR1DA0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FR1XA0.png"
+	DisableFullBright
+}
+BrightMap Sprite FR1DB0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FR1XB0.png"
+	DisableFullBright
+}
+BrightMap Sprite FR1DC0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FR1XC0.png"
+	DisableFullBright
+}
+BrightMap Sprite FREKA0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXA0.png"
+	DisableFullBright
+}
+BrightMap Sprite FREKB0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXB0.png"
+	DisableFullBright
+}
+BrightMap Sprite FREKC0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXC0.png"
+	DisableFullBright
+}
+BrightMap Sprite FREKD0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXD0.png"
+	DisableFullBright
+}
+BrightMap Sprite FREKE0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXE0.png"
+	DisableFullBright
+}
+BrightMap Sprite FREKF0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXF0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFIA0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXA0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFIB0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXB0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFIC0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXC0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFID0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXD0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFIE0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXE0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFIF0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXF0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFIG0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXG0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFIH0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXG0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFII0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXG0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRFIJ0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRXXG0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRNAA0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRAXA0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLA0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXA0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLB0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXB0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLC0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXC0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLD0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXD0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLE0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXE0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLF0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXF0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLG0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXG0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLH0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXH0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLI0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXI0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLJ0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXJ0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLK0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXK0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLL0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXL0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRRLM0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FRRXM0.png"
+	DisableFullBright
+}
+
+BrightMap Sprite FRDDA0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXE0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRDDB0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXD0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRDDC0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXC0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRDDD0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXB0.png"
+	DisableFullBright
+}
+BrightMap Sprite FRDDE0
+{
+    Map "Sprites/Weapons/Freezer/brightmaps/FREXA0.png"
+	DisableFullBright
+}
+
+BrightMap Sprite FBARA0
+{
+	Map "Sprites/Monsters/FrozenMonsters/FrozenBarrel/brightmaps/FBXRA0.png"
+	DisableFullBright
+}
+BrightMap Sprite FBARB0
+{
+   Map "Sprites/Monsters/FrozenMonsters/FrozenBarrel/brightmaps/FBXRB0.png"
+	DisableFullBright
+}
+BrightMap Sprite FBARC0
+{
+    Map "Sprites/Monsters/FrozenMonsters/FrozenBarrel/brightmaps/FBXRC0.png"
+	DisableFullBright
+}
+BrightMap Sprite FBARD0
+{
+    Map "Sprites/Monsters/FrozenMonsters/FrozenBarrel/brightmaps/FBXRD0.png"
+	DisableFullBright
+}
+BrightMap Sprite FBARE0
+{
+    Map "Sprites/Monsters/FrozenMonsters/FrozenBarrel/brightmaps/FBXRE0.png"
+	DisableFullBright
+}
+BrightMap Sprite FBARF0
+{
+    Map "Sprites/Monsters/FrozenMonsters/FrozenBarrel/brightmaps/FBXRF0.png"
+	DisableFullBright
+}
+BrightMap Sprite FBARG0
+{
+    Map "Sprites/Monsters/FrozenMonsters/FrozenBarrel/brightmaps/FBXRG0.png"
+	DisableFullBright
+}
+BrightMap Sprite FBARH0
+{
+    Map "Sprites/Monsters/FrozenMonsters/FrozenBarrel/brightmaps/FBXRH0.png"
+	DisableFullBright
+}
+pulselight BLUEGOOZ
+{
+    color 0.2 0.6 0.7
+    size 22
+    secondarySize 24
+    interval 0.1
+    offset 0 40 0
+	dontlightself 1
+}
+
+object FrozenBarrel
+{
+    frame FBAR  { light BLUEGOOZ    }
+    frame BARB  { light BLUEGOOZ    }
+}
+
+
+Pulselight TIMEFREEZESPHERE
+{
+Color 0.8 0.8 0.8
+Size 40
+SecondarySize 42
+Interval 2.0
+Offset 0 16 0
+}
+
+Object TimefreezeSphereST
+{
+Frame TIME { Light TIMEFREEZESPHERE }
+}
+
+
+
+
+BrightMap Sprite HOGEB0
+{
+    Map "Sprites/Items/Traps&Turrets/H0GED0.png"
+	DisableFullBright
+}
+BrightMap Sprite HOGEC0
+{
+    Map "Sprites/Items/Traps&Turrets/H0GEC0.png"
+	DisableFullBright
+}
+BrightMap Sprite HOGED0
+{
+    Map "Sprites/Items/Traps&Turrets/H0GED0.png"
+	DisableFullBright
+}
+BrightMap Sprite HOGEE0
+{
+    Map "Sprites/Items/Traps&Turrets/H0GEC0.png"
+	DisableFullBright
+}
+
+
+
+BrightMap Sprite T2LTD0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+BrightMap Sprite T2LTE0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+BrightMap Sprite T2LTF0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+BrightMap Sprite T2LTG0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+BrightMap Sprite T2LTH0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+BrightMap Sprite T2LTI0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+BrightMap Sprite T2LTJ0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+BrightMap Sprite T2LTK0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+BrightMap Sprite T2LTL0
+{
+    Map "Sprites/Items/Traps&Turrets/T2LTX0.png"
+	DisableFullBright
+}
+

@@ -1,0 +1,894 @@
+ACTOR ModPistol : BrutalWeapon
+{
+	Weapon.AmmoType1 "Clip1"
+	Weapon.AmmoType2 "ModPistolAmmo"
+	weapon.selectionorder 1900
+	+WEAPON.WIMPY_WEAPON
+	-INVENTORY.UNDROPPABLE
+	Inventory.PickupSound "Pistol/Draw"
+	Inventory.PickupMessage "$GOTPistol"
+	Obituary "$OBBD_Pistol"
+	Tag "$TAGBD_Pistol"
+	States
+	{
+	KickFlash: 
+		2IST E 0 A_JumpIfInventory("HasLaserSight", 1,"LaserKickFlash")
+		M0DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"KickFlashLoaded")
+		M0DP OPQR 1
+		M0DP S 10
+		M0DP RQPO 1
+		stop
+	SlideFlash: 
+		2IST E 0 A_JumpIfInventory("HasLaserSight", 1,"LaserSlideFlash")
+		M0DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"SlideFlashLoaded")
+		M0DP OPQR 1
+		M0DP S 36
+		stop
+	SlideFlashEnd: 
+		2IST E 0 A_JumpIfInventory("HasLaserSight", 1,"LaserSlideFlashEnd")
+		M0DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"SlideFlashEndLoaded")
+		M0DP S 5
+		M0DP RQPO 1
+		stop
+	SlideFlashEndEarly: 
+		2IST E 0 A_JumpIfInventory("HasLaserSight", 1,"LaserSlideFlashEndEarly")
+		M0DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"SlideFlashEndEarlyLoaded")
+		M0DP S 2
+		M0DP RQPO 1
+		stop
+	KickFlashLoaded: 
+		M0DP JKLM 1
+		M0DP N 10
+		M0DP MLKJ 1
+		stop
+	SlideFlashLoaded:
+		M0DP JKLM 1
+		M0DP N 36
+		stop
+	SlideFlashEndLoaded: 
+		M0DP N 5
+		M0DP MLKJ 1
+		stop
+	SlideFlashEndEarlyLoaded: 
+		M0DP N 2
+		M0DP MLKJ 1
+		stop
+		
+	LaserKickFlash: 
+		M1DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"LaserKickFlashLoaded")
+		M1DP OPQR 1
+		M1DP S 10
+		M1DP RQPO 1
+		stop
+	LaserSlideFlash: 
+		M1DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"LaserSlideFlashLoaded")
+		M1DP OPQR 1
+		M1DP S 36
+		stop
+	LaserSlideFlashEnd: 
+		M1DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"LaserSlideFlashEndLoaded")
+		M1DP S 5
+		M1DP RQPO 1
+		stop
+	LaserSlideFlashEndEarly: 
+		M1DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"LaserSlideFlashEndEarlyLoaded")
+		M1DP S 2
+		M1DP RQPO 1
+		stop
+	LaserKickFlashLoaded: 
+		M1DP JKLM 1
+		M1DP N 10
+		M1DP MLKJ 1
+		stop
+	LaserSlideFlashLoaded:
+		M1DP JKLM 1
+		M1DP N 36
+		stop
+	LaserSlideFlashEndLoaded: 
+		M1DP N 5
+		M1DP MLKJ 1
+		stop
+	LaserSlideFlashEndEarlyLoaded: 
+		M1DP N 2
+		M1DP MLKJ 1
+		stop	
+	Select:
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_GiveInventory("TokenCleaner")
+		M0DP F 0 A_Takeinventory("DualPistols",1)
+		TNT1 A 0 A_SetCrosshair( CallACS("GetCrosshair", 1) )
+		M0DP E 0 A_GunFlash
+		TNT1 A 0 A_JumpIfInventory("SwitchDuals", 1, "SelectDual")
+		TNT1 A 1
+		M0DP E 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		TNT1 A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"selectAnimation")
+		Goto FirstSelectAnimation
+	
+	SelectDual:
+		TNT1 A 0 A_Takeinventory("SwitchDuals",1)
+		PI2G LKJ 1 A_WeaponReady(WRF_NOFIRE)
+		TNT1 F 0 A_PlaySound("Pistol/Draw",5)
+		PI2G IHG 1 A_WeaponReady(WRF_NOFIRE)
+		TNT1 A 0 A_TakeInventory("SwitchDuals",1)
+		Goto Ready
+		
+	FirstSelectAnimation:
+		TNT1 A 0 
+		TNT1 A 0 A_JumpIfInventory("NeverSelectedModPistol", 1,2)
+		Goto SelectAnimation
+		tnt1 AA 0
+		TNT1 A 0 A_TakeInventory("NeverSelectedModPistol",1)
+		M0DP E 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		M1DR A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DR A 0
+		"####" AB 1 A_WeaponReady(WRF_ALLOWZOOM)
+		M1DI A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DI A 0
+		"####" ABCDEEEEE 1 A_WeaponReady(WRF_ALLOWZOOM)
+		"####" A 0 A_PlaySound("Pistol/slide", 5)
+		"####" FGHH 1 A_WeaponReady(WRF_ALLOWZOOM)
+		"####" H 8 A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOFIRE)
+		"####" X 2 A_PlaySound("statics3", 5)
+		"####" H 15 A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOFIRE)
+		"####" Y 2 A_PlaySound("statics3", 5)
+		"####" H 7 A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOFIRE)
+		"####" H 0 A_PlaySound("Pistol/slide2", 5)
+		"####" IJKLLL 1 A_WeaponReady(WRF_ALLOWZOOM)
+		"####" MMNOP 1 A_WeaponReady(WRF_ALLOWZOOM)
+		M1DR A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DR A 0
+		"####" BA 1 A_WeaponReady(WRF_ALLOWZOOM)
+		M0DP E 0 A_Takeinventory("Reloading",1)
+		Goto Ready
+
+	SelectAnimation:
+		M0DP E 0 A_PlaySound("Pistol/Draw", 5)
+		2IST E 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"SelectPurist")		
+		M0DS A 0 A_JumpIfInventory("ModPistolAmmo", 1, 2)
+		Goto SelectAnimationEmpty
+		TNT1 AA 0
+		M1DS A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DS A 0
+		"####" ABC 1 A_WeaponReady(WRF_NOFIRE)
+		M0DP E 0 A_Takeinventory("StartDualWield",1)
+		Goto Ready
+	
+	SelectAnimationEmpty:
+		M1DS A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DS A 0
+		"####" GHI 1 A_WeaponReady(WRF_NOFIRE)
+		M0DP E 0 A_Takeinventory("StartDualWield",1)
+	Ready3:
+	Ready:
+		M0DP E 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		M0DP E 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("NeverSelectedModPistol", 1,"FirstSelectAnimation")
+		M0DP E 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		M0DP E 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		M0DP E 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		M0DP E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		M0DP E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		M0DP E 0 A_Takeinventory("PistolFireAnimation1",1)
+		M0DP A 0 A_JumpIfInventory("HasLaserSight", 1, "ReadyLaser")
+		M0DP E 0 A_JumpIfInventory("ModPistolAmmo",1,2)
+		M0DP I 0
+		"####" "#" 1 A_WeaponReady//(WRF_ALLOWRELOAD)
+		"####" "#" 0 A_JumpIfInventory("Unloading",1,"Unload")
+		"####" "#" 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		"####" "#" 0 A_JumpIfInventory("StartDualWield",1,"DualWield")
+		"####" "#" 0 A_JumpIfInventory("ElectroModPistol", 1, "MaybeLightnings")
+		Loop
+	
+	ReadyLaser:
+		M1DP E 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		M1DP E 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("NeverSelectedModPistol", 1,"FirstSelectAnimation")
+		M1DP E 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		M1DP E 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		M1DP E 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		M1DP E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		M1DP E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		M1DP E 0 A_Takeinventory("PistolFireAnimation1",1)
+		M1DP E 0 A_JumpIfInventory("ModPistolAmmo",1,2)
+		M1DP I 0
+		M1DP I 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" "#" 1 A_WeaponReady//(WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" "#" 0 A_JumpIfInventory("Unloading",1,"Unload")
+		"####" "#" 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		"####" "#" 0 A_JumpIfInventory("StartDualWield",1,"DualWield")
+		"####" "#" 0 A_JumpIfInventory("ElectroModPistol", 1, "MaybeLightnings")
+		Loop
+	
+	
+	MaybeLightnings:
+		"####" "#" 0 A_JumpIfInventory("ModPistolAmmo",1,2)
+		goto ready
+		"####" "#" 0
+		"####" "#" 0 A_Jump(252, "Ready")
+		"####" "#" 0 A_Jump(128, "Lightnings1", "Lightnings2", "Lightnings3")
+		goto ready
+	
+	Lightnings1:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0 
+		"####" A 0 A_PlaySound("statics", 5)
+		"####" X 1 BRIGHT A_WeaponReady
+		goto ready
+	
+	Lightnings2:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" A 0 A_PlaySound("statics", 5)
+		"####" Y 1 BRIGHT A_WeaponReady
+		goto ready
+		
+	Lightnings3:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" A 0 A_PlaySound("statics", 5)
+		"####" Z 1 BRIGHT A_WeaponReady
+		goto ready
+	
+	StartSprint:
+		"####" "#" 0 A_TakeInventory("NeverSelectedModPistol",1)
+		"####" "#" 0 A_JumpIfInventory("UsedStamina", 40, "StopSprintTired")
+		M0DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"StartSprintLoaded")
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" OPQ 1 A_WeaponReady(WRF_NOFIRE)
+		Goto Sprinting
+	StartSprintLoaded:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" JKL 1 A_WeaponReady(WRF_NOFIRE)
+	Sprinting:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" A 0 offset(-9,32)
+		//M0DP E 0 offset(-9,32) A_JumpIfInventory("IsStandingStill", 1, "Ready3")
+		"####" E 0 offset(-9,32) A_JumpIfInventory("UsedStamina", 0, "StopSprint")
+		"####" A 0 offset(-9,32) ACS_ExecuteAlways(852, 0, 0, 0, 0)//Makes player faster.
+		"####" E 0 offset(-9,32) A_JumpIfInventory("PowerStrength", 1, 2)
+		"####" E 0 offset(-9,32) A_GiveInventory("UsedStamina", 2)
+		"####" E 0 offset(-9,32)
+		"####" N 0 A_JumpIfInventory("ModPistolAmmo", 1,2)
+		"####" S 0
+		"####" "#" 1 offset(-9,34) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(-6,36) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(-3,38) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(0,38) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(3,36) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(6,34) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(9,32) A_SetPitch(pitch -0.5)
+		"####" "#" 0 offset(9,32) A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" "#" 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		"####" "#" 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" "#" 0 offset(-9,32) A_GiveInventory("UsedStamina", 3)
+		"####" "#" 0 offset(9,33) A_SpawnItemEx("FootStep", 0, 0, 2, 0, 0, -4)
+		"####" "#" 1 offset(9,34) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(6,36) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(3,38) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(0,38) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(-3,36) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(-6,34) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(-9,32) A_SetPitch(pitch +0.5)
+		"####" "#" 0 offset(-9,32) A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 offset(-9,32) A_JumpIfInventory("IsRunning", 1, "Sprinting")
+		Goto StopSprint
+		
+	StopSprint:
+		M0DP J 0 A_JumpIfInventory("ModPistolAmmo", 1,"StopSprintLoaded")
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" QPO 1
+		"####" E 0 A_JumpIfInventory("UsedStamina", 60, "StopSprintTired")
+		"####" A 0 ACS_ExecuteAlways(853, 0, 0, 0, 0)//Makes player slower.
+		Goto Ready
+
+	StopSprintLoaded:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" LKJ 1
+		M0DP E 0 A_JumpIfInventory("UsedStamina", 60, "StopSprintTired")
+		PLAY A 0 ACS_ExecuteAlways(853, 0, 0, 0, 0)//Makes player slower.
+		Goto Ready
+
+	Deselect:
+		M0DP E 0 A_TakeInventory("TossGrenade", 1)
+		TNT1 A 0 A_TakeInventory("HoldInspect",1)
+		TNT1 A 0 A_TakeInventory("IsInspecting",1)
+		TNT1 A 0 A_JumpIfInventory("SwitchDuals", 1, "DeselectInstant")
+		2IST E 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"DeselectPurist")
+		M0DS E 0 A_JumpIfInventory("ModPistolAmmo", 1, 1)
+		Goto DeselectEmpty
+		M0DS E 0
+	DeselectContinue:
+		M1DS A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DS A 0
+		"####" DEF 1
+		TNT1 AAAAAAAAAAAAAAAAAA 0 A_Lower
+		TNT1 A 1 A_Lower
+		Wait
+
+	DeselectEmpty:
+		M1DS A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DS A 0
+		"####" JKL 1
+		TNT1 AAAAAAAAAAAAAAAAAA 0 A_Lower
+		TNT1 A 1 A_Lower
+		Wait
+
+	Fire:
+		"####" "#" 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"NoReload")
+		"####" "#" 0 A_JumpIfInventory("NoReloading",1,"NoReload")
+		"####" "#" 0 A_JumpIfInventory("ModPistolAmmo",1,1)
+		Goto NoAmmo
+		"####" "#" 0 A_Takeinventory("ModPistolAmmo",1)
+		"####" "#" 0 A_Takeinventory("BDDualPistolAmmo",1)
+		"####" "#" 0 A_JumpIfInventory("ModPistolAmmo",6,2)
+		"####" "#" 0 A_PlaySound("weapons/lowammo",CHAN_AUTO)
+		"####" "#" 0 A_JumpIfInventory("ElectroModPistol",1,"ResumeFireFrameElec")
+		"####" "###" 0
+		Goto ResumeFireFrame
+
+	NoReload:
+		"####" "#" 0 A_JumpIfInventory("Clip1",1,1)
+		Goto NoAmmo
+		"####" "#" 0 A_Takeinventory("Clip1",1,TIF_NOTAKEINFINITE)
+		"####" "###" 0
+	ResumeFireFrame:
+		"####" A 0
+		2IST A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		M0DP E 0
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" E 0 A_AlertMonsters
+		"####" E 0 A_PlaySound("FARSHT", 6)
+		"####" E 0 A_PlaySound("HMGFIRE", 1)
+		"####" E 0 A_JumpIFInventory("PistolBurstFire", 1, "Fire2")		
+		"####" E 0 A_ZoomFactor(0.98)
+		"####" A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1), 0, 0, 0)
+		"####" A 1 BRIGHT A_FireBullets (1, 1, -1, 25, "HitPuff", FBF_NORANDOM)
+		"####" E 0 A_ZoomFactor(1.0)
+		"####" "#" 0 A_Quake(1,2,0,12,"")
+		"####" B 1 A_FireCustomMissile("PistolCaseSpawn",5,0,0,-9)
+		"####" C 1
+		"####" I 0 A_JumpIfInventory("ModPistolAmmo",1,2)
+		Goto NoAmmo
+		"####" EF 0 A_JumpIfInventory("HasLaserSight", 1, "resumefireframe2")
+		"####" E 0 A_JumpIfInventory("IsTacticalClass", 1, "FireEndTactical")
+		"####" D 1
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 4 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 5 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" E 0 A_REfire
+		Goto Ready
+		
+	ResumeFireFrame2:
+		"####" EF 0
+		"####" E 0 A_JumpIfInventory("IsTacticalClass", 1, "FireEndTactical")
+		"####" D 1
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 0 A_REfire
+		Goto Ready
+		
+	Fire2:
+		"####" A 0
+		"####" E 0 A_GiveInventory("BurstCounter",1)
+		"####" E 0 A_ZoomFactor(0.98)
+		"####" A 1 BRIGHT A_FireBullets (1, 1, -1, 25, "HitPuff", FBF_NORANDOM)
+		"####" E 0 A_ZoomFactor(1.0)
+		"####" "#" 0 A_Quake(2,2,0,12,"")
+		"####" A 0 A_FireCustomMissile("DecorativeTracer", random(-1,1), 0, 0, 0)
+		"####" B 1
+		"####" E 0 A_FireCustomMissile("PistolCaseSpawn",5,0,0,-9)
+		"####" E 0 A_JumpIfInventory("BurstCounter",3,2)
+		Goto Fire
+		"####" AAA 0
+		"####" EF 0
+		"####" C 1 A_TakeInventory("BurstCounter",0)
+		"####" DE 1	
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 2 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		Goto Ready
+	
+	ResumeFireFrameElec:
+		"####" A 0
+		2IST A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		M0DP E 0
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" E 0 A_AlertMonsters
+		"####" E 0 A_PlaySound("FARSHT", 6)
+		"####" E 0 A_PlaySound("HMGFIRE", 1)
+		"####" E 0 A_JumpIFInventory("PistolBurstFire", 1, "Fire2Elec")		
+		"####" E 0 A_ZoomFactor(0.98)
+		"####" A 0 A_FireCustomMissile("BlueDecorativeTracer", random(-1,1), 0, 0, 0)
+		TNT1 A 0 A_Jump (256,"efire1", "efire2", "efire3" )
+		eFire1:
+		M4DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M3DP A 0
+		"####" B 1 BRIGHT A_FireBullets(1, 1, -1, 25, "LightningHitPuff")
+		Goto AfterFire
+		eFire2:
+		M4DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M3DP A 0
+		"####" C 1 BRIGHT A_FireBullets(1, 1, -1, 25, "LightningHitPuff")
+		Goto AfterFire
+		eFire3:
+		M4DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M3DP A 0
+		"####" A 1 BRIGHT A_FireBullets(1, 1, -1, 25, "LightningHitPuff")
+		Goto AfterFire
+	AfterFire:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" E 0 A_ZoomFactor(1.0)
+		"####" "#" 0 A_Quake(1,2,0,12,"")
+		"####" B 1 A_FireCustomMissile("PistolCaseSpawn",5,0,0,-9)
+		"####" C 1
+		"####" I 0 A_JumpIfInventory("ModPistolAmmo",1,2)
+		Goto NoAmmo
+		"####" EF 0 A_JumpIfInventory("HasLaserSight", 1, "resumefireframe2Elec")
+		"####" E 0 A_JumpIfInventory("IsTacticalClass", 1, "FireEndTactical")
+		"####" D 1
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 4 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 5 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" E 0 A_REfire
+		Goto Ready
+		
+	resumefireframe2Elec:
+		"####" EF 0
+		"####" E 0 A_JumpIfInventory("IsTacticalClass", 1, "FireEndTactical")
+		"####" D 1
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 1 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		"####" "#" 0 A_FireBullets(0,0,1,0,"LaserDot2",FBF_NOFLASH|FBF_NORANDOMPUFFZ)
+		"####" E 0 A_REfire
+		Goto Ready
+	Fire2Elec:
+		"####" A 0
+		"####" E 0 A_GiveInventory("BurstCounter",1)
+		"####" E 0 A_ZoomFactor(0.98)
+		TNT1 A 0 A_Jump (256,"efire21", "efire22", "efire23" )
+		eFire21:
+		M4DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M3DP A 0
+		"####" B 1 BRIGHT A_FireBullets(1, 1, -1, 25, "LightningHitPuff")
+		Goto AfterFire2
+		eFire22:
+		M4DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M3DP A 0
+		"####" C 1 BRIGHT A_FireBullets(1, 1, -1, 25, "LightningHitPuff")
+		Goto AfterFire2
+		eFire23:
+		M4DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M3DP A 0
+		"####" A 1 BRIGHT A_FireBullets(1, 1, -1, 25, "LightningHitPuff")
+		Goto AfterFire2
+		AfterFire2:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" E 0 A_ZoomFactor(1.0)
+		"####" "#" 0 A_Quake(2,2,0,12,"")
+		"####" A 0 A_FireCustomMissile("BlueDecorativeTracer", random(-1,1), 0, 0, 0)
+		"####" B 1
+		"####" E 0 A_FireCustomMissile("PistolCaseSpawn",5,0,0,-9)
+		"####" E 0 A_JumpIfInventory("BurstCounter",3,2)
+		Goto Fire
+		"####" AAA 0
+		"####" EF 0
+		"####" C 1 A_TakeInventory("BurstCounter",0)
+		"####" DE 1	
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 2 A_WeaponReady(WRF_NOBOB | WRF_ALLOWRELOAD)
+		Goto Ready
+	
+	FireEndTactical:
+		M0DP E 0
+		M0DP E 0 A_JumpIfInventory("IsRunning", 1, "FireEndTactical2")
+		M0DP E 1 A_WeaponReady(1)
+		PLAY A 0 ACS_ExecuteAlways(853, 0, 0, 0, 0)//Makes player slower.
+		M0DP E 7 A_WeaponReady(1)
+		Goto Ready
+
+	FireEndTactical2:
+		PLAY A 0 ACS_ExecuteAlways(852, 0, 0, 0, 0)//Makes player faster.
+		M0DP E 0 A_GiveInventory("UsedStamina", 4)
+		M0DP E 1 A_WeaponReady(1)
+		M0DP E 5 A_WeaponReady(1)
+		Goto Sprinting
+
+	Inspect:
+		M1DP A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP A 0
+		"####" E 0 A_JumpIfInventory("DoInspect",1,"ContinueInspect")
+		"####" E 0 A_JumpIfInventory("FiredSecondary",1,"ContinueInspect")
+		"####" E 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		"####" E 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" E 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		"####" E 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		"####" E 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		"####" E 0 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" E 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" E 0 A_JumpIfInventory("Unloading",1,"Unload")
+		"####" E 0 A_Takeinventory("PistolFireAnimation1",1)
+		"####" E 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		"####" E 0 A_JumpIfInventory("StartDualWield",1,"DualWield")
+		"####" E 6 A_WeaponReady(WRF_ALLOWZOOM)
+		"####" E 0 A_GiveInventory("DoInspect",1)
+		"####" E 1 A_WeaponReady(WRF_ALLOWRELOAD|WRF_ALLOWZOOM)
+		"####" E 0 A_TakeInventory("DoInspect",1)
+		Goto Ready3
+
+	ContinueInspect:
+		TNT1 AA 0
+		M0DP E 0 A_TakeInventory("DoInspect",1)
+		M1DR A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DR A 0
+		"####" AB 1 A_WeaponReady(WRF_ALLOWZOOM)
+		M1DI A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DI A 0
+		"####" ABCDEEEEE 1 A_WeaponReady(WRF_ALLOWZOOM)
+		"####" A 0 A_PlaySound("Pistol/slide", 5)
+		"####" FGHH 1 A_WeaponReady(WRF_ALLOWZOOM)
+		"####" A 0 A_GiveInventory("HoldInspect",1)
+	Inspect2:
+		"####" H 2 A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOFIRE)
+		"####" A 0 A_TakeInventory("HoldInspect",1)
+		"####" H 0 A_PlaySound("Pistol/slide2", 5)
+		"####" IJKLLL 1 A_WeaponReady(WRF_ALLOWZOOM)
+		"####" MMNOP 1 A_WeaponReady(WRF_ALLOWZOOM)
+		M1DR A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DR A 0
+		"####" BA 1 A_WeaponReady(WRF_ALLOWZOOM)
+		M0DP E 0 A_Takeinventory("Reloading",1)
+		Goto Ready
+
+	Reload:
+		"####" "#" 0 A_Takeinventory("Reloading",1)
+		"####" "#" 0 A_Takeinventory("ADSmode",1)
+		"####" "#" 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristWarning")
+		"####" "#" 0 A_JumpIfInventory("HoldInspect",1,"Inspect2")
+		M0DP E 0 A_JumpIfInventory("ModPistolAmmo",16,"Inspect")
+		M0DP E 0 A_JumpIfInventory("Clip1",1,3)
+		Goto Ready
+		TNT1 AAA 0
+		M0DP E 0 A_Takeinventory("Zoomed",1)
+		M0DP E 0 A_ZoomFactor(1.0)
+		M0DP E 0 A_GiveInventory ("Pumping", 1)
+		M0DP E 0 A_Takeinventory("Reloading",1)
+		M0DP E 0 A_JumpIfInventory("HasUnloadedPistol", 1, 3)
+		RIFR C 0 A_FireCustomMissile("EmptyClip2Spawn",-5,0,8,-4)
+		M0DP E 0 A_PlaySound("Pistol/Reload1", 5)
+		M0DP E 0 A_JumpIfInventory("ModPistolAmmo",1,"Reload2")//15+1 effect
+		TNT1 AA 0
+		3M0R A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		2M0R A 0
+		"####" ABCDEFGG 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" HIJKKLLL 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" MNO 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" F 0 A_PlaySound("Pistol/Reload2", 5)
+	InsertBullets:
+		"####" AAAA 0		
+		"####" E 0 A_JumpIfInventory("ModPistolAmmo",15,15)
+		"####" E 0 A_JumpIfInventory("Clip1",1,3)
+		Goto FinishReload
+		"####" AAAAAA 0
+		"####" E 0 A_Giveinventory("ModPistolAmmo",1)
+		"####" E 0 A_Takeinventory("Clip1",1,TIF_NOTAKEINFINITE)
+		Goto InsertBullets
+		"####" AAAAAAAAAA 0
+		"####" E 0 A_Takeinventory("Reloading",1)
+		"####" E 0 //A_Refire
+		Goto FinishReload
+		"####" AAAA 0
+		"####" E 0 A_Takeinventory("Reloading",1)
+		"####" E 0 //A_Refire
+		Goto FinishReload
+
+	FinishReload:
+		3M0R A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		2M0R A 0
+		"####" PQRSS 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" T 1 A_PlaySound("Pistol/slide2", 5)
+		"####" UV 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		M1DR A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DR A 0
+		"####" TTUVW 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" DCBA 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" E 0 A_Takeinventory("HasUnloadedPistol",1)
+		"####" E 0 A_Takeinventory("HasUnloadedDualPistols",1)
+		Goto Ready
+
+	Reload2: //empty
+		TNT1 AA 0
+		M1DR A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DR A 0
+		"####" ABCDEFGG 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" HIJKKLLL 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" MNO 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" E 0 A_PlaySound("Pistol/Reload2", 5)
+	InsertBullets2:
+		TNT1 AAAA 0
+		M0DP E 0 A_JumpIfInventory("ModPistolAmmo",0,15)
+		M0DP E 0 A_JumpIfInventory("Clip1",1,3)
+		Goto FinishReload2
+		TNT1 AAAAAA 0
+		M0DP E 0 A_Giveinventory("ModPistolAmmo",1)
+		M0DP E 0 A_Takeinventory("Clip1",1,TIF_NOTAKEINFINITE)
+		Goto InsertBullets2
+		TNT1 AAAAAAAAAA 0
+		M0DP E 0 A_Takeinventory("Reloading",1)
+		M0DP E 0 //A_Refire
+		Goto FinishReload2
+		TNT1 AAAA 0
+		M0DP E 0 A_Takeinventory("Reloading",1)
+		M0DP E 0 //A_Refire
+		Goto FinishReload2
+
+	FinishReload2:
+		M1DR A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DR A 0
+		"####" PQRSTT 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" UVW 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" DCBA 1 A_WEAPONREADY(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" E 0 A_Takeinventory("HasUnloadedPistol",1)
+		"####" E 0 A_Takeinventory("HasUnloadedDualPistols",1)
+		Goto Ready
+
+	Spawn:
+		M0DP A 0
+		P3ST K -1
+		Stop
+
+	AltFire:
+		"####" "#" 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristWarning")
+		TNT1 A 0 A_JumpIFInventory("PistolBurstFire", 1, "StopAlt")
+		TNT1 A 0 A_GiveInventory("PistolBurstFire", 1)
+		TNT1 A 0 A_Print("$BD_Pistol_BURST_MODE",0.5)
+		TNT1 A 0 A_PlaySound("Weapon/Empty", 5)
+		M0DP E 0 A_JumpIfInventory("ModPistolAmmo",1,2)
+		M0DP I 0
+		M1DP E 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP E 0
+		"####" "#" 1 offset(0,34)
+		"####" "#" 1 offset(0,33)
+		Goto Ready3
+
+	StopAlt:
+		TNT1 A 0
+		TNT1 A 0 A_TakeInventory("PistolBurstFire", 1)
+		TNT1 A 0 A_Print("$BD_Pistol_SINGLE_MODE",0.5)
+		TNT1 A 0 A_PlaySound("Weapon/Empty", 5)
+		M0DP E 0 A_JumpIfInventory("ModPistolAmmo",1,2)
+		M0DP I 0
+		M1DP E 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DP E 0
+		"####" "#" 1 offset(0,34)
+		"####" "#" 1 offset(0,33)
+		Goto Ready3
+
+	Steady:
+		TNT1 A 1
+		Goto Ready
+
+	User2:
+	Unload:
+		"####" "#" 1 A_WeaponReady
+		"####" "#" 0 A_Takeinventory("Unloading",1)
+		"####" "#" 0 A_Takeinventory("ADSmode",1)
+		"####" "#" 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristWarning")
+		"####" "#" 0 A_JumpIfInventory("NoReloading",1,"Ready")
+		"####" "#" 0 A_JumpIfInventory("ModPistolAmmo",1,3)
+		Goto Ready
+		TNT1 AAA 0
+		M0DP E 0 A_Takeinventory("Zoomed",1)
+		M0DP E 0 A_ZoomFactor(1.0)
+		M0DP E 0 A_GiveInventory ("Pumping", 1)
+		M0DP E 0 A_Takeinventory("Reloading",1)
+		M1DR A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		M0DR A 0
+		"####" ABCDWVUTSS 1
+		"####" E 0 A_PlaySound("Pistol/Reload1", 5)
+		3M0R A 0 A_JumpIfInventory("HasLaserSight", 1, 2)
+		2M0R A 0
+		"####" SONMKJIIHG 1
+		"####" FEDCBA 1
+		M0DP E 0 A_Giveinventory("HasUnloadedPistol",1)
+		M0DP E 0 A_Giveinventory("HasUnloadedDualPistols",1)
+		M0DP E 0 A_JumpIfInventory("ModPistolAmmo",1,"RemoveBullets")
+	RemoveBullets:
+		TNT1 AAAA 0
+		M0DP E 0 A_JumpIfInventory("ModPistolAmmo",1,3)
+		Goto Ready
+		TNT1 AAAAAA 0
+		M0DP E 0 A_Takeinventory("ModPistolAmmo",1)
+		M0DP E 0 A_Giveinventory("Clip1",1)
+		Goto RemoveBullets
+		TNT1 AAAAAAAAAA 0
+		M0DP E 0 A_Takeinventory("Reloading",1)
+		M0DP E 0 A_Refire
+		Goto Ready
+		TNT1 AAAA 0
+		M0DP E 0 A_Takeinventory("Reloading",1)
+		M0DP E 0 A_Refire
+		Goto Ready
+
+	User3:
+	DualWield:
+		M0DP A 0 A_JumpIfInventory("LaserSightModule", 1, "LaserSightModule")
+		Goto Ready
+	LaserSightModule:
+		"####" "#" 0 A_Takeinventory("StartDualWield",1)
+		M0DP A 0 A_JumpIfInventory("HasLaserSight", 1, "TakeLaser")
+		M0DW ABCCDDDEFGGG 1
+		M0DW H 4 A_PlaySound("Pistol/slide2", 5)
+		M0DW IIJKLM 1
+		M0DP A 0 A_GiveInventory("HasLaserSight")
+		Goto Ready
+	TakeLaser:
+		M0DW MLKJIII 1
+		M0DW H 4 A_PlaySound("Pistol/slide2", 5)
+		M0DW GGFEDDDCCBA 1
+		M0DP A 0 A_TakeInventory("HasLaserSight")
+		Goto Ready
+
+	}
+}
+
+
+
+//laser pointer dots
+ACTOR Laserdot
+{ 
+    Mass 0
+    Scale 0.5
+	alpha 0.7
+	+nodecal
+    +NOBLOCKMAP
+    +NOGRAVITY
+    +BLOODLESSIMPACT
+    +ALWAYSPUFF
+    +PUFFONACTORS
+    +DONTSPLASH
+    +FORCEXYBILLBOARD
+	+NOTRIGGER
+    States
+    {
+	Spawn:
+		LSIT A 0
+		LSIT A 0 A_CheckRange(1000,"Spawn3")
+		LSIT A 0 A_CheckRange(550,"Spawn2")
+		LSIT A 1 BRIGHT
+		Stop
+	Spawn2:
+		LSIT A 0 A_SetScale(0.8,0.8)
+		LSIT A 1 BRIGHT
+		Stop
+	Spawn3:
+		LSIT A 0 A_SetScale(1.3,1.3)
+		LSIT A 1 BRIGHT
+		Stop
+	}
+}
+ACTOR Laserdot2 : Laserdot
+{ 
+    States
+    {
+	Spawn:
+		LSIT A 0
+		LSIT A 0 A_CheckRange(1000,"Spawn3")
+		LSIT A 0 A_CheckRange(550,"Spawn2")
+		LSIT B 1 BRIGHT
+		Stop
+	Spawn2:
+		LSIT A 0 A_SetScale(0.8,0.8)
+		LSIT B 1 BRIGHT
+		Stop
+	Spawn3:
+		LSIT A 0 A_SetScale(1.3,1.3)
+		LSIT B 1 BRIGHT
+		Stop
+	}
+}
+ACTOR Laserdot3 : Laserdot
+{ 
+    States
+    {
+	Spawn:
+		LSIT A 0
+		LSIT A 0 A_CheckRange(1000,"Spawn3")
+		LSIT A 0 A_CheckRange(550,"Spawn2")
+		LSIT C 1 BRIGHT
+		Stop
+	Spawn2:
+		LSIT A 0 A_SetScale(0.8,0.8)
+		LSIT C 1 BRIGHT
+		Stop
+	Spawn3:
+		LSIT A 0 A_SetScale(1.3,1.3)
+		LSIT C 1 BRIGHT
+		Stop
+	}
+}
+
+ACTOR ModPistolAmmo : Ammo
+{
+	Inventory.Amount 0
+	Inventory.MaxAmount 16
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 16
+	Inventory.Icon MODPA0
+}

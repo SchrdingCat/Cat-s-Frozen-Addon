@@ -1,0 +1,56 @@
+ACTOR NewBelphegor2 : Belphegor2 Replaces Belphegor2
+{
+	PainChance "Freeze", 255
+	PainChance "Lightning", 200
+	States
+	{
+	
+	Death.Head:
+	    TNT1 A 0 A_JumpIfInTargetInventory("HasFreezerWeapon", 1, "Death.Freeze")
+		Goto Super::Death.Head
+	
+	Pain.Lightning:
+		TNT1 A 0 A_Jump(230, "Nostun")
+		TNT1 A 0 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-4, 4),  random (16, 32), 0, 0)
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4b", 0, 88,0)
+		BOS3 E 1 A_Pain
+		BOS3 EEEEEEEEEE 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 62), 0, 0, 0, random(0, 360))
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4b", 0, 88,0)
+		BOS3 E 1 A_Pain
+		BOS3 EEEEEEEEEE 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 62), 0, 0, 0, random(0, 360))
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4b", 0, 88,0)
+		BOS3 E 1 A_Pain
+		BOS3 EEEEEEEEEE 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 62), 0, 0, 0, random(0, 360))
+		TNT1 A 0 A_SpawnItem("HeadshotTarget4b", 0, 88,0)
+		BOS3 E 1 A_Pain
+		Goto See
+	NoStun:	
+		Goto Super::Pain	
+		
+	Death.Lightning:
+	Death.plasma:
+	Death.Plasma2:
+		Goto Super::Death.Railgun	
+		
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0
+		//TNT1 A 0 A_KillMaster("Vanish")
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_BossDeath
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_SpawnItem("FrozenBelphegor")
+		Stop
+
+	}
+}
+
+ACTOR BelphegorDamaged : NewBelphegor2
+{
+	Health 200
+	Speed 2
+	-COUNTKILL
+}

@@ -1,0 +1,52 @@
+ACTOR NewBaronofHell2 : BaronofHell2 Replaces BaronofHell2
+{
+	PainChance "Freeze", 255
+	PainChance "Lightning", 250
+	Species "HellNoble"
+	States
+	{
+	Pain.Lightning:
+		TNT1 A 0 A_Jump(164, "Nostun")
+		TNT1 A 0 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-4, 4),  random (16, 52), 0, 0)
+		BARO H 1 A_Pain
+		BARO HHHHHHHHHH 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 62), 0, 0, 0, random(0, 360))
+		BARO H 1 A_Pain
+		BARO HHHHHHHHHH 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 62), 0, 0, 0, random(0, 360))
+		BARO H 1 A_Pain
+		BARO HHHHHHHHHH 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 62), 0, 0, 0, random(0, 360))
+		BARO H 1 A_Pain
+		BARO HHHHHHHHHH 3 A_SpawnItemEx ("StunLightnings", random (-12, 12), random (-12, 12),  random (16, 62), 0, 0, 0, random(0, 360))
+		BARO H 1 A_Pain
+		Goto See
+	NoStun:	
+		Goto Super::Pain	
+	
+	Possession:
+		TNT1 A 0 A_SetInvulnerable
+		BARO H 2
+		BARO H 2 A_Pain
+		"####" "#" 35 ACS_NamedExecuteAlways("Pos - Flicker effect")
+		TNT1 A 0 A_UnSetInvulnerable
+		Goto See	
+		
+	Death.Lightning:
+	Death.plasma:
+	Death.Plasma2:
+		Goto Super::Death.plasma	
+		
+	Death.Head:
+	    TNT1 A 0 A_JumpIfInTargetInventory("HasFreezerWeapon", 1, "Death.Freeze")
+		Goto Super::Death.Head
+	
+			
+	Death.DeathExplosionCard:
+		goto Death.ExplosiveImpact
+	}
+}
+
+ACTOR BaronofHellDamaged : NewBaronofHell2
+{
+	Health 150
+	Speed 2
+	-COUNTKILL
+}

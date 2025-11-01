@@ -1,0 +1,21 @@
+decal IceScorch 
+{
+	pic SCORCH1
+	shade "white"
+	x-scale 1.25
+	y-scale 1.25
+	randomflipx
+	randomflipy
+	
+}
+
+decal IceScorchS 
+{
+	pic SCORCH1
+	shade "white"
+	x-scale 0.40
+	y-scale 0.40
+	randomflipx
+	randomflipy
+	
+}

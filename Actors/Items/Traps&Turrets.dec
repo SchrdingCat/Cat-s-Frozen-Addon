@@ -1,0 +1,735 @@
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////																	  			////////
+/////////						HOLOGRAM DEVICE											////////
+/////////																				////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+Actor HoloDeviceInv : CustomInventory
+{
+Scale 0.75
+-COUNTITEM
++INVENTORY.INVBAR
+-INVENTORY.UNDROPPABLE
+-INVENTORY.ALWAYSPICKUP
+Inventory.Amount 1
+Inventory.MaxAmount 1
+Inventory.Icon "HOGEI0"
+Inventory.AltHUDIcon "HOGEI0"
+Inventory.PickupSound "Plasma/Pickup"
+Inventory.PickupMessage "You picked up a Hologram Device !"
+Tag "Hologram Device"
+States
+	{
+	Spawn:
+		HOGE A 23
+		HOGE A 12 Bright
+		Loop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_PLaySound ("Grenade/Toss", 5)
+		TNT1 A 0 A_SpawnItemEx("HoloDevice", 20, 0, 20, 10, 0, 5)
+		Stop
+	}
+}
+Actor HoloDevice
+{
+	Radius 8
+	Height 5
+	Mass 1000000
+	Health 20
+	Damage 0
+	Speed 30
+	+NOBLOOD
+	+SHOOTABLE
+	+MISSILE
+	+DOOMBOUNCE
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BOUNCEONCEILINGS
+	BounceFactor 0.5
+	+THRUSPECIES
+	+THRUGHOST
+		States
+		{
+		Spawn:
+			HOGE A 0
+			TNT1 A 0 A_PlaySound("Plasma/Beep", 1)
+			HOGE A 0 A_Gravity
+			HOGE AAA 4
+			Loop
+		Death:
+			TNT1 A 0 A_SpawnItemEx("HoloDeviceThing")
+			Stop
+		Splash:
+			HOGE A 1
+			HOGE A -1
+			Stop
+		}
+}
+ACTOR HoloDeviceThing
+{
+	Health 150
+	Radius 8
+	Height 12
+	//+MISSILE
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+FRIENDLY
+	+DONTTHRUST 
+	States
+	{
+	Spawn:
+		HOGE A 8
+		HOGE E 0 A_PlaySound("Railgun/Recharge", 5, 0.5)
+		HOGE E 4 A_SpawnItemEx("HologramBabe", 0, 0, 30, 0, 0, 0, 0, SXF_SETMASTER)
+	HoloOn:
+		TNT1 A 0 A_StartSound("FRZIDLE", 1, CHANF_DEFAULT, 0.2, ATTN_NORM, 1.7)
+		HOGE BCDE 4
+		loop
+	Death:
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:	
+		TNT1 A 0
+		TNT1 A 0 A_StopSound(1)
+		TNT1 A 0 A_killchildren
+		TNT1 A 0 A_SpawnItemEx("XJunk1", 5, 0, 0, 2, random (2, 3), 10)
+		TNT1 A 0 A_SpawnItemEx("XJunk2", 5, 0, 0, 2, random (-3, -2), 10)
+		TNT1 A 0 A_SpawnItemEx("XJunk3", 5, 0, 0, 3, random (1, 4), 10)
+		TNT1 A 0 A_SpawnItemEx("XJunk4", 5, 0, 0, 1, random (-1, -4), 10)
+		TNT1 A 0 A_CustomMissile ("PlasmaSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+		Stop
+
+	Splash:
+		TNT1 A 1
+		TNT1 A -1
+		Stop
+		}
+	}
+
+Actor HologramBabe
+{
+	Monster
+	Health 100
+	Height 56
+	Radius 16
+	Speed 0
+	RenderStyle Translucent
+	Alpha 0.60
+	PainChance 255
+	YScale 0.6
+	XScale 0.7
+	//+DORMANT
+	-COUNTKILL
+	+SHOOTABLE
+	+FRIENDLY
+	+NOFEAR
+	+NODROPOFF
+	+NOTRIGGER
+	+DONTSPLASH
+	+BRIGHT
+	+FLOORCLIP
+	+WINDTHRUST
+	+NOBLOCKMONST
+	+SLIDESONWALLS
+	+NOBLOOD
+	+QUICKTORETALIATE
+	+NOTAUTOAIMED
+	+THRUACTORS
+	+NORADIUSDMG
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+FLOAT
+	+INFLOAT
+	+DONTFALL
+	+CANPASS
+	+NOINTERACTION
+	Tag "Hologram babe"
+	States
+		{
+		Spawn:
+			TNT1 A 0 A_GiveInventory("TargetIsAMarine")
+			B4BH FGH 2
+		Idle:
+			TNT1 A 0
+			TNT1 A 0 ACS_NamedExecuteAlways("HoloTID")
+			B4BH ABCDEDCB 4 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			TNT1 A 0 A_AlertMonsters(5000,AMF_TARGETEMITTER)
+			TNT1 A 0 A_LookEx(0,0,1700,0,165,"See")
+			TNT1 A 0 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			Loop
+		See:
+			B4BH ABCDEDCB 4 A_Warp(AAPTR_MASTER, 0, 0, 30) 
+			TNT1 A 0 ACS_NamedExecuteAlways("HoloTID")
+			B4BH AAAAA 0 A_Chase( "melee", "missile", CHF_DONTMOVE)
+			TNT1 A 0 A_AlertMonsters(5000,AMF_TARGETEMITTER)
+			TNT1 A 0 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			Loop
+		Melee:
+			TNT1 A 0 
+			TNT1 A 0 A_Jump(8,"showboobs")
+			TNT1 A 0 A_RadiusGive("HoloTriggered", 5000, RGF_MONSTERS | RGF_EXFILTER | RGF_EXSPECIES, 1, "scientist", "Marines")
+			B4BH ABCDEDCB 4 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			B4BH AAAAA 0 A_Chase( "melee", "missile", CHF_DONTMOVE)
+			TNT1 A 0 A_AlertMonsters(5000,AMF_TARGETEMITTER)
+			TNT1 A 0 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			Goto See
+		Missile:
+			TNT1 A 0 
+			TNT1 A 0 A_Jump(8,"showboobs")
+			TNT1 A 0 A_RadiusGive("HoloTriggered", 5000, RGF_MONSTERS | RGF_EXFILTER | RGF_EXSPECIES, 1, "scientist", "Marines")
+			B4BH ABCDEDCB 4 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			B4BH AAAAA 0 A_Chase( "melee", "missile", CHF_DONTMOVE)
+			TNT1 A 0 A_AlertMonsters(5000,AMF_TARGETEMITTER)
+			TNT1 A 0 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			TNT1 A 0 A_Jump(128,"See")
+			Goto See
+		Showboobs:
+			TNT1 A 0 A_RadiusGive("HoloTriggered", 5000, RGF_MONSTERS | RGF_EXFILTER | RGF_EXSPECIES, 1, "scientist", "Marines")
+			B4BH IIIIJKJKJKIIII 4 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			B4BH AAAAA 0 A_Chase( "melee", "missile", CHF_DONTMOVE)
+			TNT1 A 0 A_AlertMonsters(5000,AMF_TARGETEMITTER)
+			TNT1 A 0 A_Warp(AAPTR_MASTER, 0, 0, 30)
+			TNT1 A 0 A_Jump(128,"See")
+			Goto See
+		Pain:
+			B4BH G 4
+			B4BH G 4
+			TNT1 A 0 A_Warp(AAPTR_MASTER)
+			Goto See
+		Vanish:
+		Death:
+		XDeath:
+		Death.Ice:
+		Death.Freeze:
+		Death.Frost:
+			TNT1 A 0 ACS_NamedExecuteAlways("HoloTIDEnd")
+			B4BH A 1 A_Stop
+			B4BH AAAABBBBCCCCDDDDEEEEDDDDCCCCBBBB 1 A_FadeOut(0.2,1)
+			Stop
+		}
+}
+
+Actor HoloTriggered : CustomInventory
+{
+	-COUNTITEM
+	+INVENTORY.UNDROPPABLE
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	States
+		{
+		Pickup:
+			TNT1 A 0 ACS_NamedExecuteAlways("HoloTarget")
+			stop
+		}
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////																	  			////////
+/////////						FLAMETHROWER AUTO-TURRET								////////
+/////////																				////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+ACTOR FlameTurret
+{
+	Monster
+	Health 200
+	Height 56
+	Radius 16
+	Speed 0
+	scale 0.75
+	-COUNTKILL
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+FRIENDLY
+	+LOOKALLAROUND
+	+NOBLOOD
+	+STANDSTILL
+	+QUICKTORETALIATE
+	species "marines"
+	States
+	{
+	 Spawn:
+		TNT1 A 0 A_GiveInventory("TargetIsAMarine")
+	Spawnloop:
+		8TR1 AAAAAAAAAAAAAAAA 2 A_Look
+		8TR1 A 0 A_PlaySound ("Sentry/Active")
+		loop
+	 See:
+		8TR1 A 2 A_FaceTarget
+		8TR1 AAAAAAAAAAAAAAAA 2 A_Chase
+		8TR1 A 0 A_PlaySound ("Sentry/Active")
+		loop
+	 Melee:
+	 Missile:
+		SZTW A 0 A_JumpIfInTargetInventory("TargetIsAMarine",1,"See")
+		8TR1 A 8 A_FaceTarget
+		8TR2 A 0 A_PlaySound("Flamer/loop", 5, 1, 1)
+		8TR2 A 0 bRIGHT A_CustomMissile("TFlamethrowerProjectileNew2", 27, 10) 
+		8TR1 A 0 BRIGHT A_CustomMissile("TFlamethrowerProjectileNew3", 27, 10) 
+		8TR1 A 1 BRIGHT A_CustomMissile("Shotgunparticles2", 25, 10)
+		8TR2 A 0 BRIGHT A_CustomMissile("TFlamethrowerProjectileNew3", 27, 10)
+		8TR2 A 0 bRIGHT A_CustomMissile("TFlamethrowerProjectileNew2", 27, 10) 
+		8TR1 A 1 BRIGHT A_CustomMissile("TFlamethrowerProjectileNew4", 27, 10) 
+		8TR1 A 0 BRIGHT A_CustomMissile("Shotgunparticles2", 25, 10)
+		8TR2 A 0 BRIGHT A_CustomMissile("TFlamethrowerProjectileNew", 27, 10)
+		8TR2 A 1 bRIGHT A_CustomMissile("TFlamethrowerProjectileNew2", 27, 10) 
+		8TR1 A 0 BRIGHT A_CustomMissile("TFlamethrowerProjectileNew", 27, 10)
+		8TR1 A 0 BRIGHT A_CustomMissile("Shotgunparticles2", 27, 1)
+		8TR2 A 1 BRIGHT A_CustomMissile("TFlamethrowerProjectileNew3", 27, 10)
+		8TR2 A 0 bRIGHT A_CustomMissile("TFlamethrowerProjectileNew2", 27, 10) 
+		8TR1 A 0 BRIGHT A_CustomMissile("TFlamethrowerProjectileNew", 27, 10) 
+		8TR1 A 1 BRIGHT A_CustomMissile("Shotgunparticles2", 25, 10)
+		8TR2 A 0 BRIGHT A_CustomMissile("TFlamethrowerProjectileNew", 27, 10)
+		8TR2 A 0 A_PlaySound("Flamer/stop", 5)
+		goto see
+	Death:
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0 A_Stop
+		TNT1 A 0 A_SpawnItemEx ("BarrelExplosionDamage",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("BarrelKaboomSilent",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_CustomMissile ("FireworkSFXType2", 64, 0, random (0, 360), 2, random (30, 60))
+		TNT1 AA 0 A_CustomMissile ("HighExplosiveFlames", random (10, 20), 0, random (0, 360), 2, random (10, 90))
+		EXPL A 0 A_CustomMissile ("BigBlackSmokeLarger", 20, 0, random (0, 360), 2, random (10, 90))
+		TNT1 A 0 A_CustomMissile ("BDExplosionparticles3", 64, 0, random (0, 360), 2, random (40, 90))
+		EXPL A 0 Radius_Quake (2, 24, 0, 15, 0)
+		BEXP B 0 BRIGHT A_Scream
+		BEXP B 0 BRIGHT A_PlaySound("Barrel/explodeDistant", 3)
+		TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		TNT1 AAAA 0 A_CustomMissile ("XJunk1", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAA 0 A_CustomMissile ("XJunk2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece2", random (-35, 35), random (-35, 35))
+		TNT1 A 4
+		TNT1 AAA 8 A_CustomMissile ("ExplosionSmoke", 1, 0, random (0, 360), 2, random (50, 130))
+        TNT1 AAA 0 A_CustomMissile ("XJunk3", 42, 0, random (0, 360), 2, random (0, 160))
+        TNT1 A 0 A_CustomMissile ("XJunk5", 42, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AA 0 A_CustomMissile ("XJunk4", 42, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0
+        FZB1 HI 0
+		STOP
+		}
+	}
+ACTOR TFlamethrowerProjectileNew : FlamethrowerProjectileNew
+{
+	Speed 30
+	Damage (random(3, 3))
+}
+ACTOR FlamethrowerProjectileNew3 : TFlamethrowerProjectileNew
+{
+	XScale 0.17
+	YScale 0.17
+}
+
+ACTOR TFlamethrowerProjectileNew2 : TFlamethrowerProjectileNew
+{
+	XScale 0.2
+	YScale 0.2
+	States
+	{
+
+	Spawn:
+		FLXB A 1
+		FLXB ABC 1 bright 
+		FLXP BCDEFG 1 BRIGHT
+		TNT1 A 0 A_CustomMissile ("FlamethrowerProjectileSmoke", 10, 0, random (0, 360), 2, random (60, 130))
+		FLXP HIJKL 1 BRIGHT
+		EXPL AA 0 A_CustomMissile ("FlamethrowerFireParticles", 6, 0, random (0, 360), 2, random (10, 90))
+		Stop
+
+	Death:
+		TNT1 A 0
+		TNT1 A 0 A_Explode(16, 128)
+		TNT1 A 0 A_Jump(128, "Death2")
+	Death1:
+		TNT1 A 0 A_SetScale(0.55, 0.55)
+		TNT1 A 0 A_CustomMissile("FlamethrowerBurningStuff", random (-32, 0), random (-32, 32), random (-32, 32), 2, random (-32, 32))
+		FLXP ABCDEFGHIJKLMNOPQRS 1 BRIGHT
+		TNT1 A 0 A_CustomMissile ("FlamethrowerProjectileSmoke", 20, 0, random (0, 360), 2, random (60, 130))
+		FLXP TUVWXYZ 1 BRIGHT
+		Stop
+
+	Death2:
+		TNT1 A 0 A_SetScale(-0.65, 0.65)
+		TNT1 A 0 A_CustomMissile("FlamethrowerBurningStuff", random (-32, 0), random (-32, 32), random (-32, 32), 2, random (-32, 32))
+		FLXP ABCDEFGHIJKLMNOPQRS 1 BRIGHT
+		TNT1 A 0 A_CustomMissile ("FlamethrowerProjectileSmoke", 30, 0, random (0, 360), 2, random (60, 130))
+		FLXP TUVWXYZ 1 BRIGHT
+		Stop
+	}
+}
+
+ACTOR FlameTurretBox : CustomInventory
+{
+  +COUNTITEM
+  +INVENTORY.INVBAR
+  Inventory.MaxAmount 2
+  Inventory.Icon "FLT8B0"
+  Inventory.PickupMessage "You picked up a flamethrowing turret"
+  Inventory.PickupSound "CBOXPICK"
+  States
+  {
+  Spawn:
+    FLT8 A -1
+    Stop
+  Use:
+	TNT1 A 0 A_StartSound("RCKCLIP2", 5)
+    TNT1 A 1 A_SpawnItemEx ("FlameTurret", 56, 0, 8, 0, 0, 0, 0, 1)
+    Stop
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////																	  			////////
+/////////								FREEZE MINE										////////
+/////////																				////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+Actor FreezeMineInv : CustomInventory
+{
+-COUNTITEM
++INVENTORY.INVBAR
+-INVENTORY.UNDROPPABLE
+-INVENTORY.ALWAYSPICKUP
+Inventory.Amount 1
+Inventory.MaxAmount 10
+Inventory.Icon "F4ZMD0"
+Inventory.AltHUDIcon "F4ZMD0"
+Inventory.PickupSound "Grenade/Pickup"
+Inventory.PickupMessage "You picked up a Freeze Mine!"
+Tag "Freeze Mine"
+Xscale 0.75
+Yscale 0.6
+States
+	{
+	Spawn:
+		F4ZM A 23
+		F4ZM A 12 Bright
+		Loop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_PLaySound ("Grenade/Toss", 5)
+		TNT1 A 0 A_SpawnItemEx("FreezeMine", 20, 0, 20, 10, 0, 5)
+		Stop
+	}
+}
+Actor FreezeMine
+{
+	Radius 8
+	Height 5
+	Mass 1000000
+	Health 20
+	Damage 0
+	Speed 10
+	+NOBLOOD
+	+SHOOTABLE
+	+MISSILE
+	+DOOMBOUNCE
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BOUNCEONCEILINGS
+	BounceFactor 0.5
+	+THRUSPECIES
+	+THRUGHOST
+	Xscale 0.75
+	Yscale 0.6
+		States
+		{
+		Spawn:
+			F4ZM A 0
+			TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+			F4ZM A 0 A_Gravity
+			F4ZM AAA 4
+			Loop
+		Death:
+			TNT1 A 0 A_SpawnItemEx("FreezeMineActive")
+			Stop
+		Splash:
+			F4ZM A 1
+			F4ZM A -1
+			Stop
+		}
+}
+ACTOR FreezeMineActive
+{
+	Health 15
+	Radius 8
+	Height 12
+	Monster
+	meleerange 120
+	-COUNTKILL
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+FRIENDLY
+	+LOOKALLAROUND
+	+NOBLOOD
+	+STANDSTILL
+	+QUICKTORETALIATE
+	species "marines"
+	Xscale 0.75
+	Yscale 0.6
+	damagefactor "Freeze", 0.0
+	States
+	{
+	Spawn:
+		F4ZM A 0 A_PlaySound("Railgun/Recharge", 5, 0.5)
+		F4ZM A 4
+	SpawnLoop:
+		F4ZM A 16 A_LookEx(0,0,400)
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM B 4
+		loop
+	See:
+		F4ZM A 12 A_Chase("Melee", 0,CHF_DONTMOVE) 
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM B 4
+		loop
+	Melee:
+		F4ZM C 4
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM B 4
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM C 4
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM B 4
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM C 4
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM B 4
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM C 4
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM B 4
+		TNT1 A 0 A_PlaySound("Plasma/Beep", 1, 0.7)
+		F4ZM F 2
+	Death:
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+	XDeath:
+		TNT1 A 0
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("IceShardSmall",0,0,0,random(18,24),random(-18,18),random(-18,18),random(-45,45))
+		BXPL AAAAAAAAA 0 A_SpawnItemEx("CryoSmoke", 0, 0, 0, random(10, 30), 0, random(0, 10), random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		BXPL AAAA 0 A_SpawnItemEx("CryoSmoke3", 0, 0, 0, random(10, 30), 0, random(0, 10), random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx("FreezenadeExplosion")
+		TNT1 AAAAAAAAA 0 A_SpawnItemEx ("FreezeCloudSpawnerLong",frandom(-100,100),frandom(-100,100),20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx("XJunk1", 5, 0, 0, 2, random (2, 3), 5)
+		TNT1 A 0 A_SpawnItemEx("XJunk2", 5, 0, 0, 2, random (-3, -2), 5)
+		TNT1 A 1 A_CustomMissile ("PlasmaSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+		Stop
+		}
+	}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////																	  			////////
+/////////							TESLA AUTO-TURRET									////////
+/////////																				////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+ACTOR TeslaTurret
+{
+	Monster
+	Health 175
+	Height 56
+	Radius 16
+	Speed 0
+	scale 0.75
+	Mass 1000000
+	-COUNTKILL
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+FRIENDLY
+	+LOOKALLAROUND
+	+NOBLOOD
+	+STANDSTILL
+	+QUICKTORETALIATE
+	species "marines"
+	DamageType Lightning
+    MaxTargetRange 700
+	States
+	{
+	 Spawn:
+		TNT1 A 0 A_GiveInventory("TargetIsAMarine")
+		T2LT ABCD 4
+	Idle:
+		TNT1 A 0 A_StartSound("FRZIDLE", 1, CHANF_DEFAULT, 0.2, ATTN_NORM, 1.7)
+		T2LT EFGDEFGDEFGDEFG 2 A_Look
+		loop
+	 See:
+		TNT1 A 0 A_StartSound("FRZIDLE", 1, CHANF_DEFAULT, 0.2, ATTN_NORM, 1.7)
+		T2LT EFGDEFGDEFGDEFG 2 A_Chase
+		loop
+	 Melee:
+	 Missile:
+		SZTW A 0 A_JumpIfInTargetInventory("TargetIsAMarine",1,"See")
+		T2LT GH 4 A_FaceTarget
+		T2LT I 2 
+		TNT1 A 0 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		T2LT K 2 
+		T2LT I 2 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		T2LT J 4 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		TNT1 A 0 A_PlaySound("SPARKS")
+		T2LT KK 1 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		TNT1 A 0 A_StartSound("electrogun/hit", 5)
+		T2LT LLLL 1 A_CustomRailgun(12, 0, "none", 05FAFA, RGF_Silent, 1, 50, "TeslaZapperPuff", 10,5, 880, 0,0,0, "LightningDotz", 12)  
+		T2LT I 2 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		T2LT JJ 2 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		TNT1 A 0 A_PlaySound("SPARKS")
+		T2LT K 2 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		TNT1 A 0 A_StartSound("electrogun/hit", 5)
+		T2LT LLLL 1 A_CustomRailgun(12, 0, "none", 05FAFA, RGF_Silent, 1, 50, "TeslaZapperPuff", 10,5, 880, 0,0,0, "LightningDotz", 12)  //A_SpawnItemEx("JacobLadderZapper", 15, 15, 30)
+		T2LT II 1 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		TNT1 A 0 A_PlaySound("SPARKS")
+		T2LT JJ 2 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		TNT1 A 0 A_PlaySound("SPARKS")
+		T2LT KK 1 A_SpawnItemEX("StunLightningsSmall",0,0,random(16,45),0,0,0,60,SXF_NOCHECKPOSITION, random(0, 360))
+		TNT1 A 0 A_StartSound("electrogun/hit", 5)
+		T2LT LLLL 1 A_CustomRailgun(12, 0, "none", 05FAFA, RGF_Silent, 1, 50, "TeslaZapperPuff", 10,5, 880, 0,0,0, "LightningDotz", 12)  //A_SpawnItemEx("JacobLadderZapper", 15, 15, 30)
+		goto see
+	Death:
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+	XDeath:
+		TNT1 A 0
+		TNT1 A 0 A_Stopsound(1)
+		T2LT M 4 Bright
+		TNT1 A 0 A_StartSound ("DSBOTTLE",1)
+		TNT1 AA 0 A_CustomMissile ("XJunk1", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AA 0 A_CustomMissile ("XJunk2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece2", random (-35, 35), random (-35, 35))
+		TNT1 AAA 0 A_CustomMissile ("ExplosionSmoke", 1, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_CustomMissile ("XJunk3", 42, 0, random (0, 360), 2, random (0, 160))
+        TNT1 A 0 A_CustomMissile ("XJunk5", 42, 0, random (0, 360), 2, random (0, 160))
+        TNT1 A 0 A_CustomMissile ("XJunk4", 42, 0, random (0, 360), 2, random (0, 160))
+		T2LT N 200
+		T2LT NNNNNNNNNNNNNNNNNNNNNNNNNN 1 A_FadeOut(0.1,1)
+		wait
+		}
+	}
+
+ACTOR TeslaTurretBox : CustomInventory
+{
+  +COUNTITEM
+  +INVENTORY.INVBAR
+  Inventory.MaxAmount 2
+  Inventory.Icon "T2LTP0"
+  Inventory.PickupMessage "You picked up a Tesla turret !"
+  Inventory.PickupSound "CBOXPICK"
+  States
+  {
+  Spawn:
+    T2LT O -1
+    Stop
+  Use:
+	TNT1 A 0 A_StartSound("RCKCLIP2", 5)
+    TNT1 A 1 A_SpawnItemEx ("TeslaTurret", 56, 0, 8, 0, 0, 0, 0, 1)
+    Stop
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////																	  			////////
+/////////							ICE WALL SPAWNER									////////
+/////////																				////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Actor IceWallSpawnerInv : CustomInventory
+{
+Scale 0.5
+-COUNTITEM
++INVENTORY.INVBAR
+-INVENTORY.UNDROPPABLE
+-INVENTORY.ALWAYSPICKUP
+Inventory.Amount 1
+Inventory.MaxAmount 3
+Inventory.Icon "1CWAG0"
+Inventory.AltHUDIcon "1CWAG0"
+Inventory.PickupSound "Plasma/Pickup"
+Inventory.PickupMessage "You picked up an Ice Wall Spawner !"
+Tag "Ice Wall Spawner"
+States
+	{
+	Spawn:
+		1CWA A 23
+		1CWA A 12 Bright
+		Loop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_PLaySound ("Grenade/Toss", 5)
+		TNT1 A 0 A_SpawnItemEx("IceWallSpawner", 20, 0, 20, 10, 0, 5)
+		Stop
+	}
+}
+Actor IceWallSpawner
+{
+	Radius 8
+	Height 5
+	Mass 1000000
+	Health 20
+	Damage 0
+	Speed 30
+	+NOBLOOD
+	+SHOOTABLE
+	+MISSILE
+	+DOOMBOUNCE
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BOUNCEONCEILINGS
+	BounceFactor 0.2
+	+THRUSPECIES
+	+THRUGHOST
+	Scale 0.5
+		States
+		{
+		Spawn:
+			1CWA A 0
+			TNT1 A 0 A_PlaySound("Plasma/Beep", 1)
+			1CWA A 0 A_Gravity
+			1CWA ABCD 4
+			Loop
+		Splash:
+		Death:
+			1CWA CD 4
+			BXPL AAAA 0 A_SpawnItemEx("CryoSmoke", 0, 0, 0, random(10, 30), 0, random(0, 10), random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+			1CWA E 4
+			BXPL AAAA 0 A_SpawnItemEx("CryoSmoke3", 0, 0, 0, random(10, 30), 0, random(0, 10), random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+			TNT1 AAAA 0 A_SpawnItemEx ("FreezeCloudSpawner",frandom(-100,100),frandom(-100,100),20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		    TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+			1CWA F 8 BRIGHT
+			1CWA IJ 1 BRIGHT
+			1CWA K 1 BRIGHT A_CustomMissile("CryoFlare",-5,0,-85,0,random(-10,10))
+			TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (5, 20), 0, random (0, 360), 2, random (0, 160))
+			TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (5, 20), 0, random (0, 360), 2, random (0, 160))
+			TNT1 AAAAAA 0  A_SpawnItemEx("IceShardSmallSG",0,0,0,random(18,24),random(-18,18),random(-18,18),random(-45,45))
+			TNT1 A 0 A_PlaySound("ICIMPA", 5)
+			TNT1 A 0 A_CustomMissile ("XJunk3", 42, 0, random (0, 360), 2, random (0, 160))
+			TNT1 A 0 A_CustomMissile ("XJunk5", 42, 0, random (0, 360), 2, random (0, 160))
+			TNT1 A 0 A_CustomMissile ("XJunk4", 42, 0, random (0, 360), 2, random (0, 160))
+			TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+			TNT1 A 0 A_SpawnItemEx("IceWall")
+			TNT1 A 5
+			TNT1 A 0 A_PlaySound("EnemyFreeze", 3)
+			Stop
+		}
+}

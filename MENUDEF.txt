@@ -1,0 +1,239 @@
+DEFAULTLISTMENU
+{
+Font "BigUpper", "LightBlue", "Cyan"
+}
+
+ListMenu "MainMenu"
+{
+Font "BigUpper", "LightBlue", "Cyan"
+IfGame(Doom, Chex)
+	{
+		StaticPatch 94, 2, "M_DOOM"
+		Position 97, 72
+		IfOption(ReadThis)
+		{
+			Position 97, 64
+		}
+	}
+	IfGame(Strife)
+	{
+		StaticPatch 84, 2, "M_STRIFE"
+		Position 97, 45
+	}
+	IfGame(Heretic)
+	{
+		StaticPatch 88, 0, "M_HTIC"
+		StaticPatch 40, 10, "M_SKL01"
+		StaticPatch 232, 10, "M_SKL00"
+		Position 110, 56
+	}
+	IfGame(Hexen)
+	{
+		StaticPatch 88, 0, "M_HTIC"
+		StaticPatch 37, 80, "FBULB0"
+		StaticPatch 278, 80, "FBULA0"
+		Position 110, 56
+	}
+
+	IfGame(Doom, Strife, Chex)
+	{
+		TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
+		ifOption(SwapMenu)
+		{
+			TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
+			TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
+			TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
+			TextItem "$MNU_BDOPTIONS", "b", "BrutalMenu"
+			TextItem "$MNU_CREDITS", "c", "BrutalCreditsMenu"
+		}
+		else
+		{
+			TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
+			TextItem "$MNU_BDOPTIONS", "b", "BrutalMenu"
+			TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
+			TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
+			TextItem "$MNU_CREDITS", "c", "BrutalCreditsMenu"
+		}
+		ifOption(ReadThis)
+		{
+			TextItem "$MNU_INFO","r", "ReadThisMenu"
+		}
+		TextItem "$MNU_QUITGAME", "q", "QuitMenu"
+	}
+
+	IfGame(Heretic, Hexen)
+	{
+		TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
+		TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
+		TextItem "$MNU_BDOPTIONS", "b", "BrutalMenu"
+		TextItem "$MNU_CREDITS", "c", "BrutalCreditsMenu"
+		TextItem "$MNU_GAMEFILES", "g", "GameFilesMenu"
+		TextItem "$MNU_INFO", "i", "ReadThisMenu"
+		TextItem "$MNU_QUITGAME", "q", "QuitMenu"
+	}
+}
+ListMenu "PlayerclassMenu"
+{
+	Font "BigUpper", "LightBlue", "Cyan"
+	StaticTextCentered 160, 15, "$MNU_BDGAMEMODE"
+	Position 30, 50
+	PlayerDisplay 220, 50, "80 01 01", "61 02 02"
+	// The rest of this menu will be set up based on the actual player definitions.
+}
+ListMenu "EpisodeMenu"
+{
+	
+	Font "BigUpper", "LightBlue", "Cyan"
+	
+	IfGame(Doom, Heretic, Hexen, Strife)
+	{
+		NetgameMessage "$NEWGAME"
+	}
+	IfGame(Chex)
+	{
+		NetgameMessage "$CNEWGAME"
+	}
+
+	IfGame(Doom, Chex)
+	{
+		Position 48, 63
+		StaticPatch 54, 38, "M_EPISOD", 0 , "$MNU_EPISODE"
+		linespacing 16
+	}
+	IfGame(Strife)
+	{
+		Position 48, 63
+		StaticText 54, 38, "$MNU_EPISODE"
+	}
+	IfGame(Heretic, Hexen)
+	{
+		Position 80, 50
+	}
+	// items will be filled in by MAPINFO
+}
+
+OptionMenu "BrutalMenu"
+{
+	Title "$MNU_BDOPTIONS"
+	StaticText "$BD_APPLY_ALL_CHANGES"
+	Command "$BD_APPLY_ALL_CHANGES_COMMAND", "Pukename GetCVars always"
+	StaticText " "
+	StaticText " "
+	StaticText "$BD_PRESETS_SETTINGS",1
+	StaticText " "
+	Command "$BD_PRESETS_SETTINGS_SOURCE_PORT_RECOMMEND_CHECK", "pukename CheckSourcePortOptions"
+	SafeCommand "$BD_PRESETS_SETTINGS_DEFAULTS", "pukename DefaultCvars always"
+	SafeCommand "$BD_PRESETS_SETTINGS_ALLFEATURES", "pukename AllCvarsOn always"
+	SafeCommand "$BD_PRESETS_SETTINGS_MINIMALISM", "pukename MinimalismCvars always"
+	StaticText " "
+	StaticText " "
+	StaticText "$BD_PREFERENCE",1
+	StaticText " "
+	Submenu "$BD_PERFORMANCE",	"BrutalDoomOptionsPerformance"
+	Submenu "$BD_LEVEL_OPTIONS",	"BrutalDoomOptionsLevel"
+	Submenu "$BD_PLAYER_OPTIONS_CUSTOM",	"DOXCROSSHAIRS"
+	Submenu "$BD_PLAYER_OPTIONS",	"BrutalDoomOptionsPlayer"
+	Submenu "$BD_SCREEN_OPTIONS",	"BrutalDoomScreenOptions"
+	StaticText " "
+	StaticText " "
+	StaticText "$BD_GAMEPLAY",1
+	StaticText " "
+	Submenu "$BD_GAMEPLAY_OPTIONS",	"BrutalDoomOptionsGame"
+	Submenu "$BD_EXTREME_GAMEPLAY",	"BrutalDoomOptionsExtremeGame"
+	Submenu "$BD_WEAPON_SPAWNERS",	"BrutalDoomWeaponsSpawner"
+	Submenu "$BD_MONSTER_SPAWNERS",	"BrutalDoomMonstersSpawner"
+	Submenu "Map Selection",	"BDTestMapSelection"
+	StaticText " "
+	StaticText " "
+	StaticText "----------------------------------------- Cat's Frozen Addon -----------------------------------------",1
+	StaticText " "
+	Submenu "Frozen addon Options",	"FrozenOptionsGame"
+	//Submenu "Frozen addon Spawners",	"FrozenOptionsSpawner"
+	StaticText " "
+	StaticText "You can manage new weapons spawning in BD weapons spawner options", "ICE"
+	StaticText ""
+	StaticText "-------------------------------------------------------------------------------------------------------",1
+	Submenu "$BD_ENGINE_OPTIONS","GZDShortcuts"
+}
+OptionMenu "FrozenOptionsGame"
+{
+Title "Frozen Addon Gameplay Options"
+  StaticText " "
+  StaticText "------------------------------------------- Scientist ---------------------------------------------------"
+  Option "Scientist Spawning", "CFzA_ScientistOption", "YesNo"
+  Option "Scientist Rewards", "CFzA_RewardOption", "RewardOptionValue"
+  Slider "Reward Rate", "CFzA_RewardRate", 0, 6, 1 , 0
+  Option "Inventory items", "CFzA_InventoryItems", "InventoryOption"
+  StaticText " "
+  StaticText "------------------------------------------- Monsters ----------------------------------------------------"
+  Option "Cryocubus Spawning", "CFzA_DisableCryocubus", "DisableCryocubusValue"
+  Option "Frostbrain Spawning", "CFzA_DisableFrostbrain", "DisableFrostbrainValue"
+  Option "Frost Baron Spawning", "CFzA_DisableFrostBaron", "DisableFrostBaronValue"
+  Option "Monsters stay frozen", "CFzA_StayFrozen", "YesNo"
+  StaticText " "
+  StaticText "------------------------------------------- Weapons ----------------------------------------------------"
+  Option "Disable alternative shells spawning", "CFzA_DisableAltShells", "YesNo"
+  StaticText " "
+  Command "-Apply All Changes-", "Pukename ServerCVars_CFzA"
+}
+
+OptionValue "InventoryOption"
+{
+	0, "No"
+	1, "Yes"
+}
+
+OptionValue "RewardOptionValue"
+{
+	0, "Standard"
+	1, "Standard without CryoASG"
+	2, "No alternative ammo"
+	3, "No new weapons, no alt ammo"
+}
+
+OptionValue "DisableCryocubusValue"
+{
+	0, "Random"
+	1, "Mancubus Only"
+	2, "Cryocubus Only"
+}
+
+OptionValue "DisableFrostbrainValue"
+{
+	0, "Random"
+	1, "Cacodemon Only"
+	2, "Frostbrain Only"
+}
+
+OptionValue "DisableFrostbaronValue"
+{
+	0, "Random"
+	1, "Baron Of Hell Only"
+	2, "Frost Baron Only"
+}
+OptionValue "ChaingunSpawnerValue"
+{
+	0, "Random"
+	1, "Chaingun Only"
+	2, "SMG Only"
+	3, "Assault Rifle only"
+	4, "No Modular Pistol"
+}
+OptionValue "PlasmaSpawnerValue"
+{
+	0, "Random"
+	1, "Plasma Rifle Only"
+	2, "Railgun Only"
+	3, "Cryo Rifle Only"
+	4, "No Cryo Rifle"
+}
+
+OptionValue "BFGSpawnerValue"
+{
+	0, "Random"
+	1, "BFG 9000 Only"
+	2, "BFG10K Only"
+	3, "Unmaker Only"
+	4, "Freezer Only"
+	5, "No Freezer"
+}

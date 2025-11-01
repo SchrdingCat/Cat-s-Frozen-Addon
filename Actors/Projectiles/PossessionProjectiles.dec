@@ -1,0 +1,181 @@
+
+// Homing ghost projectile fired upon the item's use ----------------------------------------------
+
+ACTOR PossessionGhost
+{
+  Alpha 0.75
+  Height 2
+  MaxTargetRange 32
+  Projectile
+  Radius 2
+  RenderStyle "Add"
+  SeeSound "skull/melee"
+  Speed 15
+  +BRIGHT
+  +SCREENSEEKER
+  +SEEKERMISSILE
+  +THRUACTORS
+
+  const int PSGH_JITC_DISTANCE = 20; // A_JumpIfTracerCloser distance parameter
+
+  States
+  {
+  Spawn:
+    TNT1 A 0 NoDelay A_GiveInventory("PossessionGhostRoutine", 1)
+    PSGH A 1 A_JumpIfTracerCloser(PSGH_JITC_DISTANCE, "Possess")
+    TNT1 A 0 A_GiveInventory("PossessionGhostRoutine", 1)
+    PSGH A 1 A_JumpIfTracerCloser(PSGH_JITC_DISTANCE, "Possess")
+    TNT1 A 0 A_GiveInventory("PossessionGhostRoutine", 1)
+    PSGH A 1 A_JumpIfTracerCloser(PSGH_JITC_DISTANCE, "Possess")
+    TNT1 A 0 A_GiveInventory("PossessionGhostRoutine", 1)
+    PSGH A 1 A_JumpIfTracerCloser(PSGH_JITC_DISTANCE, "Possess")
+    TNT1 A 0 A_GiveInventory("PossessionGhostRoutine", 1)
+    PSGH B 1 A_JumpIfTracerCloser(PSGH_JITC_DISTANCE, "Possess")
+    TNT1 A 0 A_GiveInventory("PossessionGhostRoutine", 1)
+    PSGH B 1 A_JumpIfTracerCloser(PSGH_JITC_DISTANCE, "Possess")
+    TNT1 A 0 A_GiveInventory("PossessionGhostRoutine", 1)
+    PSGH B 1 A_JumpIfTracerCloser(PSGH_JITC_DISTANCE, "Possess")
+    TNT1 A 0 A_GiveInventory("PossessionGhostRoutine", 1)
+    PSGH B 1 A_JumpIfTracerCloser(PSGH_JITC_DISTANCE, "Possess")
+    Loop
+  Possess:
+    TNT1 A 0 A_GiveInventory("PossessMonster", 1 , AAPTR_TRACER)
+    Stop
+  Death:
+    Goto Null
+  }
+}
+
+ACTOR PossessionGhostTrail
+{
+  Alpha 0.5
+  RenderStyle "Add"
+  +NOINTERACTION
+  States
+  {
+  Spawn:
+    TNT1 A 2
+    PSGH A 1 Bright A_FadeOut(0.08)
+    Wait
+  }
+}
+
+ACTOR PossessionGhostRoutine : CustomInventory
+{
+  States
+  {
+  Pickup:
+    TNT1 A 0 A_SeekerMissile(5.0, 10.0, SMF_LOOK, 256)
+    TNT1 A 0 A_SpawnItemEx("PossessionGhostTrail", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+    Stop
+  }
+}
+
+// Possession state indicators (the things that spawn on top of the possessed monster) ------------
+
+ACTOR PossessionWarperA
+{
+  RenderStyle "Add"
+  Scale 0.75
+  +ISMONSTER
+  +NOINTERACTION
+  Alpha 0.6
+  var int user_angle;
+  var int user_xoffset;
+  var int user_yoffset;
+  var int user_zoffset;
+
+  States
+  {
+  Spawn:
+    TNT1 A 0 NoDelay A_SetUserVar("user_xoffset", 32)
+  SetVars:
+    TNT1 A 0 A_SetUserVar("user_yoffset", 0)
+    TNT1 A 0 A_SetUserVar("user_zoffset", CallACS("Pos - Adjust height"))
+    TNT1 A 0 A_SetUserVar("user_angle", 0)
+  AnimInit:
+    TNT1 A 1 A_Warp(AAPTR_MASTER, user_xoffset, user_yoffset, user_zoffset, user_angle,
+                    WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_ABSOLUTEANGLE)
+  AnimLoop:
+    POBL A 1 Bright A_Warp(AAPTR_MASTER, user_xoffset, user_yoffset, user_zoffset, user_angle,
+                           WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_ABSOLUTEANGLE)
+    TNT1 A 0 A_SetUserVar("user_angle", user_angle + 8)
+    TNT1 A 0 A_SpawnItemEx("PossessionWarperTrail", 0, 0, 0, 0, 0, 0, 0,
+                           SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION)
+    TNT1 A 0 A_JumpIf(CallACS("Pos - Check possession state") == TRUE, "Destroy")
+    Loop
+  Destroy:
+    POBL A 1 Bright A_Warp(AAPTR_MASTER, user_xoffset, user_yoffset, user_zoffset, user_angle,
+                           WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_ABSOLUTEANGLE)
+    TNT1 A 0 A_SetUserVar("user_angle", user_angle + 8)
+    TNT1 A 0 A_SpawnItemEx("PossessionWarperTrail", 0, 0, 0, 0, 0, 0, 0,
+                           SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION)
+    TNT1 A 0 A_FadeOut(0.02)
+    Loop
+  }
+}
+
+ACTOR PossessionWarperB : PossessionWarperA
+{
+  States
+  {
+  Spawn:
+    TNT1 A 0 NoDelay A_SetUserVar("user_xoffset", -32)
+    Goto SetVars
+  }
+}
+
+ACTOR PossessionWarperTrail
+{
+  RenderStyle "Add"
+  Scale 0.3
+  +NOINTERACTION
+  States
+  {
+  Spawn:
+    TNT1 A 1
+    POBL B 1 Bright A_FadeOut(0.15)
+    Wait
+  }
+}
+
+// Possession setup "scripts" ---------------------------------------------------------------------
+
+ACTOR PossessMonster : CustomInventory
+{
+  States
+  {
+  Pickup: // "Forces" the to-be-possessed monster to enter the Possession state
+    TNT1 A 0 ACS_NamedExecuteAlways("Pos - Execute Possession state")
+    Stop
+  }
+}
+
+ACTOR UnSkullFly : CustomInventory
+{
+  States
+  {
+  Pickup:
+    // The Lost Soul or any monster that charges at its target using A_SkullAttack or variant of
+    // the function gets the following exectued on it in case it was charging at the moment when it
+    // was struck by the possession projectile.
+    TNT1 A 0 A_ChangeFlag("SKULLFLY", FALSE) // Free the monster from the shackles of SKULLFLY...
+    TNT1 A 0 A_Stop // ... and stop it in its tracks.
+    Stop
+  }
+}
+
+// Effect timer
+ACTOR PossessionEffect : Powerup { Powerup.Duration -45 }
+
+ACTOR SpawnPossessionWarpers : CustomInventory
+{
+  States
+  {
+  Pickup:
+    TNT1 A 0 A_GiveInventory("PossessionEffect", 1)
+    TNT1 A 0 A_SpawnItemEx("PossessionWarperA", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER|SXF_NOCHECKPOSITION)
+    TNT1 A 0 A_SpawnItemEx("PossessionWarperB", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER|SXF_NOCHECKPOSITION)
+    Stop
+  }
+}

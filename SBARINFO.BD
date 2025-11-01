@@ -1,0 +1,1069 @@
+//blehblehbleh
+
+base Doom;
+height 32;
+monospacefonts true, "0";
+//Resolution 320,200;
+
+statusbar normal, forcescaled // Standard Doom Status bar
+{
+	drawimage "STBARBD", 0, 168;
+	drawimage "STTPRCNT", 90, 171;
+	drawimage "STTPRCNT", 221, 171;
+
+		drawswitchableimage weaponslot 2, "STGNU22", "STYSNU22", 111, 172;
+		drawswitchableimage weaponslot 3, "STGNU23", "STYSNU23", 123, 172;
+		drawswitchableimage weaponslot 4, "STGNU24", "STYSNU24", 135, 172;
+		drawswitchableimage weaponslot 5, "STGNU25", "STYSNU25", 111, 182;
+		drawswitchableimage weaponslot 6, "STGNU26", "STYSNU26", 123, 182;
+		drawswitchableimage weaponslot 7, "STGNU27", "STYSNU27", 135, 182;
+
+	InInventory not NoReloading,1 || IsPlayingAsPurist,1
+		{
+		UsesSecondaryAmmo
+			{
+			DrawImage "STMAG",-49,168;
+			drawnumber 3, HUDFONT_DOOM, untranslated, ammo2, alignment(center), -25, 171;
+			drawnumber 3, HUDFONT_DOOM, untranslated, ammo1, 44, 171;
+			}
+		}
+		
+	InInventory NoReloading,1 || IsPlayingAsPurist,1
+	{
+		drawnumber 3, HUDFONT_DOOM, untranslated, ammo1, 44, 171;
+	}
+	/*InInventory IsPlayingAsPurist,1
+	{
+		drawnumber 3, HUDFONT_DOOM, untranslated, ammo1, 44, 171;
+	}*/
+
+	UsesSecondaryAmmo not
+	{
+		drawnumber 3, HUDFONT_DOOM, untranslated, ammo1, 44, 171;
+	}
+
+	IsSelected "TankGun","ArtilleryTankGun"
+	{
+		DrawImage "STMAG",-49,168;
+		drawnumber 3, HUDFONT_DOOM, untranslated, ammo2, alignment(center), -25, 171;
+		drawnumber 3, HUDFONT_DOOM, untranslated, ammo1, 44, 171;
+	}
+
+	IsSelected "attackhelicopterGun"
+	{
+		DrawImage "STMAG",-49,168;
+		drawnumber 3, HUDFONT_DOOM, untranslated, ammo2, alignment(center), -25, 171;
+		drawnumber 3, HUDFONT_DOOM, untranslated, ammo1, 44, 171;
+	}
+
+	/*	IsSelected "Rifle"
+		{
+			DrawImage "STMAG",-49,168;
+			InInventory not NoReloading,1
+			{
+			drawnumber 3, INDEXFONT_DOOM, untranslated, ammo AmmoRocket,-25, 171;
+			}
+			else
+			{
+			drawnumber 3, HUDFONT_DOOM, untranslated, ammo AmmoRocket, -25, 171;
+			}
+		} */ //you don't need this on the normal status bar.
+
+	drawnumber 3, HUDFONT_DOOM, untranslated, health, 90, 171;
+	drawnumber 3, HUDFONT_DOOM, untranslated, armor, 221, 171;
+
+	//keys
+	drawswitchableimage keyslot 2 && 5, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 239, 171;
+	drawswitchableimage keyslot 3 && 6, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 239, 181;
+	drawswitchableimage keyslot 1 && 4, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 239, 191;
+
+
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo Clip1, 284, 170;
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo Clip2, 284, 176;
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo AmmoShell, 284, 182;
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo AmmoRocket, 284, 188;
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo AmmoCell, 284, 194;
+
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo GrenadeAmmo, 319, 170;
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo Gas, 319, 176;
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo MiniHellRocketAmmo, 319, 182;
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo SoulAmmo, 319, 188;
+	drawnumber 3, INDEXFONT_DOOM, untranslated, ammo Nuke, 319, 194;
+	gamemode deathmatch, teamgame
+	{
+		drawnumber 2, HUDFONT_DOOM, untranslated, frags, 138, 171;
+	}
+
+
+	InInventory Not IsNOTTacticalClass, 1 || InfiniteSprint, 1
+	{
+		// STAMINA //
+		//drawnumber 4, SMALLFONT, white, Ammo UsedStamina, whennotzero | interpolate(4), drawshadow, alignment(center), 160, 160, 0;
+		DrawImage "STAMICON", 357, 189;
+		DrawBar "STAMBAR", "STAMBAR2", Ammo UsedStamina, vertical, reverse, 358, 169;
+	}
+
+	// INVISIBILITY //
+	//drawnumber 4, SMALLFONT, Blue, PowerupTime BlurSphere, whennotzero, drawshadow, alignment(center), 60, 160, 0;
+	InInventory PowerInvisibility, 1
+	{
+		DrawImage "SBARINVS", 323, 169;
+		DrawBar "SBARRED", "SBARBACK", PowerupTime BlurSphere, horizontal, interpolate(10), 331, 171;
+	}
+	// INVULNERABILITY //
+	//drawnumber 4, SMALLFONT, Black, PowerupTime InvulnerabilitySphere, drawshadow, whennotzero, alignment(center), 40, 160, 0;
+	InInventory PowerInvulnerable, 1
+	{
+		DrawImage "SBARINVU", 323, 177;
+		DrawBar "SBARGREN", "SBARBACK", PowerupTime InvulnerabilitySphere, horizontal, interpolate(10), 331, 179;
+	}
+
+	// RADSUIT //
+	//drawnumber 4, SMALLFONT, green, PowerupTime RadSuit, whennotzero, drawshadow, alignment(center), 20, 160, 0;
+	InInventory PowerIronFeet, 1
+	{
+		DrawImage "SBARRADS", 323, 185;
+		DrawBar "SBARWHIT", "SBARBACK", PowerupTime RadSuit, horizontal, interpolate(10), 331, 187;
+	}
+	
+	// INFRARED //
+	//drawnumber 4, SMALLFONT, White, PowerupTime NightVisionGiver, whennotzero, drawshadow, alignment(center), 80, 160, 0;
+	InInventory PowerTorch, 1
+	{
+		DrawImage "SBARINFR", 323, 193;
+		DrawBar "SBARGRAY", "SBARBACK", PowerupTime NightVisionGiver, horizontal, interpolate(10), 331, 195;
+	}
+
+
+	// GRENADES //
+	//drawswitchableimage "GrenadeAmmo", "GRNDC", "GRNDB", 345, 194;
+	//drawimage "GRNDA"
+	//drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, whennotzero, drawshadow, alignment(center), 345, 185, 0;
+
+	gamemode deathmatch, teamgame
+		drawnumber 2, HUDFONT_DOOM, untranslated, frags, drawshadow, 138, 171;
+	else
+	{
+		drawimage "STARMS", 104, 168;
+
+		drawswitchableimage weaponslot 2, "STGNUM2", "STYSNUM2", 111, 172;
+		drawswitchableimage weaponslot 3, "STGNUM3", "STYSNUM3", 123, 172;
+		drawswitchableimage weaponslot 4, "STGNUM4", "STYSNUM4", 135, 172;
+		drawswitchableimage weaponslot 5, "STGNUM5", "STYSNUM5", 111, 182;
+		drawswitchableimage weaponslot 6, "STGNUM6", "STYSNUM6", 123, 182;
+		drawswitchableimage weaponslot 7, "STGNUM7", "STYSNUM7", 135, 182;
+
+	}
+
+	InInventory PowerStrength
+		{
+		DrawImage "HASBERK", 143, 168;
+		}
+
+	drawselectedinventory alternateonempty, INDEXFONT, 143, 168
+	{
+
+		InInventory GenderMale, 1
+		{
+		drawmugshot "STM", 5, 143, 168;
+		}
+
+		InInventory GenderFemale, 1
+		{
+		drawmugshot "GAL", 5, 143, 168;
+		}
+	}
+}
+
+statusbar Fullscreen, fullscreenoffsets, forcescaled
+{
+	InInventory sbartype1,1 //ZDoom
+	{
+		AspectRatio "16:9"
+		{
+			//health
+			drawswitchableimage "PowerStrength", "MEDIA0", "MEDKC0", 40, -2, centerbottom;
+			drawnumber 2147483647, HUDFONT_DOOM, untranslated, health, drawshadow, 102, -20;
+
+			//armor
+			drawimage armoricon, 40, -24, centerbottom;
+			drawnumber 2147483647, HUDFONT_DOOM, untranslated, armor, drawshadow, whennotzero, 102, -39;
+
+			//ammo
+			drawimage ammoicon1, -44, -4, centerbottom;
+			drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo1, drawshadow, -55, -20;
+
+			usesammo
+			{
+				//secondary ammo and inventory
+				usessecondaryammo
+				{
+					InInventory not NoReloading,1 || IsPlayingAsPurist,1
+					{
+					drawimage ammoicon2, -44, -22, centerbottom;
+					drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo2, drawshadow, -55, -38;
+					}
+					
+					IsSelected "Rifle"
+					{
+						InInventory not NoReloading,1 || IsPlayingAsPurist,1
+						{
+							drawswitchableimage "RFGLoaded", "NoGren", "Gren", -44, -40, centerbottom;
+							drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo AmmoRocket, drawshadow, -55, -56;
+						}
+						else
+						{
+							InInventory not IsPlayingAsPurist,1
+							{
+							drawswitchableimage "RFGLoaded", "NoGren", "Gren", -44, -22, centerbottom;
+							drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo AmmoRocket, drawshadow, -55, -38;
+							}
+						}
+					}
+				
+					inventorybarnotvisible
+					{
+						drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, HUDFONT_DOOM, -55, -39, -26, -56, untranslated;
+					}
+				}
+				else //no secondary ammo
+				{
+					IsSelected "Rifle"
+					{
+						InInventory not IsPlayingAsPurist,1
+						{
+						drawswitchableimage "RFGLoaded", "NoGren", "Gren", -44, -22, centerbottom;
+						drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo AmmoRocket, drawshadow, -55, -38;
+						}
+					}		
+				
+					inventorybarnotvisible
+					{
+						drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, HUDFONT_DOOM, -55, -21, -26, -38, untranslated;
+					}
+				}
+			}
+			else // no ammo but inventory
+			{
+				inventorybarnotvisible
+				{
+					drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, HUDFONT_DOOM, -55, -3, -26, -20, untranslated;
+				}
+			}
+
+			IsSelected "TankGun","ArtilleryTankGun"
+			{
+				drawimage ammoicon2, -44, -22, centerbottom;
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo2, drawshadow, -55, -38;
+				drawimage ammoicon1, -44, -4, centerbottom;
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo1, drawshadow, -55, -20;
+			}
+
+			IsSelected "attackhelicopterGun"
+			{
+				drawimage ammoicon2, -44, -22, centerbottom;
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo2, drawshadow, -55, -38;
+				drawimage ammoicon1, -44, -4, centerbottom;
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo1, drawshadow, -55, -20;
+			}
+
+			IsSelected not "HandGrenades"
+			{
+			drawimage "GRNDA", -118, -5;
+			drawnumber 4, SMALLFONT, untranslated, Ammo GrenadeAmmo, drawshadow, -112, -15;
+			}
+			
+			IsSelected not "Freezenades"
+			{
+			drawimage "FGNDA", -118, -25;
+			drawnumber 4, SMALLFONT, LightBlue, Ammo FreezenadeAmmo, drawshadow, -112, -35;
+			}
+			
+			InInventory IsPlayer,1
+			{
+				InInventory Not IsNOTTacticalClass, 1 || InfiniteSprint, 1
+				{
+					//STAMINA
+					drawnumber 4, SMALLFONT, white, Ammo UsedStamina, whennotzero, alignment(center), drawshadow, 0+center, -9, 0;
+				}
+
+				// RADSUIT
+				drawnumber 4, SMALLFONT, green, PowerupTime RadSuit, whennotzero, alignment(center), drawshadow, 0+center, -19, 0;
+
+				// INVULNERABILITY
+				drawnumber 4, SMALLFONT, Black, PowerupTime InvulnerabilitySphere, whennotzero, drawshadow, alignment(center), 0+center, -28, 0;
+
+				// INVISIBILITY
+				drawnumber 4, SMALLFONT, Blue, PowerupTime BlurSphere, whennotzero, drawshadow, alignment(center), 0+center, -37, 0;
+
+				// INFRARED
+				drawnumber 4, SMALLFONT, White, PowerupTime NightVisionGiver, whennotzero, drawshadow, alignment(center), 0+center, -45, 0;
+			}
+
+			gamemode deathmatch
+			{
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, frags, drawshadow, -14, 1;
+			}
+			else
+			{
+				// let's hope no mod ever uses 100 keys...
+				drawkeybar 100, vertical, reverserows, auto, -50, 2, 0, 3, auto;
+			}				
+		}
+		else
+		{
+			//health
+			drawswitchableimage "PowerStrength", "MEDIA0", "MEDKC0",  20, -2, centerbottom;
+			drawnumber 2147483647, HUDFONT_DOOM, untranslated, health, drawshadow, 82, -20;
+
+			//armor
+			drawimage armoricon, 20, -24, centerbottom;
+			drawnumber 2147483647, HUDFONT_DOOM, untranslated, armor, drawshadow, whennotzero, 82, -39;
+
+			//ammo
+			drawimage ammoicon1, -14, -4, centerbottom;
+			drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo1, drawshadow, -25, -20;
+
+			usesammo
+			{
+				//secondary ammo and inventory
+				usessecondaryammo
+				{
+					InInventory not NoReloading,1 || IsPlayingAsPurist,1
+					{
+					drawimage ammoicon2, -14, -22, centerbottom;
+					drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo2, drawshadow, -25, -38;
+					}
+			
+					IsSelected "Rifle"
+					{
+						InInventory not NoReloading,1 || IsPlayingAsPurist,1
+						{
+							drawswitchableimage "RFGLoaded", "NoGren", "Gren", -14, -40, centerbottom;
+							drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo AmmoRocket, drawshadow, -25, -56;
+						}
+						else
+						{
+							InInventory not IsPlayingAsPurist,1
+							{
+							drawswitchableimage "RFGLoaded", "NoGren", "Gren", -14, -22, centerbottom;
+							drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo AmmoRocket, drawshadow, -25, -38;
+							}
+						}
+					}
+			
+					inventorybarnotvisible
+					{
+						drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, HUDFONT_DOOM, -14, -39, -26, -56, untranslated;
+					}
+				}
+				else //no secondary ammo
+				{
+					IsSelected "Rifle"
+					{
+						drawswitchableimage "RFGLoaded", "NoGren", "Gren", -14, -22, centerbottom;
+						drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo AmmoRocket, drawshadow, -25, -38;
+					}		
+				
+					inventorybarnotvisible
+					{
+						drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, HUDFONT_DOOM, -14, -21, -26, -38, untranslated;
+					}
+				}
+			}
+			else // no ammo but inventory
+			{
+				inventorybarnotvisible
+				{
+					drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, HUDFONT_DOOM, -14, -3, -26, -20, untranslated;
+				}
+			}
+
+			IsSelected "TankGun","ArtilleryTankGun"
+			{
+				drawimage ammoicon2, -14, -22, centerbottom;
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo2, drawshadow, -25, -38;
+				drawimage ammoicon1, -14, -4, centerbottom;
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo1, drawshadow, -25, -20;
+			}
+
+			IsSelected "attackhelicopterGun"
+			{
+				drawimage ammoicon2, -14, -22, centerbottom;
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo2, drawshadow, -25, -38;
+				drawimage ammoicon1, -14, -4, centerbottom;
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, ammo1, drawshadow, -25, -20;
+			}
+
+			IsSelected not "HandGrenades"
+			{
+			drawimage "GRNDA", -90, -5;
+			drawnumber 4, SMALLFONT, untranslated, Ammo GrenadeAmmo, drawshadow, -85, -15;
+			}
+			
+			IsSelected not "Freezenades"
+			{
+			drawimage "FGNDA", -90, -25;
+			drawnumber 4, SMALLFONT, LightBlue, Ammo FreezenadeAmmo, drawshadow, -90, -35;
+			}
+			
+			InInventory IsPlayer,1
+			{
+				InInventory Not IsNOTTacticalClass, 1 || InfiniteSprint, 1
+				{
+					//STAMINA
+					drawnumber 4, SMALLFONT, white, Ammo UsedStamina, whennotzero, alignment(center), drawshadow, 0+center, -9, 0;
+				}
+
+				// RADSUIT
+				drawnumber 4, SMALLFONT, green, PowerupTime RadSuit, whennotzero, alignment(center), drawshadow, 0+center, -19, 0;
+
+				// INVULNERABILITY
+				drawnumber 4, SMALLFONT, Black, PowerupTime InvulnerabilitySphere, whennotzero, drawshadow, alignment(center), 0+center, -28, 0;
+
+				// INVISIBILITY
+				drawnumber 4, SMALLFONT, Blue, PowerupTime BlurSphere, whennotzero, drawshadow, alignment(center), 0+center, -37, 0;
+
+				// INFRARED
+				drawnumber 4, SMALLFONT, White, PowerupTime NightVisionGiver, whennotzero, drawshadow, alignment(center), 0+center, -45, 0;
+			}
+
+			gamemode deathmatch
+			{
+				drawnumber 2147483647, HUDFONT_DOOM, untranslated, frags, drawshadow, -3, 1;
+			}
+			else
+			{
+				// let's hope no mod ever uses 100 keys...
+				drawkeybar 100, vertical, reverserows, auto, -10, 2, 0, 3, auto;
+			}
+		}
+	}	
+	else InInventory sbartype2,1 //Simple Brutal
+	{
+		AspectRatio "16:9"
+		{
+			drawswitchableimage keyslot 2 && 5, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 130, -13;
+			drawswitchableimage keyslot 3 && 6, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 130, -23;
+			drawswitchableimage keyslot 1 && 4, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 130, -33;
+
+			// Armor //
+			drawimage armoricon, 110, -14;
+			drawnumber 2, INDEXFONT, blue, SavePercent, whennotzero, 120, -18, 0, green, 51, red, 81;
+
+			drawnumber 4, SMALLFONT, green, armor, drawshadow | whennotzero, alignment(center), 110, -12, 0, yellow, 10, blue, 101;
+
+			// Health
+
+			InInventory GenderMale, 1
+			{
+				drawmugshot "STM", 5, 60, -46;
+			}
+
+			InInventory GenderFemale, 1
+			{
+				drawmugshot "GAL", 5, 60, -46;
+			}
+
+			InInventory PowerStrength
+			{
+				DrawImage "HASBERK", 60, -46;
+			}
+			drawnumber 4, SMALLFONT, yellow, health, drawshadow, alignment(center), 75, -12, 0, red, 40, green, 71;
+
+			InInventory IsPlayer,1
+			{
+				InInventory Not IsNOTTacticalClass, 1 || InfiniteSprint, 1//Not InfiniteSprint,1 && IsNOTTacticalClass, 1
+				{
+					// STAMINA //
+					DrawImage "STAMICON", 143, -13;
+					DrawBar "STAMBAR", "STAMBAR2", Ammo UsedStamina, vertical, reverse, 145, -34;
+				}
+
+				// INVISIBILITY //
+				InInventory PowerInvisibility, 1
+				{
+					DrawImage "SBARINVS", 157, -11;
+					DrawBar "SBARRED", "SBARBACK", PowerupTime BlurSphere, horizontal, interpolate(10), 165, -9;
+				}
+				// INVULNERABILITY //
+				InInventory PowerInvulnerable, 1
+				{
+					DrawImage "SBARINVU", 157, -19;
+					DrawBar "SBARGREN", "SBARBACK", PowerupTime InvulnerabilitySphere, horizontal, interpolate(10), 165, -17;
+				}
+
+				// RADSUIT //
+				InInventory PowerIronFeet, 1
+				{
+					DrawImage "SBARRADS", 157, -27;
+					DrawBar "SBARWHIT", "SBARBACK", PowerupTime RadSuit, horizontal, interpolate(10), 165, -25;
+				}
+					
+				// INFRARED //
+				InInventory PowerTorch, 1
+				{
+					DrawImage "SBARINFR", 157, -35;
+					DrawBar "SBARGRAY", "SBARBACK", PowerupTime NightVisionGiver, horizontal, interpolate(10), 165, -33;
+				}
+			}
+				
+
+			//drawimage "ARTIAMMO", 278, 159;
+			InInventory not NoReloading,1 || IsPlayingAsPurist,1
+			{
+				UsesSecondaryAmmo
+				{
+					drawimage ammoicon2, -125, -25, center;
+					drawimage ammoicon1, -80, -25, center;
+					drawnumber 4, DIGINUMBER, untranslated, ammo2, drawshadow, alignment(center), -130, -15, 0;
+					drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -80, -15, 0;
+				}
+			}
+			InInventory NoReloading,1 || IsPlayingAsPurist,1
+			{
+				drawimage ammoicon1, -80, -25, center;
+				drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -80, -15, 0;
+			}
+				/*InInventory IsPlayingAsPurist,1
+				{
+					drawimage ammoicon1, -75, -25, center;
+					drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -80, -15, 0;
+				}*/
+
+			IsSelected "Rifle"
+			{
+				InInventory not NoReloading,1 || IsPlayingAsPurist,1
+				{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", -78, -64, center;
+					drawnumber 4, DIGINUMBER, untranslated, ammo AmmoRocket, drawshadow,alignment(center), -80, -54, 0;
+				}
+				else
+				{
+					InInventory not IsPlayingAsPurist,1
+					{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", -78, -64, center;
+					drawnumber 4, DIGINUMBER, untranslated, ammo AmmoRocket, drawshadow, alignment(center), -80, -54, 0;
+					}
+				}
+			}
+
+			// Inventory Items
+			drawselectedinventory center, drawshadow, SMALLFONT, -45, -15, -48, -12;
+
+			IsSelected "TankGun","ArtilleryTankGun"
+			{
+				drawnumber 4, DIGINUMBER, untranslated, ammo2, drawshadow, alignment(center), -187, -15, 0;
+				drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -127, -15, 0;
+			}
+
+			IsSelected "attackhelicopterGun"
+			{
+				drawnumber 4, DIGINUMBER, untranslated, ammo2, drawshadow, alignment(center), -187, -15, 0;
+				drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -127, -15, 0;
+			}
+
+
+			UsesSecondaryAmmo not
+			{
+				drawimage ammoicon1, -80, -25, center;
+				drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -80, -15, 0;
+			}
+			drawimage "ARTICAS2", 100, 124;
+
+			IsSelected not "HandGrenades"
+			{
+			drawimage "GRNDA", -167, -3;
+			drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, drawshadow, alignment(center), -175, -15, 0;
+			}
+			IsSelected not "Freezenades"
+			{
+			drawimage "FGNDA", -167, -23;
+			drawnumber 4, SMALLFONT, LightBlue, Ammo FreezenadeAmmo, drawshadow, alignment(center), -175, -35, 0;
+			}
+			gamemode deathmatch, teamgame
+			{
+				drawnumber 4, SMALLFONT, darkred, frags, -115, 10;
+				drawstring SMALLFONT, darkred, "Frags", -115, 2;
+			}
+		}
+		else//Not centered
+		{
+			drawswitchableimage keyslot 2 && 5, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 80, -13;
+			drawswitchableimage keyslot 3 && 6, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 80, -23;
+			drawswitchableimage keyslot 1 && 4, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 80, -33;
+
+			// Armor
+			//drawimage armoricon, 78, 200; next to the mugshot
+			// Armor //
+			drawimage armoricon, 58, -14;
+			drawnumber 2, INDEXFONT, blue, SavePercent, whennotzero, 70, -18, 0, green, 51, red, 81;
+
+			drawnumber 4, SMALLFONT, green, armor, drawshadow | whennotzero, alignment(center), 58, -12, 0, yellow, 10, blue, 101;
+
+			//Health
+
+			InInventory GenderMale, 1
+			{
+				drawmugshot "STM", 5, 8, -46;
+			}
+
+			InInventory GenderFemale, 1
+			{
+				drawmugshot "GAL", 5, 8, -46;
+			}
+
+			InInventory PowerStrength
+			{
+				DrawImage "HASBERK", 8, -46;
+			}
+
+			drawnumber 4, SMALLFONT, yellow, health, drawshadow, alignment(center), 24, -12, 0, red, 40, green, 71;
+
+
+			InInventory IsPlayer,1
+			{
+				InInventory Not IsNOTTacticalClass, 1 || InfiniteSprint, 1//Not InfiniteSprint,1 && IsNOTTacticalClass, 1
+				{
+					// STAMINA //
+					DrawImage "STAMICON", 93, -13;
+					DrawBar "STAMBAR", "STAMBAR2", Ammo UsedStamina, vertical, reverse, 94, -34;
+				}
+
+				// INVISIBILITY //
+				InInventory PowerInvisibility, 1
+				{
+					DrawImage "SBARINVS", 107, -11;
+					DrawBar "SBARRED", "SBARBACK", PowerupTime BlurSphere, horizontal, interpolate(10), 115, -9;
+				}
+				// INVULNERABILITY //
+				InInventory PowerInvulnerable, 1
+				{
+					DrawImage "SBARINVU", 107, -19;
+					DrawBar "SBARGREN", "SBARBACK", PowerupTime InvulnerabilitySphere, horizontal, interpolate(10), 115, -17;
+				}
+
+				// RADSUIT //
+				InInventory PowerIronFeet, 1
+				{
+					DrawImage "SBARRADS", 107, -27;
+					DrawBar "SBARWHIT", "SBARBACK", PowerupTime RadSuit, horizontal, interpolate(10), 115, -25;
+				}
+					
+					// INFRARED //
+				InInventory PowerTorch, 1
+				{
+					DrawImage "SBARINFR", 107, -35;
+					DrawBar "SBARGRAY", "SBARBACK", PowerupTime NightVisionGiver, horizontal, interpolate(10), 115, -33;
+				}
+			}
+
+			//drawimage "ARTIAMMO", 278, 159;
+			InInventory not NoReloading,1 || IsPlayingAsPurist,1
+			{
+				UsesSecondaryAmmo
+				{
+					drawimage ammoicon2, -85, -25, center;
+					drawimage ammoicon1, -24, -25, center;
+					drawnumber 4, DIGINUMBER, untranslated, ammo2, drawshadow, alignment(center), -87, -15, 0;
+					drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -27, -15, 0;
+				}
+			}
+	
+			InInventory NoReloading,1 || IsPlayingAsPurist,1
+			{
+				drawimage ammoicon1, -58, -25, center;
+				drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -57, -15, 0;
+			}
+				/*InInventory IsPlayingAsPurist,1
+				{
+					drawimage ammoicon1, -58, -25, center;
+					drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -57, -15, 0;
+				}*/
+
+			IsSelected "Rifle"
+			{
+				InInventory not NoReloading,1 || IsPlayingAsPurist,1
+				{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", -25, -64, center;
+					drawnumber 4, DIGINUMBER, untranslated, ammo AmmoRocket, drawshadow, alignment(center), -27, -54, 0;
+				}
+				else
+				{
+					InInventory not IsPlayingAsPurist,1
+					{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", -55, -64, center;
+					drawnumber 4, DIGINUMBER, untranslated, ammo AmmoRocket, drawshadow, alignment(center), -57, -54, 0;
+					}
+				}
+			}
+
+			// Inventory Items
+			drawselectedinventory center, drawshadow, SMALLFONT, -85, -54, -88, -51;
+
+			IsSelected "TankGun","ArtilleryTankGun"
+			{
+				drawnumber 4, DIGINUMBER, untranslated, ammo2, drawshadow, alignment(center), -87, -15, 0;
+				drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -27, -15, 0;
+			}
+
+			IsSelected "attackhelicopterGun"
+			{
+				drawnumber 4, DIGINUMBER, untranslated, ammo2, drawshadow, alignment(center), -87, -15, 0;
+				drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -27, -15, 0;
+			}
+
+
+			UsesSecondaryAmmo not
+			{
+				drawimage ammoicon1, -58, -25, center;
+				drawnumber 4, DIGINUMBER, untranslated, ammo1, drawshadow, alignment(center), -57, -15, 0;
+			}
+			drawimage "ARTICAS2", 0, 124;
+
+			//GRENADES
+			IsSelected not "HandGrenades"
+			{
+			drawimage "GRNDA", -127, -3;
+			drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, drawshadow, alignment(center), -135, -15, 0;
+			}
+			IsSelected not "Freezenades"
+			{
+			drawimage "FGNDA", -127, -23;
+			drawnumber 4, SMALLFONT, LightBlue, Ammo FreezenadeAmmo, drawshadow, alignment(center), -135, -35, 0;
+			}
+			gamemode deathmatch, teamgame
+			{
+				drawnumber 4, SMALLFONT, darkred, frags, -15, 10;
+				drawstring SMALLFONT, darkred, "Frags", -15, 2;
+			}
+		}	
+	}	
+	else InInventory sbartype3, 1 // Minimal
+	{
+		AspectRatio "16:9"
+		{
+			// Keys
+			//drawimage "KEYS", 304, 0;
+			drawswitchableimage keyslot 2 && 5, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 120, -26;
+			drawswitchableimage keyslot 3 && 6, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 130, -26;
+			drawswitchableimage keyslot 1 && 4, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 140, -26;
+
+			//Inventory Items
+			drawselectedinventory center, drawshadow, SMALLFONT, -65, -35, -70, -35;
+
+			// Armor //
+			drawnumber 4, BIGFONT, green, armor, whennotzero, drawshadow, 150, -17, 0, yellow, 10, blue, 101;
+
+			// Health //
+			drawnumber 4, BIGFONT, yellow, health, whennotzero, drawshadow, 105, -17, 0, red, 40, green, 71;
+
+			//Ammo
+
+			InInventory not NoReloading,1 || IsPlayingAsPurist,1
+			{
+				drawnumber 4, BIGFONT, red, ammo2, drawshadow, alignment(center), -148, -17, 0;
+			}
+			drawnumber 4, BIGFONT, red, ammo1, drawshadow, alignment(center), -100, -17, 0;
+
+			IsSelected "TankGun","ArtilleryTankGun"
+			{
+				drawnumber 4, BIGFONT, red, ammo2, drawshadow, alignment(center), -150, -17, 0;
+				drawnumber 4, BIGFONT, red, ammo1, drawshadow, alignment(center), -100, -17, 0;
+			}
+
+			IsSelected "attackhelicopterGun"
+			{
+				drawnumber 4, BIGFONT, red, ammo2, drawshadow, alignment(center), -150, -17, 0;
+				drawnumber 4, BIGFONT, red, ammo1, drawshadow, alignment(center), -100, -17, 0;
+			}
+
+			IsSelected "Rifle"
+			{
+				InInventory not NoReloading,1 || IsPlayingAsPurist,1
+				{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", -125, -20, center;
+					drawnumber 4, INDEXFONT, red, ammo AmmoRocket, alignment(center), -125, -12, 0;
+				}
+				else
+				{
+					InInventory not IsPlayingAsPurist,1
+					{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", -125, -20, center;
+					drawnumber 4, BIGFONT, red, ammo AmmoRocket, drawshadow, alignment(center), -148, -17, 0;
+					}
+				}
+			}
+
+			drawimage "ARTICAS2", 100, 124;
+
+			IsSelected not "HandGrenades"
+			{
+			drawimage "GRNDA", -95, -25;
+			drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, drawshadow, alignment(center), -100, -35, 0;
+			}
+			IsSelected not "Freezenades"
+			{
+			drawimage "FGNDA", -95, -45;
+			drawnumber 4, SMALLFONT, LightBlue, Ammo FreezenadeAmmo, drawshadow, alignment(center), -175, -55, 0;
+			}
+			gamemode deathmatch, teamgame
+			{
+				drawnumber 8, SMALLFONT, darkred, frags, 302, 8;
+				DrawString SMALLFONT, darkred, "Frags", 302, 0;
+			}
+			
+			
+			InInventory IsPlayer,1
+			{
+				InInventory Not IsNOTTacticalClass, 1 || InfiniteSprint, 1
+				{
+					//STAMINA
+					drawnumber 4, SMALLFONT, Yellow, Ammo UsedStamina, whennotzero, alignment(Left), drawshadow, 160, -10, 0;
+				}
+				// RADSUIT
+				drawnumber 4, SMALLFONT, White, PowerupTime RadSuit, whennotzero, alignment(Left), drawshadow, 160, -19, 0;
+				// INVULNERABILITY
+				drawnumber 4, SMALLFONT, Green, PowerupTime InvulnerabilitySphere, whennotzero, drawshadow, alignment(Left), 160, -28, 0;
+				// INVISIBILITY
+				drawnumber 4, SMALLFONT, Red, PowerupTime BlurSphere, whennotzero, drawshadow, alignment(Left), 160, -37, 0;
+				// INFRARED
+				drawnumber 4, SMALLFONT, Grey, PowerupTime NightVisionGiver, whennotzero, drawshadow, alignment(Left), 160, -45, 0;
+			}
+			
+		}
+		else//Not centered
+		{
+			// Keys
+			//drawimage "KEYS", 304, 0;
+			drawswitchableimage keyslot 2 && 5, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 110, -13;
+			drawswitchableimage keyslot 3 && 6, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 120, -13;
+			drawswitchableimage keyslot 1 && 4, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 130, -13;
+
+			//Inventory Items
+			drawselectedinventory center, drawshadow, SMALLFONT, -17, -57, -20, -54;
+
+			// Armor //
+			drawnumber 4, BIGFONT, green, armor, whennotzero, drawshadow, 100, -17, 0, yellow, 10, blue, 101;
+
+			// Health //
+			drawnumber 4, BIGFONT, yellow, health, whennotzero, drawshadow, 50, -17, 0, red, 40, green, 71;
+
+			//Ammo
+
+			InInventory not NoReloading,1 || IsPlayingAsPurist,1
+			{
+				drawnumber 4, BIGFONT, red, ammo2, drawshadow, alignment(center), -75, -17, 0;
+			}
+			drawnumber 4, BIGFONT, red, ammo1, drawshadow, alignment(center), -25, -17, 0;
+
+			IsSelected "TankGun","ArtilleryTankGun"
+			{
+				drawnumber 4, BIGFONT, red, ammo2, drawshadow, alignment(center), -75, -17, 0;
+				drawnumber 4, BIGFONT, red, ammo1, drawshadow, alignment(center), -25, -17, 0;
+			}
+
+			IsSelected "attackhelicopterGun"
+			{
+				drawnumber 4, BIGFONT, red, ammo2, drawshadow, alignment(center), -75, -17, 0;
+				drawnumber 4, BIGFONT, red, ammo1, drawshadow, alignment(center), -25, -17, 0;
+			}
+
+			IsSelected "Rifle"
+			{
+				InInventory not NoReloading,1 || IsPlayingAsPurist,1
+				{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", -75, -47, center;
+					drawnumber 4, BIGFONT, red, ammo AmmoRocket, drawshadow, alignment(center), -75, -37, 0;
+				}
+				else
+				{
+					InInventory not IsPlayingAsPurist,1
+					{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", -75, -27, center;
+					drawnumber 4, BIGFONT, red, ammo AmmoRocket, drawshadow, alignment(center), -75, -17, 0;
+					}
+				}
+			}
+
+			drawimage "ARTICAS2", 0, 124;
+			
+			IsSelected not "HandGrenades"
+			{
+			drawimage "GRNDA", -17, -25;
+			drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, drawshadow, alignment(center), -25, -35, 0;
+			}
+			IsSelected not "Freezenades"
+			{
+			drawimage "FGNDA", -17, -45;
+			drawnumber 4, SMALLFONT, LightBlue, Ammo FreezenadeAmmo, drawshadow, alignment(center), -25, -55, 0;
+			}
+			gamemode deathmatch, teamgame
+			{
+				drawnumber 8, SMALLFONT, darkred, frags, 302, 8;
+				DrawString SMALLFONT, darkred, "Frags", 302, 0;
+			}
+			
+			InInventory IsPlayer,1
+			{
+				InInventory Not IsNOTTacticalClass, 1 || InfiniteSprint, 1
+				{
+					//STAMINA
+					drawnumber 4, SMALLFONT, Yellow, Ammo UsedStamina, whennotzero, alignment(Right), drawshadow, 45, -28, 0;
+				}
+				// RADSUIT
+				drawnumber 4, SMALLFONT, White, PowerupTime RadSuit, whennotzero, alignment(Right), drawshadow, 45, -37, 0;
+				// INVULNERABILITY
+				drawnumber 4, SMALLFONT, Green, PowerupTime InvulnerabilitySphere, whennotzero, drawshadow, alignment(Right), 45, -46, 0;
+				// INVISIBILITY
+				drawnumber 4, SMALLFONT, Red, PowerupTime BlurSphere, whennotzero, drawshadow, alignment(Right), 45, -55, 0;
+				// INFRARED
+				drawnumber 4, SMALLFONT, Grey, PowerupTime NightVisionGiver, whennotzero, drawshadow, alignment(Right), 45, -64, 0;
+			}
+			
+		}
+	}
+	else InInventory sbartype4, 1 // Full Helmet
+	{
+			// basic layout
+			DrawImage "HELMTOP", -160+center, 0;
+			DrawImage "HELMBOTM", -160+center, -59;
+
+			DrawImage "HEADSUP3", -137+center, 17;
+
+			// health and armor bars
+			Alpha 0.75
+			{
+				// health and armor bars
+				DrawBar "HealthFu", "HealthEm", Health, horizontal, interpolate(8), -140+center, -41;
+				DrawNumber 3, DIGIFONT_SMALL, DoomNukemStatusBarGreen, Health, Alignment(right), fillzeros, -92+center, -31;
+
+				DrawBar "ArmorFul", "ArmorEmp", Armor, horizontal, interpolate(8), -140+center, -26;
+				DrawNumber 3, DIGIFONT_SMALL, DoomNukemStatusBarGreen, Armor, Alignment(right), fillzeros, -88+center, -20;
+
+				// ammo count
+
+				InInventory not NoReloading,1 || IsPlayingAsPurist,1
+				{
+					DrawNumber 3, DIGIFONT_SMALL, DoomNukemStatusBarGreen, Ammo2, fillzeros, 110+center, -21;
+				}
+
+				DrawNumber 3, DIGIFONT_LARGE, DoomNukemStatusBarGreen, Ammo1, fillzeros, 146+center, -27;
+
+				IsSelected not "HandGrenades"
+				{
+				DrawImage "HELMGREN", 95+center, -31;
+				drawNumber 2, INDEXFONT, white, ammo GrenadeAmmo, fillzeros, 112+center, -30;
+				}
+				
+				// level stats
+				drawnumber 4, AMMOFONT, DoomNukemIndexGreen, kills, drawshadow(1,1), -86+center, 24;
+				drawnumber 4, AMMOFONT, DoomNukemIndexGreen, monsters, Alignment(left), drawshadow(1,1), -79+center, 24;
+				drawnumber 3, AMMOFONT, DoomNukemIndexGreen, items, drawshadow(1,1), -86+center, 31;
+				drawnumber 3, AMMOFONT, DoomNukemIndexGreen, totalitems, Alignment(left), drawshadow(1,1), -79+center, 31;
+				drawnumber 2, AMMOFONT, DoomNukemIndexGreen, secrets, drawshadow(1,1), -80+center, 38;
+				drawnumber 2, AMMOFONT, DoomNukemIndexGreen, totalsecrets, Alignment(left), drawshadow(1,1), -73+center, 38;
+			}
+
+			// keys
+			DrawKeyBar 1, horizontal, 9, 88+center, 32, 0;
+			DrawKeyBar 1, horizontal, 9, 96+center, 31, 1;
+			DrawKeyBar 1, horizontal, 9, 104+center, 30, 2;
+			DrawKeyBar 1, horizontal, 9, 112+center, 29, 3;
+			DrawKeyBar 1, horizontal, 9, 120+center, 28, 4;
+			DrawKeyBar 1, horizontal, 9, 128+center, 27, 5;
+
+			Alpha 0.75
+			InInventory Not IsNOTTacticalClass, 1 || InfiniteSprint, 1
+			{
+				drawbar "HELMSTAF", "HELMSTAE", ammo UsedStamina, horizontal, interpolate(8), -90+center, 4;
+			}
+			/*
+			InInventory "PowerInvulnerable"
+			{
+				drawimage "HELMBOX", -85+center, -25;
+				Alpha 0.75
+					drawnumber 4, DIGIFONT_SMALL, darkgreen, PowerupTime InvulnerabilitySphere, Alignment(center), drawshadow(1,1) | whennotzero, -61+center, -14, 0;
+			}
+			InInventory "PowerIronfeet"
+			{
+				drawimage "HELMBOX", -43+center, -25;
+				Alpha 0.75
+					drawnumber 4, DIGIFONT_SMALL, green, PowerupTime RadSuit, Alignment(center), drawshadow(1,1) | whennotzero, -19+center, -14, 0;
+			}
+			InInventory "HasInfraRed", 1
+			{
+				drawimage "HELMBOX", -3+center, -25;
+				Alpha 0.75
+					drawnumber 4, DIGIFONT_SMALL, blue, PowerupTime ArtiTorch, Alignment(center), drawshadow(1,1) | whennotzero, 21+center, -14, 0;
+			}
+			InInventory "PowerInvisibility"
+			{
+				drawimage "HELMBOX", 39+center, -25;
+				Alpha 0.75
+					drawnumber 4, DIGIFONT_SMALL, white, PowerupTime BlurSphere, Alignment(center), drawshadow(1,1) | whennotzero, 63+center, -14, 0;
+			}
+			*/
+			
+			// INFRARED //
+				DrawBar "HELMBGRY", "HELMBARB", PowerupTime NightVisionGiver, horizontal, interpolate(10), -129+center, 0;
+			// RADSUIT //
+				DrawBar "HELMBWHT", "HELMBARB", PowerupTime RadSuit, horizontal, interpolate(10), -129+center, 0;		
+			// INVISIBILITY //
+				DrawBar "HELMBRED", "HELMBARB", PowerupTime BlurSphere, horizontal, interpolate(10), -129+center, 0;
+			// INVULNERABILITY //
+				DrawBar "HELMBGRN", "HELMBARB", PowerupTime InvulnerabilitySphere, horizontal, interpolate(10), -129+center, 0;
+			
+			
+			
+			/*
+			// hud face D:
+
+			InInventory GenderMale, 1
+			{
+				DrawImage "HEADSUP", -320+center, 0;
+				drawmugshot "STM", 5, 16+center, 7;
+			}
+			InInventory GenderFemale, 1
+			{
+				DrawImage "HEADSUP2", 0+center, 100, center;
+				drawmugshot "GAL", 5, 16+center, 7;
+			}*/
+
+			IsSelected "Rifle"
+			{
+				InInventory not NoReloading,1 || IsPlayingAsPurist,1
+				{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", 65+center, -28, center, 10,10;
+					//drawnumber 4, INDEXFONT, red, ammo AmmoRocket, alignment(center), -105, -15, 0;
+					drawNumber 2, DIGIFONT_SMALL, white, ammo AmmoRocket, fillzeros, 72+center, -24;
+				}
+				else
+				{
+					InInventory not IsPlayingAsPurist,1
+					{
+					drawswitchableimage "RFGLoaded", "NoGren", "Gren", 65+center, -28, center;
+					//drawnumber 4, DIGINUMBER, untranslated, ammo AmmoRocket, drawshadow, alignment(center), -80, -54, 0;
+					drawNumber 2, DIGIFONT_SMALL, white, ammo AmmoRocket, fillzeros, 72+center, -24;
+					}
+				}
+			}
+
+			//Inventory Items
+			drawselectedinventory center, drawshadow, DIGIFONT_SMALL, 65+center, -48, 62+center, -45;
+
+			InInventory PowerStrength
+				drawimage "redcross", -151+center, -38;
+		}
+	}
+
+// Inventory Stuff //
+StatusBar InventoryFullscreen, FullscreenOffsets
+{
+	DrawInventoryBar Doom, NoArrows, Translucent, 6, INDEXFONT, -96 + Center, 0, -68 + Center, 2, White;
+}
+
+StatusBar Inventory, FullscreenOffsets
+{
+	DrawInventoryBar Doom, NoArrows, Translucent, 6, INDEXFONT, -96 + Center, 0, -68 + Center, 2, White;
+}

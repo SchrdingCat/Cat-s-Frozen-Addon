@@ -1,0 +1,325 @@
+ACTOR SnowCasterWeapon : BrutalWeapon
+{
+	Scale 0.8
+	Weapon.AmmoUse 1
+	Weapon.AmmoType "SnowCasterAmmo"
+	Weapon.AmmoGive1 1
+	Weapon.AmmoGive2 1
+	Weapon.SelectionOrder 3800
+	-WEAPON.NOAUTOFIRE
+	-WEAPON.AMMO_CHECKBOTH
+	+WEAPON.AMMO_OPTIONAL
+	+WEAPON.ALT_AMMO_OPTIONAL
+	Inventory.PickupSound "AmmoAPIN"
+	Inventory.Pickupmessage "Winter is coming !"
+	Inventory.RestrictedTo BDoomer, Doomer2, Doomer3
+	Obituary "\cr%o\c- got cold !"
+	Tag "SnowCaster"
+	States
+	{
+	KickFlash: 
+		//TNT1 A 0 A_JumpIfNoAmmo(3)
+		5NWW E 0 A_JumpIfInventory("DevicePlaced",1, 2)
+		5NWW A 0
+		"####" "#" 18
+		stop
+	SlideFlash: 
+		//TNT1 A 0 A_JumpIfNoAmmo(3)
+		5NWW E 0 A_JumpIfInventory("DevicePlaced",1, 2)
+		5NWW A 0
+		"####" "#" 35
+		stop
+	SlideFlashEnd: 
+		//TNT1 A 0 A_JumpIfNoAmmo(3)
+		5NWW E 0 A_JumpIfInventory("DevicePlaced",1, 2)
+		5NWW A 0
+		"####" "#" 9
+		stop
+	SlideFlashEndEarly: 
+		//TNT1 A 0 A_JumpIfNoAmmo(3)
+		5NWW E 0 A_JumpIfInventory("DevicePlaced",1, 2)
+		5NWW A 0
+		"####" "#" 6
+		stop
+
+	Spawn:
+		5NWC A -1
+		Stop
+
+	Select:
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_Giveinventory("SwitchtoFist",1)
+		TNT1 A 0 A_Giveinventory("FistsSelected",1)
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_GiveInventory("TokenCleaner")
+		TNT1 A 0 A_SetCrosshair(41)
+		TNT1 A 0 A_GunFlash
+		TNT1 A 1
+	SelectAnimation:
+		5NWW MLK 1 A_WeaponReady(WRF_NOFIRE)
+		5NWW E 0 A_JumpIfInventory("DevicePlaced",1, "ready")
+		5NWW CBA 1 A_WeaponReady(WRF_NOFIRE)
+	NoAmmo:
+	Ready:
+	Ready3:
+		TNT1 A 0 A_JumpIfNoAmmo(2)
+		TNT1 A 0 A_TakeInventory("DevicePlaced", 1)
+		5NWW E 0 A_JumpIfInventory("DevicePlaced",1, 2)
+		5NWW A 0
+		"####" "#" 1 A_WeaponReady
+		"####" "#" 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" "#" 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" "#" 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		"####" "#" 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		"####" "#" 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		"####" "#" 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		"####" A 0 A_JumpIfInventory("StartDualWield",1,"DualWield")
+		Loop
+		
+	Deselect:
+		"####" "#" 0 A_JumpIfInventory("DevicePlaced",1, "Deselect2")
+		5NWW ABC 1 
+	Deselect2:
+		"####" KLM 1 
+		TNT1 AAAAAAAAAAAAAAAA 0 A_Lower
+		TNT1 A 1 A_Lower
+		Wait
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("DevicePlaced", 1, "Ready")
+		TNT1 A 0 A_GiveInventory("DevicePlaced", 1)
+		5NWW ABCDE 1
+		5NWW E 1
+		TNT1 A 0 A_PlaySound("MINE001", 5)
+		TNT1 A 0 A_TakeInventory("SnowCasterAmmo",1)
+		TNT1 A 0 A_SpawnItemEx("SnowCasterDevice",20,0,0,0)
+		Goto Ready
+		
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("SnowCasterAmmo", 1, "Ready")
+		5NWW EE 2
+		TNT1 A 0 A_PlaySound("DSPIPARM",5)
+	AltHold:
+		5NWW GGGGG 1 
+		TNT1 A 0 ACS_NamedExecuteAlways("SnowCasterOn",0,0,0,0)
+		TNT1 A 0 A_Refire
+		5NWW GFFEEE 1 
+		TNT1 A 0 A_TakeInventory("DevicePlaced", 1)
+		5NWW KLM 1 
+		TNT1 A 0 A_TakeInventory("SnowCasterWeapon", 1)
+		Stop
+	
+	StartSprint:
+		"####" "#" 1 A_WeaponReady(WRF_NOFIRE)
+		"####" "#" 0 A_JumpIfInventory("UsedStamina", 40, "StopSprintTired")
+	Sprinting:
+		"####" "#" 0 offset(-9,32)
+		"####" "#" 0 offset(-9,32) A_JumpIfInventory("IsStandingStill", 1, "Ready3")
+		"####" "#" 0 offset(-9,32) A_JumpIfInventory("UsedStamina", 100, "StopSprintTired")
+		"####" "#" 0 offset(-9,32) ACS_ExecuteAlways(852, 0, 0, 0, 0)//Makes player faster.
+		"####" "#" 0 offset(-9,32) A_JumpIfInventory("PowerStrength", 1, 2)
+		"####" "#" 0 offset(-9,32) A_GiveInventory("UsedStamina", 2)
+		"####" "#" 0 offset(-9,32)
+		"####" "#" 1 offset(-9,34) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(-6,36) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(-3,38) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(0,38) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(3,36) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(6,34) A_SetPitch(pitch -0.5)
+		"####" "#" 1 offset(9,32) A_SetPitch(pitch -0.5)
+		"####" "#" 0 offset(9,32) A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" "#" 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		"####" "#" 0 offset(-9,32) A_GiveInventory("UsedStamina", 3)
+		"####" "#" 0 offset(9,33) A_SpawnItemEx("FootStep", 0, 0, 2, 0, 0, -4)
+		"####" "#" 1 offset(9,34) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(6,36) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(3,38) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(0,38) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(-3,36) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(-6,34) A_SetPitch(pitch +0.5)
+		"####" "#" 1 offset(-9,32) A_SetPitch(pitch +0.5)
+		"####" "#" 0 offset(-9,32) A_WeaponReady(WRF_NOBOB)
+		"####" "#" 0 offset(-9,32) A_JumpIfInventory("IsRunning", 1, "Sprinting")
+		Goto StopSprint
+
+	StopSprintTired:
+		"####" "#" 1
+		"####" "#" 0 ACS_ExecuteAlways(853, 0, 0, 0, 0)//Makes player slower.
+		"####" "#" 0 A_PlaySound("Tired", 2)
+		"####" "#" 0 A_TakeInventory("UsedStamina", 2)
+		"####" "#" 5 A_WeaponReady
+		"####" "#" 0 A_TakeInventory("UsedStamina", 2)
+		"####" "#" 5 A_WeaponReady
+		"####" "#" 0 A_TakeInventory("UsedStamina", 2)
+		"####" "#" 5 A_WeaponReady
+		"####" "#" 0 A_TakeInventory("UsedStamina", 2)
+		"####" "#" 5 A_WeaponReady
+		"####" "#" 0 A_TakeInventory("UsedStamina", 2)
+		"####" "#" 5 A_WeaponReady
+		Goto Ready
+
+	StopSprint:
+		"####" "#" 1
+		"####" "#" 0 A_JumpIfInventory("UsedStamina", 60, "StopSprintTired")
+		"####" "#" 0 ACS_ExecuteAlways(853, 0, 0, 0, 0)//Makes player slower.
+		Goto Ready
+	}
+}
+
+ACTOR SnowCasterDevice : SwitchableDecoration
+{
+  Mass 99999
+  Health 99999
+  Radius 5
+  Height 5
+  DamageFactor "freeze", 0.0
+  DamageFactor "ice", 0.0
+  +SOLID
+  +SHOOTABLE
+  +NOBLOOD
+  +MISSILE
+  -NOGRAVITY
+  -BLOODSPLATTER
+  -EXTREMEDEATH
+  +DONTDRAIN
+  +USESPECIAL
+  +NOTARGET
+  +INVULNERABLE
+  +NODAMAGE
+  //+EXPLODEONWATER
+  //+SKYEXPLODE
+  Activation THINGSPEC_Activate
+  States
+  {
+  Spawn:
+  	TNT1 A 0
+	TNT1 A 0 Thing_ChangeTid(0,1999)
+   Stay:
+	5NWC A 2 
+	Loop
+  Active:
+  	5NWC A 2
+	TNT1 A 0 A_SpawnItem("SnowCasterAmmo")
+	Stop
+  Explode:
+	5NWC A 1 A_Changeflag("USESPECIAL", 0)
+	5NWC A 1 A_Changeflag("NOINTERACTION", 1)
+	TNT1 A 0 Thing_ChangeTid(0,1998)
+	5NWC A 1 A_PlaySound("Plasma/Beep")
+	5NWC A 10
+	5NWC BCDE 1
+	5NWC E 6
+	5NWC FGHI 2
+	5NWC J 12 A_PlaySound("Plasma/Beep")
+	5NWC K 12 A_PlaySound("Plasma/Beep")
+	5NWC L 12 A_PlaySound("Plasma/Beep")
+	TNT1 A 0 A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC M 12 A_PlaySound("Plasma/Beep")
+	5NWC M 4 A_PlaySound("DSFRCLOP", 6, 1.0, 1)
+	5NWC N 4 A_SpawnItemEx ("SnowStart",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC NMN 5 A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC M 4 A_SpawnItemEx ("Snowcloud",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,0,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEX("StunLightningsSmall",0,0,35,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_PlaySound("SPARKS")
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEX("StunLightningsSmall",0,0,15,0,0,0,12,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_PlaySound("SPARKS")
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEX("StunLightningsSmall",0,0,280,0,0,0,10,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_PlaySound("SPARKS")
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEX("StunLightnings",0,0,20,0,0,0,10,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_PlaySound("LAMPLOP2")
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_SpawnItemEX("HorizontalShockwave2",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEX("StunLightningsSmall",0,0,25,0,0,0,60,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_PlaySound("SPARKS")
+	5NWC MNMN 4  A_SpawnItemEx("CryoFlareSpawn",0,0,35,0)
+	TNT1 A 0 A_PlaySound("SPARKS")
+	TNT1 A 0 A_StopSounds(6,6)
+	5NWC MMMMMMMMM 12 A_SpawnItemEX("StunLightnings",0,0,random(5,30),0,0,0,random(0,360),SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_PlaySound("weapons/barrelpain")
+	TNT1 A 0 A_SpawnItem("ExplosionSimpleSmokeColumn")
+    TNT1 AAA 0 A_CustomMissile ("XJunk3", 30, 0, random (0, 360), 2, random (0, 160))
+    TNT1 A 0 A_CustomMissile ("XJunk5", 20, 0, random (0, 360), 2, random (0, 160))
+    TNT1 AA 0 A_CustomMissile ("XJunk4", 15, 0, random (0, 360), 2, random (0, 160))
+	5NWC O 500
+	5NWC O 6 A_FadeOut(0.1)
+	Wait
+  }
+}

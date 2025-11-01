@@ -1,0 +1,8 @@
+#library "SnowCasterOn"
+#include "zcommon.acs"
+
+
+script "SnowCasterOn" (Void)
+{
+	SetActorState(1999,"explode");
+}

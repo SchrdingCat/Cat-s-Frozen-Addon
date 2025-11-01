@@ -1,0 +1,8 @@
+#include "zcommon.acs"
+
+script "SlowingFreeze" (void)
+{
+	SetActorProperty(0, APROP_SPEED, (GetActorProperty(0, APROP_SPEED) * 1/4));
+	GiveInventory("IsSlowed", 1);
+	delay(1);
+}

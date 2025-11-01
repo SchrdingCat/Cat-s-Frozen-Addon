@@ -1,0 +1,4128 @@
+//////////////////////////////////////////////////////////////
+///														   ///
+///		Frozen RifleZombieman / Base frozen actor		   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenZombieman : FrozenZombieman replaces FrozenZombieman
+{
+	Health 10
+	Radius 16
+	Height 45
+	+SOLID	
+	+SHOOTABLE	
+	-NOBLOOD
+	+NOBLOODDECALS
+	+PUSHABLE
+	Friction 0.1
+	PainChance "Ice", 0
+	damagefactor "Ice", 0.0
+	PainChance "Freeze", 0
+	damagefactor "Freeze", 0.0
+	PainChance "Head", 256 
+	DamageFactor "Head", 10.0
+	BloodType "Ice_Blood"
+	+NOBLOCKMONST
+	-COUNTKILL
+	+NOTARGET
+	+NEVERTARGET
+	+CANTSEEK
+	-FORCEXYBILLBOARD
+	Mass 999999
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenZombie_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		ZFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1)
+		ZFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		ZFZD A 50
+		ZFZD B 2
+		ZFZD A 50
+		ZFZD B 2
+		ZFZD A 50
+		ZFZD B 2
+		ZFZD A 25
+		ZFZD B 2
+		ZFZD A 25
+		ZFZD B 2
+		ZFZD A 10
+		ZFZD B 2
+		ZFZD A 10
+		ZFZD B 2
+		ZFZD A 10
+		ZFZD BABABA 2
+        TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+        TNT1 A 0 A_ChangeFlag("SOLID", 0)
+        TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+        TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+        TNT1 A 0 A_spawnItem("RifleZombieDamaged")
+        Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ZombiemanHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfRZombie")
+		Stop
+	Death:	
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+        TNT1 A 0 A_PlaySound ("EnemyShatter", 3)
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+        TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+        TNT1 A 0 A_SpawnItem("Rifle")
+        ZFZD C 300
+        ZFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+        Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenZombieman")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfRZombie : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		ZFZD D 1
+	Stay:
+		ZFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 A 0 A_SpawnItem("Rifle")	
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		ZFZD C 300
+		ZFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfRZombie")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///		Frozen 	Marine									   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenMarine : FrozenZombieman
+{
+	Health 10
+	Radius 16
+	Height 45
+	+SOLID	
+	+SHOOTABLE	
+	-NOBLOOD
+	+NOBLOODDECALS
+	+PUSHABLE
+	Friction 0.1
+	PainChance "Ice", 0
+	damagefactor "Ice", 0.0
+	PainChance "Freeze", 0
+	damagefactor "Freeze", 0.0
+	PainChance "Head", 256 
+	DamageFactor "Head", 10.0
+	BloodType "Ice_Blood"
+	+NOBLOCKMONST
+	-COUNTKILL
+	+NOTARGET
+	+NEVERTARGET
+	+CANTSEEK
+	-FORCEXYBILLBOARD
+	Mass 999999
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenZombie_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZMA A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZMA A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		FZMA A 50
+		FZMA B 2
+		FZMA A 50
+		FZMA B 2
+		FZMA A 50
+		FZMA B 2
+		FZMA A 25
+		FZMA B 2
+		FZMA A 25
+		FZMA B 2
+		FZMA A 10
+		FZMA B 2
+		FZMA A 10
+		FZMA B 2
+		FZMA A 10
+		FZMA BABABA 2
+        TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+        TNT1 A 0 A_ChangeFlag("SOLID", 0)
+        TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+        TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+        TNT1 A 0 A_spawnItem("Marine_Fist")
+        Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ZombiemanHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfMarine")
+		Stop
+	Death:	
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+        TNT1 A 0 A_PlaySound ("EnemyShatter", 3)
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+        TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)		
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+        TNT1 A 0 A_SpawnItem("Rifle")
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+        FZMA C 300
+        FZMA CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+        Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("NewFrozenMarine")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfMarine : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		FZMA D 1
+	Stay:
+		FZMA D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    //TNT1 A 0 A_SpawnItem("Rifle")	
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		FZMA C 300
+		FZMA CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfMarine")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen PistolZombieman         		   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenPistolZombie : NewFrozenZombieman 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenZombie_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)     
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		HFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		HFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		HFZD A 50
+		HFZD B 2
+		HFZD A 50
+		HFZD B 2
+		HFZD A 50
+		HFZD B 2
+		HFZD A 25
+		HFZD B 2
+		HFZD A 25
+		HFZD B 2
+		HFZD A 10
+		HFZD B 2
+		HFZD A 10
+		HFZD B 2
+		HFZD A 10
+		HFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("PistolZombieDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ZombiemanHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfPZombie")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("PistolSpawner")
+		ZFZD C 300
+		ZFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenPistolZombie")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfPZombie : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		HFZD D 1
+	Stay:
+		HFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("PistolSpawner")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		ZFZD C 300
+		ZFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfPZombie")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Pig			         		   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenPig : NewFrozenZombieman 
+{
+	Radius 16
+	Height 25
+	States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZPY A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZPY A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		FZPY A 50
+		FZPY B 2
+		FZPY A 50
+		FZPY B 2
+		FZPY A 50
+		FZPY B 2
+		FZPY A 25
+		FZPY B 2
+		FZPY A 25
+		FZPY B 2
+		FZPY A 10
+		FZPY B 2
+		FZPY A 10
+		FZPY B 2
+		FZPY A 10
+		FZPY BABABA 2		
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAA 0 A_CustomMissile ("XIceChunk1", 12, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAA 0 A_CustomMissile ("XIceChunk2", 12, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAA 0 A_CustomMissile ("XIceChunk3", 12, 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+	    TNT1 A 0 A_spawnItem("Pig")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAA 0 A_CustomMissile ("XIceChunk1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XIceChunk2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("XIceChunk3", 12, 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAA 0 A_CustomMissile ("FrozenMeat1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 10, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 10, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAA 0 A_CustomMissile ("XDeath1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("XDeath3", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("MuchBlood", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenPig")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Rat		         		   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenRat : NewFrozenZombieman 
+{
+	Radius 8
+	Height 15
+	States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		RATF A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		RATF A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		RATF A 50
+		RATF B 2
+		RATF A 50
+		RATF B 2
+		RATF A 50
+		RATF B 2
+		RATF A 25
+		RATF B 2
+		RATF A 25
+		RATF B 2
+		RATF A 10
+		RATF B 2
+		RATF A 10
+		RATF B 2
+		RATF A 10
+		RATF BABABA 2
+	
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", 12, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XIceChunk2", 12, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAA 0 A_CustomMissile ("XIceChunk3", 12, 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+	    TNT1 A 0 A_spawnItem("RatMonster")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AA 0 A_CustomMissile ("XIceChunk1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", 12, 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 10, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 10, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_CustomMissile ("FrozenMeat1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("FrozenMeat2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("MuchBlood", 12, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenRat")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Chicken		         		   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenChicken : NewFrozenZombieman 
+{
+	Radius 8
+	Height 15
+	States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZCK A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZCK A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		FZCK A 50
+		FZCK B 2
+		FZCK A 50
+		FZCK B 2
+		FZCK A 50
+		FZCK B 2
+		FZCK A 25
+		FZCK B 2
+		FZCK A 25
+		FZCK B 2
+		FZCK A 10
+		FZCK B 2
+		FZCK A 10
+		FZCK B 2
+		FZCK A 10
+		FZCK BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", 12, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XIceChunk2", 12, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAA 0 A_CustomMissile ("XIceChunk3", 12, 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+	    TNT1 A 0 A_spawnItem("Chicken")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AA 0 A_CustomMissile ("XIceChunk1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", 12, 0, random (0, 360), 2, random (40, 120))
+		TNT1 A 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 10, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 A 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 10, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_CustomMissile ("FrozenMeat1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("FrozenMeat2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("MuchBlood", 12, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenChicken")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Raven		         		   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenRaven 
+{
+	Radius 8
+	Height 15
+	Projectile
+	Gravity 1.0
+	-NOGRAVITY
+	States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		RVPL Z 3
+		loop	
+	Death:
+		RVPL X 2
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AA 0 A_CustomMissile ("XIceChunk1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XIceChunk3", 12, 0, random (0, 360), 2, random (40, 120))
+		TNT1 A 0 A_CustomMissile ("FrozenMeat1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 5, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 A 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 5, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_CustomMissile ("FrozenMeat2", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("XDeath1", 12, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("MuchBlood", 12, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Axe ZombieMan         			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenLabGuy : NewFrozenZombieman 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenZombie_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION) 
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		LFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		LFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		LFZD A 50
+		LFZD B 2
+		LFZD A 50
+		LFZD B 2
+		LFZD A 50
+		LFZD B 2
+		LFZD A 25
+		LFZD B 2
+		LFZD A 25
+		LFZD B 2
+		LFZD A 10
+		LFZD B 2
+		LFZD A 10
+		LFZD B 2
+		LFZD A 10
+		LFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("LabGuyDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ZombiemanHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfLabguy")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("BrutalAxe")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		LFZD C 300
+		LFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenLabGuy")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfLabguy : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		LFZD D 1
+	Stay:
+		LFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("BrutalAxe")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		LFZD C 300
+		LFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfLabguy")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Shotgun guy        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenShotgunguy : NewFrozenZombieman replaces FrozenShotgunguy
+{
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenZombie_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION) 
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		SFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		SFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		SFZD A 50
+		SFZD B 2
+		SFZD A 50
+		SFZD B 2
+		SFZD A 50
+		SFZD B 2
+		SFZD A 25
+		SFZD B 2
+		SFZD A 25
+		SFZD B 2
+		SFZD A 10
+		SFZD B 2
+		SFZD A 10
+		SFZD B 2
+		SFZD A 10
+		SFZD BABABA 2
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("ShotgunGuy1Damaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ZombiemanHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfSGGuy")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("ShotgunSpawner")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		SFZD C 300
+		SFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenShotgunguy")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfSGGuy : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		SFZD D 1
+	Stay:
+		SFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("ShotgunSpawner")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		ZFZD C 300
+		ZFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfSGGuy")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///					  Frozen SMG guy        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenSMGGuy : NewFrozenZombieman 
+{
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenZombie_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION) 
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		UFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		UFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		UFZD A 50
+		UFZD B 2
+		UFZD A 50
+		UFZD B 2
+		UFZD A 50
+		UFZD B 2
+		UFZD A 25
+		UFZD B 2
+		UFZD A 25
+		UFZD B 2
+		UFZD A 10
+		UFZD B 2
+		UFZD A 10
+		UFZD B 2
+		UFZD A 10
+		UFZD BABABA 2	
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("SMGGuyDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ZombiemanHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfSMGGuy")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("SMGSpawner")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		UFZD C 300
+		UFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenSMGGuy")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfSMGGuy : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		UFZD D 1
+	Stay:
+		UFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("SMGSpawner")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		UFZD C 300
+		UFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenHalfSMGGuy")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Chaingun guy        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenChaingunguy : NewFrozenZombieman replaces FrozenChaingunguy
+{
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenZombie_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION) 
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		XFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		XFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)	
+		XFZD A 50
+		XFZD B 2
+		XFZD A 50
+		XFZD B 2
+		XFZD A 50
+		XFZD B 2
+		XFZD A 25
+		XFZD B 2
+		XFZD A 25
+		XFZD B 2
+		XFZD A 10
+		XFZD B 2
+		XFZD A 10
+		XFZD B 2
+		XFZD A 10
+		XFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("ChaingunguyDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ZombiemanHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfChaingunGuy")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("MiniGun")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		XFZD C 300
+		XFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenChaingunguy")
+		Stop
+	}
+}
+ACTOR FrozenHalfChaingunGuy : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		XFZD D 1
+	Stay:
+		XFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("MiniGun")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		XFZD C 300
+		XFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenHalfChaingunGuy")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///					  Frozen Nazi	        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenNazi : NewFrozenZombieman 
+{
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZNZ A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZNZ A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		FZNZ A 50
+		FZNZ B 2
+		FZNZ A 50
+		FZNZ B 2
+		FZNZ A 50
+		FZNZ B 2
+		FZNZ A 25
+		FZNZ B 2
+		FZNZ A 25
+		FZNZ B 2
+		FZNZ A 10
+		FZNZ B 2
+		FZNZ A 10
+		FZNZ B 2
+		FZNZ A 10
+		FZNZ BABABA 2		
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+	    TNT1 A 0 A_spawnItem("Nazi")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem("MP40Drop")
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		FZNZ C 300
+		FZNZ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenNazi")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Imp		        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenImp : NewFrozenZombieman replaces FrozenImp
+{
+	PainChance "Head", 256 
+	DamageFactor "Head", 10.0
+	Radius 8
+	+NOBLOCKMONST
+	-COUNTKILL
+	+NOTARGET
+	+NEVERTARGET
+	+CANTSEEK
+	-FORCEXYBILLBOARD
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenImp_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		IFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		IFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		IFZD A 50
+		IFZD B 2
+		IFZD A 50
+		IFZD B 2
+		IFZD A 50
+		IFZD B 2
+		IFZD A 25
+		IFZD B 2
+		IFZD A 25
+		IFZD B 2
+		IFZD A 10
+		IFZD B 2
+		IFZD A 10
+		IFZD B 2
+		IFZD A 10
+		IFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("ImpDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ImpHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfImp")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		IFZD C 300
+		IFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenImp")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfImp : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		IFZD D 1
+	Stay:
+		IFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		IFZD C 300
+		IFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenHalfImp")
+		Stop
+	}
+}
+/*
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Soulharvester		       		   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenSoulharvester : NewFrozenZombieman 
+{
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenImp_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZSH A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZSH A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		FZSH A 50
+		FZSH B 2
+		FZSH A 50
+		FZSH B 2
+		FZSH A 50
+		FZSH B 2
+		FZSH A 25
+		FZSH B 2
+		FZSH A 25
+		FZSH B 2
+		FZSH A 10
+		FZSH B 2
+		FZSH A 10
+		FZSH B 2
+		FZSH A 10
+		FZSH BABABA 2
+		Goto Death.Burn
+		Death.Fire:
+		Death.Flames:
+		Death.Burn:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+	    TNT1 A 0 A_spawnItem("SoulHarvesterImp")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 A 0 A_SpawnItemEx("ImpHeadExplode", 0, 0, 22)
+		//TNT1 A 0 A_CustomMissile ("MuchBlood", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfSH")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		FZSH C 300
+		FZSH CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenSoulharvester")
+		Stop
+	}
+}
+ACTOR FrozenHalfSH : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		IFZD D 1
+	Stay:
+		IFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		IFZD C 300
+		IFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfImp")
+		Stop
+	}
+}
+*/
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Lostsoul	        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenLostSoul : NewFrozenZombieman 
+{
+	+MISSILE
+	+BOUNCEONWALLS
+	+BOUNCEONFLOORS
+	+BOUNCEONCEILINGS
+	Gravity 1.0
+	BounceType Doom
+	BounceCount 1
+	States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		KFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		KFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		KFZD A 50
+		KFZD B 2
+		KFZD A 50
+		KFZD B 2
+		KFZD A 50
+		KFZD B 2
+		KFZD A 25
+		KFZD B 2
+		KFZD A 25
+		KFZD B 2
+		KFZD A 10
+		KFZD B 2
+		KFZD A 10
+		KFZD B 2
+		KFZD A 10
+		KFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+	    TNT1 A 0 A_spawnItem("TehLostSoul")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (10, 20), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (10, 20), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (10, 20), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAA 0 A_CustomMissile ("SmallLSPart1", random (10, 30), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 5, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 5, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAA 0 A_CustomMissile ("SmallLSPart3", 22, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("LSpart1", random (10, 40), 0, random (0, 360), 2, random (0, 160))
+		KFZD C 300
+		KFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenLostSoul")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Demon		        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenDemon : NewFrozenZombieman replaces FrozenDemon
+{
+Scale 1.1
+Radius 24
+Height 36
+Health 20
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenDemon_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		PFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		PFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		PFZD A 50
+		PFZD B 2
+		PFZD A 50
+		PFZD B 2
+		PFZD A 50
+		PFZD B 2
+		PFZD A 25
+		PFZD B 2
+		PFZD A 25
+		PFZD B 2
+		PFZD A 10
+		PFZD B 2
+		PFZD A 10
+		PFZD B 2
+		PFZD A 10
+		PFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("BullDemonDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath2b", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath3b", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 50, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 A 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AAA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 AAAAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big", 40, 0, random (0, 360), 2, random (30, 110))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfDemon")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2b", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3b", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big", 40, 0, random (0, 360), 2, random (30, 110))
+		TNT1 A 0 A_CustomMissile ("XDeathStomach", 20, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		PFZD C 300
+		PFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenDemon")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfDemon : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		PFZD D 1
+	Stay:
+		PFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		PFZD C 300
+		PFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfDemon")
+		Stop
+	}
+}
+
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen NightmareDemon		        	   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenNightmareDemon : NewFrozenZombieman
+{
+Scale 1.1
+Radius 24
+Height 36
+Health 20
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenDemon_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZNI A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZNI A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		FZNI A 50
+		FZNI B 2
+		FZNI A 50
+		FZNI B 2
+		FZNI A 50
+		FZNI B 2
+		FZNI A 25
+		FZNI B 2
+		FZNI A 25
+		FZNI B 2
+		FZNI A 10
+		FZNI B 2
+		FZNI A 10
+		FZNI B 2
+		FZNI A 10
+		FZNI BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("NightmareemonDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath2bGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath3bGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("SuperWallGreenBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 50, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AAA 0 A_CustomMissile ("GreenBloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAA 0 A_CustomMissile ("GreenBloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfNightmareDemon")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2bGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3bGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("MuchBloodGreen", 40, 0, random (0, 360), 2, random (30, 110))
+		TNT1 AAAAA 0 A_CustomMissile ("GreenGuts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBloodGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GreenGrowingBloodPool")
+		FZNI C 300
+		FZNI CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenNightmareDemon")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfNightmareDemon : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		FZNI D 1
+	Stay:
+		FZNI D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenGreenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GreenGuts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GreenGrowingBloodPool")
+		FZNI C 300
+		FZNI CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfNightmareDemon")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Mancubus	        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenMancubus: NewFrozenZombieman replaces FrozenMancubus
+{
+Radius 48
+Height 45
+Health 20
+Scale 1.2
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenMancubus_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		MFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		MFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		MFZD A 50
+		MFZD B 2
+		MFZD A 50
+		MFZD B 2
+		MFZD A 50
+		MFZD B 2
+		MFZD A 25
+		MFZD B 2
+		MFZD A 25
+		MFZD B 2
+		MFZD A 10
+		MFZD B 2
+		MFZD A 10
+		MFZD B 2
+		MFZD A 10
+		MFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("MancubusDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 60, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 60, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 AAAAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAA 0 A_CustomMissile ("ArterialBlood22Big", 40, 0, random (0, 360), 2, random (30, 110))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfMancubus")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath2b", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath3b", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner", 30, 0, random (0, 360), 2, random (40, 70))
+		TNT1 A 0 A_CustomMissile ("XDeathOrgan1", 24, 0, random (0, 360), 2, random (10, 90))
+		TNT1 A 0 A_CustomMissile ("XDeathOrgan2", 24, 0, random (0, 360), 2, random (10, 90))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)		
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		MFZD C 300
+		MFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenMancubus")
+		Stop
+	}
+}
+
+ACTOR FrozenHalfMancubus : NewFrozenZombieman
+{
+Radius 48
+Height 50
+Scale 1.2
+States
+	{
+	Spawn:
+		MFZD D 1
+	Stay:
+		MFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2b", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3b", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		MFZD C 300
+		MFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfMancubus")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Volcabus	        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenVolcabus : NewFrozenZombieman 
+{
+Radius 48
+Height 64
+Health 20
+Scale 1.2
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZVB A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZVB A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		FZVB A 50
+		FZVB B 2
+		FZVB A 50
+		FZVB B 2
+		FZVB A 50
+		FZVB B 2
+		FZVB A 25
+		FZVB B 2
+		FZVB A 25
+		FZVB B 2
+		FZVB A 10
+		FZVB B 2
+		FZVB A 10
+		FZVB B 2
+		FZVB A 10
+		FZVB BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("VolcabusDamaged")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		FZVB C 300
+		FZVB CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+	Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenVolcabus")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Revenant		       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenRevenant : NewFrozenZombieman replaces FrozenRevenant
+{
+Radius 20
+Height 45
+Health 20
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenMancubus_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		RFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		RFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		RFZD A 50
+		RFZD B 2
+		RFZD A 50
+		RFZD B 2
+		RFZD A 50
+		RFZD B 2
+		RFZD A 25
+		RFZD B 2
+		RFZD A 25
+		RFZD B 2
+		RFZD A 10
+		RFZD B 2
+		RFZD A 10
+		RFZD B 2
+		RFZD A 10
+		RFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("RevenantDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 60, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 AAAAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAA 0 A_CustomMissile ("ArterialBlood22Big", 40, 0, random (0, 360), 2, random (30, 110))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfRevenant")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		RFZD C 300
+		RFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenRevenant")
+		Stop
+	}
+}
+ACTOR FrozenHalfRevenant : NewFrozenZombieman
+{
+Radius 20
+Height 40
+States
+	{
+	Spawn:
+		RFZD D 1
+	Stay:
+		RFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		RFZD C 300
+		RFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfRevenant")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen HellKnight		       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenHellKnight : NewFrozenZombieman replaces FrozenHellKnight
+{
+Radius 16
+Height 44
+Health 20
+Scale 1
+PainChance "Head", 256 
+DamageFactor "Head", 10.0
++NOBLOCKMONST
+-COUNTKILL
++NOTARGET
++NEVERTARGET
++CANTSEEK
+-FORCEXYBILLBOARD
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenHellKnight_Headshot",0,0,25,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		BFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		BFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		BFZD A 50
+		BFZD B 2
+		BFZD A 50
+		BFZD B 2
+		BFZD A 50
+		BFZD B 2
+		BFZD A 25
+		BFZD B 2
+		BFZD A 25
+		BFZD B 2
+		BFZD A 10
+		BFZD B 2
+		BFZD A 10
+		BFZD B 2
+		BFZD A 10
+		BFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("HellKnightDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (50, 60), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 60, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItem("HellKnightHeadExplode", 0, 62)
+		TNT1 AAAAA 0 A_CustomMissile ("MuchBloodGreen", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem("FrozenHellKnightHalf")
+		TNT1 VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV 1 A_CustomMissile ("Green_LiquidBlood", 40, 0, random (0, 360), 2, random (30, 110))
+		TNT1 A -1
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GreenGuts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 40, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 40, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBloodGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		BFZD C 300
+		BFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		BFZD B 1
+		TNT1 AA 0 A_CustomMissile ("XIceChunk1", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("NewFrozenHellKnight")
+		Stop
+	}
+}
+
+ACTOR FrozenHellKnightHalf : NewFrozenZombieman 
+{
+Radius 16
+Height 50
+Health 20
+Scale 1
+States
+	{
+	Spawn:
+		BFZD D 2
+	Stay:	
+		BFZD D -1
+		wait
+		
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GreenGuts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 40, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 40, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBloodGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		BFZD C 300
+		BFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHellKnightHalf")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Baron of hell       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenBaronOfHell : NewFrozenZombieman replaces FrozenBaronOfHell
+{
+Radius 20
+Height 54
+Health 20
+Scale 1.1
+PainChance "Head", 256 
+DamageFactor "Head", 10.0
++NOBLOCKMONST
+-COUNTKILL
++NOTARGET
++NEVERTARGET
++CANTSEEK
+-FORCEXYBILLBOARD
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenHellKnight_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)  
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		BFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		BFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)	
+		BFZD A 50
+		BFZD B 2
+		BFZD A 50
+		BFZD B 2
+		BFZD A 50
+		BFZD B 2
+		BFZD A 25
+		BFZD B 2
+		BFZD A 25
+		BFZD B 2
+		BFZD A 10
+		BFZD B 2
+		BFZD A 10
+		BFZD B 2
+		BFZD A 10
+		BFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("BaronOfHellDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (50, 60), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 60, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItem("BaronOfHellHeadExplode", 0, 62)
+		TNT1 AAAAA 0 A_CustomMissile ("MuchBloodGreen", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem("FrozenBaronHalf")
+		TNT1 VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV 1 A_CustomMissile ("Green_LiquidBlood", 50, 0, random (0, 360), 2, random (30, 110))
+		TNT1 A -1
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GreenGuts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 40, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 40, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBloodGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		BFZD C 300
+		BFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		BFZD B 1
+		TNT1 AA 0 A_CustomMissile ("XIceChunk1", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("NewFrozenBaronOfHell")
+		Stop
+	}
+}
+ACTOR FrozenBaronHalf : NewFrozenZombieman 
+{
+Radius 16
+Height 50
+Health 20
+Scale 1.1
+States
+	{
+	Spawn:
+		BFZD D 2
+	Stay:	
+		BFZD D -1
+		wait
+		
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GreenGuts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 40, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 40, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBloodGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		BFZD C 300
+		BFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenBaronHalf")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Belphegor		      			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenBelphegor : NewFrozenZombieman
+{
+Radius 24
+Height 64
+Health 20
+Scale 1.2
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZBG A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZBG A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)	
+		FZBG A 50
+		FZBG B 2
+		FZBG A 50
+		FZBG B 2
+		FZBG A 50
+		FZBG B 2
+		FZBG A 25
+		FZBG B 2
+		FZBG A 25
+		FZBG B 2
+		FZBG A 10
+		FZBG B 2
+		FZBG A 10
+		FZBG B 2
+		FZBG A 10
+		FZBG BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("BelphegorDamaged")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("FrozenGreenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3Green", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GreenGuts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 40, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 40, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AA 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBloodGreen", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		FZBG C 300
+		FZBG CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenBelphegor")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Cacodemon		       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenCacodemon : NewFrozenZombieman replaces FrozenCacodemon
+{
+Radius 31
+Height 45
+Health 20
+Scale 1.0
+Mass 200
++MISSILE
++BOUNCEONWALLS
++BOUNCEONFLOORS
++BOUNCEONCEILINGS
+Gravity 1.0
+BounceType Doom
+BounceCount 2
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenMancubus_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		CFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		CFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)	
+		CFZD A 50
+		CFZD B 2
+		CFZD A 50
+		CFZD B 2
+		CFZD A 50
+		CFZD B 2
+		CFZD A 25
+		CFZD B 2
+		CFZD A 25
+		CFZD B 2
+		CFZD A 10
+		CFZD B 2
+		CFZD A 10
+		CFZD B 2
+		CFZD A 10
+		CFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("CacodemonDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (50, 60), 0, random (0, 360), 2, random (40, 120))
+		TNT1 A 0 A_SpawnItem("Muchblood2Blue", 0, 40)
+		TNT1 AAA 0 A_CustomMissile ("XDeath2Blue", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath3Blue", 25, 0, random (0, 360), 2, random (30, 150))
+		TNT1 AAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 50, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AAA 0 A_CustomMissile ("BlueBloodMistBig", 50, 0, random (0, 360), 2, random (0, 50))
+		TNT1 AAAAA 0 A_CustomMissile ("Blue_FlyingBlood", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem("FrozenCacoHalf")
+		TNT1 A -1
+		Stop
+	Death:	
+		TNT1 A 0 A_Jump(128,"Death.Head")
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("Blue_FlyingBlood", 50, 0, random (160, 200), 2, random (0, 50))
+		TNT1 A 0 A_SpawnItem("Muchblood2Blue", 0, 40)
+		TNT1 AAAA 0 A_CustomMissile ("XDeath2Blue", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath3Blue", 25, 0, random (0, 360), 2, random (30, 150))
+		TNT1 A 0 A_CustomMissile ("XDeath2bBlue", 25, 0, random (0, 360), 2, random (30, 150))
+		TNT1 A 0 A_CustomMissile ("XDeath3bBlue", 25, 0, random (0, 360), 2, random (30, 150))
+		TNT1 A 0 A_CustomMissile ("XDeath2Blue", 25, 0, random (160, 210), 2, random (30, 60))
+		TNT1 AA 0 A_CustomMissile ("BlueBloodMistBig", 50, 0, random (0, 360), 2, random (0, 50))
+		TNT1 A 0 A_CustomMissile ("CacoXDeath2", 50, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_CustomMissile ("CacoXDeath1", 50, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_CustomMissile ("CacoXDeath3", 50, 0, random (0, 360), 2, random (20, 40))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_CustomMissile ("CacoXDeath4", 50, 0, random (0, 360), 2, random (20, 40))
+		TNT1 AA 0 A_CustomMissile ("CacoXDeath5", 50, 0, random (0, 360), 2, random (20, 40))
+		TNT1 AAAA 0 A_CustomMissile ("CacoXDeath6", 50, 0, random (0, 360), 2, random (20, 40))
+		TNT1 AAAAAA 0 A_CustomMissile ("CacoXDeath7", 50, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_StopSound(7)
+	TNT1 A 0 A_SpawnItem("FrozenCacodemon")
+	Stop
+	}
+}
+ACTOR FrozenCacoHalf : NewFrozenZombieman
+{
+Radius 31
+Height 56
+Health 20
+Scale 1.0
+States
+	{
+	Spawn:
+	CFZD D 2
+	Stay:	
+	CFZD D -1
+		wait
+	Death:	
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("Blue_FlyingBlood", 50, 0, random (160, 200), 2, random (0, 50))
+	TNT1 AAAA 0 A_CustomMissile ("XDeath2Blue", random (50, 60), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAA 0 A_CustomMissile ("XDeath3Blue", 25, 0, random (0, 360), 2, random (30, 150))
+	TNT1 A 0 A_CustomMissile ("XDeath2bBlue", 25, 0, random (0, 360), 2, random (30, 150))
+	TNT1 A 0 A_CustomMissile ("XDeath3bBlue", 25, 0, random (0, 360), 2, random (30, 150))
+	TNT1 A 0 A_CustomMissile ("XDeath2Blue", 25, 0, random (160, 210), 2, random (30, 60))
+	TNT1 AA 0 A_CustomMissile ("BlueBloodMistBig", 50, 0, random (0, 360), 2, random (0, 50))
+	TNT1 A 0 A_CustomMissile ("CacoXDeath2", 50, 0, random (0, 360), 2, random (20, 40))
+	TNT1 A 0 A_CustomMissile ("CacoXDeath1", 50, 0, random (0, 360), 2, random (20, 40))
+	TNT1 A 0 A_CustomMissile ("CacoXDeath3", 50, 0, random (0, 360), 2, random (20, 40))
+	TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+	TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+	TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_CustomMissile ("CacoXDeath4", 50, 0, random (0, 360), 2, random (20, 40))
+	TNT1 AA 0 A_CustomMissile ("CacoXDeath5", 50, 0, random (0, 360), 2, random (20, 40))
+	TNT1 AAAA 0 A_CustomMissile ("CacoXDeath6", 50, 0, random (0, 360), 2, random (20, 40))
+	TNT1 AAAAAA 0 A_CustomMissile ("CacoXDeath7", 50, 0, random (0, 360), 2, random (20, 40))
+	TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+	Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_SpawnItem("FrozenCacoHalf")
+	Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Arachnotron	       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenArachnotron : NewFrozenZombieman replaces FrozenArachnotron
+{
+Radius 48
+Height 44
+Health 20
+Scale 1.1
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenDemon_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		TFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		TFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		TFZD A 50
+		TFZD B 2
+		TFZD A 50
+		TFZD B 2
+		TFZD A 50
+		TFZD B 2
+		TFZD A 25
+		TFZD B 2
+		TFZD A 25
+		TFZD B 2
+		TFZD A 10
+		TFZD B 2
+		TFZD A 10
+		TFZD B 2
+		TFZD A 10
+		TFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("ArachnotronDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("ArterialBlood22Big3", 50, 0, random (175, 185), 2, random (30, 40))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 AAAAAA 0 A_CustomMissile ("SmallBrainPiece", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAA 0 A_CustomMissile ("XDeathSpiderNew1", 32, 0, random (0, 360), 2, random (60, 90))
+		TNT1 AAA 0 A_CustomMissile ("XDeathSpiderNew2", 32, 0, random (0, 360), 2, random (60, 90))
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big", 40, 0, random (0, 360), 2, random (30, 110))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfArachnotron")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeathSpiderNew1", 32, 0, random (0, 360), 2, random (60, 90))
+		TNT1 AAA 0 A_CustomMissile ("XDeathSpiderNew2", 32, 0, random (0, 360), 2, random (60, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SmallBrainPiece", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AA 0 A_CustomMissile ("SpiderLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))	
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TFZD C 300
+		TFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+	Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenArachnotron")
+	Stop
+	}
+}
+
+ACTOR FrozenHalfArachnotron : NewFrozenZombieman
+{
+States
+	{
+	Spawn:
+		TFZD D 1
+	Stay:
+		TFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 A 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SpiderLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TFZD C 300
+		TFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfArachnotron")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen AncientArachnotron	       		   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+
+Actor FrozenArachnotron2 : NewFrozenZombieMan
+{
+Radius 48
+Height 64
+Health 20
+Scale 1.3
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZ4R A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZ4R A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)	
+		FZ4R A 50
+		FZ4R B 2
+		FZ4R A 50
+		FZ4R B 2
+		FZ4R A 50
+		FZ4R B 2
+		FZ4R A 25
+		FZ4R B 2
+		FZ4R A 25
+		FZ4R B 2
+		FZ4R A 10
+		FZ4R B 2
+		FZ4R A 10
+		FZ4R B 2
+		FZ4R A 10
+		FZ4R BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("Arachnotron2Damaged")
+	    Stop
+	Death:	
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_StopSound(7)
+	TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+	TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+	TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))	
+	TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+	FZ4R C 300
+	FZ4R CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+	Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_StopSound(7)
+	TNT1 A 0 A_SpawnItem("FrozenArachnotron2")
+	Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Pain elemental	       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenPainElemental : NewFrozenZombieman replaces FrozenPainElemental
+{
+Radius 31
+Height 56
+Health 20
+Scale 1.0
+Mass 200
++MISSILE
++BOUNCEONWALLS
++BOUNCEONFLOORS
++BOUNCEONCEILINGS
+Gravity 1.0
+BounceType Doom
+BounceCount 2
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		EFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		EFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		EFZD A 50
+		EFZD B 2
+		EFZD A 50
+		EFZD B 2
+		EFZD A 50
+		EFZD B 2
+		EFZD A 25
+		EFZD B 2
+		EFZD A 25
+		EFZD B 2
+		EFZD A 10
+		EFZD B 2
+		EFZD A 10
+		EFZD B 2
+		EFZD A 10
+		EFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("PainElementalDamaged")
+	    Stop
+	Death:	
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_StopSound(7)
+	TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	TNT1 A 0 A_Explode (220,220)
+	TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+    TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)     
+		 TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		 TNT1 AAAA 0 A_CustomMissile ("SmallBrainPiece", 32, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("PEPart1", 32, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAA 0 A_CustomMissile ("PEPart2", 32, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 32, 0, random (0, 360), 2, random (0, 160))
+		EXPL A 0 A_SpawnItemEx("ExplosionParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+	EXPL AAAAAAAAAAAAAAAAA 0 A_CustomMissile ("FireBallExplosion", 6, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		TNT1 A 0 BRIGHT A_PainDie
+	Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_SpawnItem("FrozenPainElemental")
+	Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Archvile		       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewFrozenarchvile : NewFrozenZombieman replaces Frozenarchvile
+{
+Radius 26
+Height 45
+Health 20
+States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FrozenMancubus_Headshot",0,0,30,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION)
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		AFZD A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		AFZD A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		AFZD A 50
+		AFZD B 2
+		AFZD A 50
+		AFZD B 2
+		AFZD A 50
+		AFZD B 2
+		AFZD A 25
+		AFZD B 2
+		AFZD A 25
+		AFZD B 2
+		AFZD A 10
+		AFZD B 2
+		AFZD A 10
+		AFZD B 2
+		AFZD A 10
+		AFZD BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("TeharchvileDamaged")
+	    Stop
+	Death.Head:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAA 0 A_CustomMissile ("XIceChunk1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XIceChunk2", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk3", random (40, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_CustomMissile ("FrozenMeat1", random (40, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 55, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 AA 0 A_CustomMissile ("ArterialBlood22Big2", 50, 0, 45, 2, random (40, 60))
+		TNT1 AAAAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAA 0 A_CustomMissile ("ArterialBlood22Big", 40, 0, random (0, 360), 2, random (30, 110))
+		TNT1 A 0 A_SpawnItem ("FrozenHalfArchvile")
+		Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+	TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 40, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+	TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 40, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+	TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 AAAAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+	AFZD C 300
+	AFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+	Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_SpawnItem("Frozenarchvile")
+	Stop
+	}
+}
+ACTOR FrozenHalfArchvile : NewFrozenZombieman
+{
+Radius 26
+Height 45
+States
+	{
+	Spawn:
+		AFZD D 1
+	Stay:
+		AFZD D -1
+		wait
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 40, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 40, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 AA 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		AFZD C 300
+		AFZD CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenHalfArchvile")
+		Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen CyberDemon	        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenCyberDemon : NewFrozenZombieman
+{
+Radius 45
+Height 94
+Health 20
+Scale 1.2
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		CYFZ A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		CYFZ A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)	
+		CYFZ A 50
+		CYFZ B 2
+		CYFZ A 50
+		CYFZ B 2
+		CYFZ A 50
+		CYFZ B 2
+		CYFZ A 25
+		CYFZ B 2
+		CYFZ A 25
+		CYFZ B 2
+		CYFZ A 10
+		CYFZ B 2
+		CYFZ A 10
+		CYFZ B 2
+		CYFZ A 10
+		CYFZ BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", 75, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", 90, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", 100, 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("CyberDemonDamaged")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", 80, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", 51, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", 41, 0, random (0, 360), 2, random (40, 120))
+		TNT1 A 0 A_CustomMissile ("CyberXDeath", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("XDeath3b", 120, 0, random (0, 360), 2, random (50, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("XDeath2b", 120, 0, random (0, 360), 2, random (50, 90))
+		TNT1 AAAAAAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 80, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 80, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAA 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat1", 80, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat2", 90, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("MuchBlood3", 76, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		CYFZ C 300
+		CYFZ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenCyberDemon")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Mastermind	        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenMastermind : NewFrozenZombieman
+{
+Radius 60
+Height 100
+Health 20
+Scale 1.1
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		SPFZ A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		SPFZ A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		SPFZ A 50
+		SPFZ B 2
+		SPFZ A 50
+		SPFZ B 2
+		SPFZ A 50
+		SPFZ B 2
+		SPFZ A 25
+		SPFZ B 2
+		SPFZ A 25
+		SPFZ B 2
+		SPFZ A 10
+		SPFZ B 2
+		SPFZ A 10
+		SPFZ B 2
+		SPFZ A 10
+		SPFZ BABABA 2
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", 75, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", 90, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", 100, 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("MastermindDamaged")
+	    Stop
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", 80, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", 51, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", 41, 0, random (0, 360), 2, random (40, 120))
+		TNT1 A 0 A_CustomMissile ("CyberXDeath", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("XDeath3b", 120, 0, random (0, 360), 2, random (50, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("XDeath2b", 120, 0, random (0, 360), 2, random (50, 90))
+		TNT1 AAAAAAAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 50, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 50, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAA 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat1", 80, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("FrozenMeat2", 90, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("MuchBlood3", 76, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		SPFZ C 300
+		SPFZ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_SpawnItem("FrozenMastermind")
+		Stop
+	}
+}
+
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				    Frozen Scientist        			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenScientist: NewFrozenZombieman 
+{
+	Height 56
+	States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+		SZTF A -1
+	    Wait
+		
+	Death:	
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AAAA 0 A_CustomMissile ("FrozenMeat1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("FrozenMeat2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		SZTF C 300
+		SZTF CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.01)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_SpawnItem("FrozenScientist")
+		Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen CacoAsshole	       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenCacoAsshole : NewFrozenZombieman
+{
+Radius 31
+Height 65
+Health 20
+Scale 1.0
+Mass 200
++MISSILE
++BOUNCEONWALLS
++BOUNCEONFLOORS
++BOUNCEONCEILINGS
+Gravity 1.0
+BounceType Doom
+BounceCount 2
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+	Frozen:
+		FZ4H A 800
+		TNT1 A 0 A_JumpIfInventory("StayFrozen", 1, "Frozen", AAPTR_PLAYER1 )
+		FZ4H A 2
+		TNT1 A 0 A_PlaySound("ICEBRK1", 7)	
+		FZ4H A 50
+		FZ4H A 2
+		FZ4H A 50
+		FZ4H A 2
+		FZ4H A 50
+		FZ4H A 2
+		FZ4H A 25
+		FZ4H A 2
+		FZ4H A 25
+		FZ4H A 2
+		FZ4H A 10
+		FZ4H A 2
+		FZ4H A 10
+		FZ4H A 2
+		FZ4H A 10
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	    TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	    TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+	    TNT1 A 0 A_spawnItem("CacoAssholeDamaged")
+	    Stop
+	Death:	
+		TNT1 A 0 A_Jump(128,"Death.Head")
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("EnemyShatter", 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+		TNT1 AA 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_CustomMissile ("BDExplosionparticles",12, 0, random (0, 360), 2, random (40, 90))
+		TNT1 A 0 A_CustomMissile ("BDExplosionparticles2", 12, 0, random (0, 360), 2, random (40, 90))
+		TNT1 A 0 A_CustomMissile ("BDExplosionparticles3", 12, 0, random (0, 360), 2, random (40, 90))
+		EXPL A 0 A_CustomMissile ("FlamethrowerFireParticles", 12, 0, random (0, 360), 2, random (0, 90))
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece2", random (-35, 35), random (-35, 35))
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-45, 45), random (-45, 35))
+		TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("RevenantDust", 22, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("RevenantDust2", 22, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_PlaySound("SCHELETRO/MORTE")
+		TNT1 A 0 A_CustomMissile ("CacoAssholePiece3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("CacoAssholePiece2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("CacoAssholePiece1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("RevenantPiece", 22, 0, random (0, 360), 2, random (30, 150))
+		ACA1 AA 20 A_CustomMissile ("BigBlackSmoke", 0, 0, random (0, 360), 2, random (40, 160))
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 0, random(-5,5), random(-5,5), 5)
+		Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_StopSound(7)
+	TNT1 A 0 A_SpawnItem("FrozenCacoAsshole")
+	Stop
+	}
+}
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Frozen Barrel		       			       ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR FrozenBarrel : NewFrozenZombieman 
+{
+Radius 20
+Height 56
+Health 20
+States
+	{
+	Spawn:
+        TNT1 A 0 A_PlaySound("EnemyFreeze",3 )
+		FBAR ABCDCBABCDCBABCDCBABCDCBABCDCBABCDCBABCDCB 2
+		FBAR EFGGF 2 
+		//TNT1 A 0 A_PlaySound("ICEBRK1", 7)
+		FBAR ABCDCBABCDCBABCDCBABCDCBABCDCB 2
+		FBAR EFGGF 2  
+		FBAR ABCDCBABCDCBABCDCBABCDCB 2
+		FBAR EFGGF 2 
+		FBAR ABCDCBABCDCBABCDCB 2
+		FBAR EFGHG 2  
+		FBAR ABCDCBABCDCB 2
+		FBAR EFGHG 2 
+		FBAR ABCDCB 2
+		FBAR FGHF 2   
+		FBAR ABC 2
+		FBAR FGHF 2  
+		FBAR DCBA 2
+		Goto Death
+		
+	Death.Fire:
+	Death.Flames:
+	Death.Burn:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+    TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_PlaySound("EnemyUnfreeze", 3)
+	TNT1 AAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_spawnItem("ExplosiveBarrel")
+	Stop
+	
+	Death:	
+	TNT1 A 0 A_NoBlocking
+	BARI A 0
+	FBAR FGH 2 
+	FBXP CD 4 BRIGHT
+	TNT1 A 0 A_SpawnItemEx("FreezenadeExplosion", 0, 0 ,2.5)
+	TNT1 AA 0 A_CustomMissile ("BarrelShrapnel1", 25, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("BarrelShrapnel2", 15, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("BarrelShrapnel3", 5, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("BarrelShrapnel4", 5, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAA 0 Bright A_SpawnItemEx("CryoSmoke", 0, 0, 20, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION)
+	TNT1 AAAA 0 Bright A_SpawnItemEx("CryoSmoke3", 0, 0, 20, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(1,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION,64)
+	TNT1 A 0 A_SpawnItemEx ("DetectFloorIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 A 0 A_SpawnItemEx ("DetectCeilIce",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 AAAA 0 A_SpawnItemEx ("FreezeCloudSpawner",0,0,5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", random (15, 50), 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", random (15, 50), 0, random (0, 360), 2, random (40, 120))
+	Stop
+	Death.Freeze:
+	Death.Ice:
+	Death.Frost:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_SpawnItem("FrozenBarrel")
+	Stop
+	}
+}
+
+//////////////////////////////////////////////////////////////
+///														   ///
+///				  Ice particles			       			   ///
+///														   ///
+//////////////////////////////////////////////////////////////
+ACTOR NewXIceChunk1 replaces XIceChunk1
+{
+    Radius 4
+    Height 4
+    Speed 8
+    Scale 1.0
+	Mass 1
+    +NOBLOCKMAP
+	+MISSILE
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +CLIENTSIDEONLY
+	-DONTSPLASH
+	+THRUGHOST
+	+THRUACTORS
+	+DOOMBOUNCE
+	Alpha 0.6
+	RenderStyle "Translucent"
+	BounceFactor 0.4
+	Mass 1
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        ICH1 ABCD 3
+        Loop
+    Death:
+        ICH1 B 100
+		ICH1 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 1 A_FadeOut(0.01)
+		Stop
+    }
+}
+
+
+ACTOR NewIceChunk2 : NewXIceChunk1 replaces XIceChunk2
+{
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        ICH2 ABCD 3
+        Loop
+    Death:
+        ICH2 D 100
+		ICH2 DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.01)
+		Stop
+    }
+}
+
+
+
+ACTOR NewIceChunk3 : NewXIceChunk1 replaces XIceChunk3
+{
+-DOOMBOUNCE
+Gravity 0.4
+Speed 6
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        ICH3 ABCD 3
+        Loop
+    Death:
+        ICH3 D 100
+		ICH3 DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.01)
+		Stop
+    }
+}
+ACTOR XIceChunkAdd1 : NewXIceChunk1 
+{
+scale 0.7
+Renderstyle Add
+States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        ICH1 ABCD 3
+        Loop
+    Death:
+        ICH1 B 20
+		ICH1 BBBBBBBBBBBBBBBBBBBBBBBBBBBB 1 A_FadeOut(0.1)
+		Stop
+    }
+}
+
+Actor FrozenMeat1 : NewXIceChunk1
+{
+	Alpha 1
+	RenderStyle "Normal"
+	States
+    {
+		Spawn:
+			TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+			FZM1 ABCD 3
+			Loop
+		Death:
+			FZM1 D 100
+			FZM1 DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.01)
+			Stop
+	}
+}
+Actor FrozenMeat2 : FrozenMeat1
+{
+	States
+    {
+		Spawn:
+			TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+			FZM2 ABCD 3
+			Loop
+		Death:
+			FZM2 D 100
+			FZM2 DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.01)
+			Stop
+	}
+}
+Actor FrozenGreenMeat1 : FrozenMeat1
+{
+	States
+    {
+		Spawn:
+			TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+			FZG1 ABCD 3
+			Loop
+		Death:
+			FZG1 D 100
+			FZG1 DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.01)
+			Stop
+	}
+}
+Actor FrozenGreenMeat2 : FrozenMeat1
+{
+	States
+    {
+		Spawn:
+			TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+			FZG2 ABCD 3
+			Loop
+		Death:
+			FZG2 D 100
+			FZG2 DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.01)
+			Stop
+	}
+}
+
+ACTOR NewIceChunk replaces IceChunk
+{
+   Radius 4
+    Height 4
+    Speed 8
+	vspeed 1
+    Scale 1.0
+	Mass 2
+    +NOBLOCKMAP
+	+MISSILE
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +CLIENTSIDEONLY
+	-DONTSPLASH
+	+THRUGHOST
+	+THRUACTORS
+	+DOOMBOUNCE
+	Alpha 0.6
+	RenderStyle "Translucent"
+	BounceFactor 0.4
+	Mass 1
+	Gravity 0.3
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        ICH1 ABCD 3
+        Loop
+    Death:
+        ICH1 B 100
+		ICH1 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 1 A_FadeOut(0.01)
+		Stop
+    }
+}
+
+actor FrozenZombie_Headshot: HeadHitbox2
+{
+	Height 12
+	Radius 8
+	+NOBLOOD
+	damagefactor "Ice", 0.0 damagefactor "Freeze", 0.0
+	States
+	{
+	Spawn:
+		XXXX A 0 A_NoBlocking
+		XXXX A 0 A_FaceTarget
+		HHB1 A 2 A_Warp(AAPTR_Master,0,0,45,0,WARPF_ABSOLUTEANGLE|WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		Loop
+	}
+}
+
+actor FrozenImp_Headshot: HeadHitbox2
+{
+	Height 12
+	Radius 8
+	+NOBLOOD
+	damagefactor "Ice", 0.0 damagefactor "Freeze", 0.0
+	States
+	{
+	Spawn:
+		XXXX A 0 A_NoBlocking
+		XXXX A 0 A_FaceTarget
+		HHB1 A 2 A_Warp(AAPTR_Master,0,0,50,0,WARPF_ABSOLUTEANGLE|WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		Loop
+	}
+}
+
+actor FrozenDemon_Headshot: HeadHitbox2
+{
+	Height 20
+	Radius 16
+	+NOBLOOD
+	damagefactor "Ice", 0.0 damagefactor "Freeze", 0.0
+	States
+	{
+	Spawn:
+		XXXX A 0 A_NoBlocking
+		XXXX A 0 A_FaceTarget
+		HHB1 A 2 A_Warp(AAPTR_Master,0,0,40,0,WARPF_ABSOLUTEANGLE|WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		Loop
+	}
+}
+
+actor FrozenMancubus_Headshot: HeadHitbox2
+{
+	Height 30
+	Radius 24
+	+NOBLOOD
+	damagefactor "Ice", 0.0 damagefactor "Freeze", 0.0
+	States
+	{
+	Spawn:
+		XXXX A 0 A_NoBlocking
+		XXXX A 0 A_FaceTarget
+		HHB1 A 2 A_Warp(AAPTR_Master,0,0,45,0,WARPF_ABSOLUTEANGLE|WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		Loop
+	}
+}
+
+actor FrozenHellKnight_Headshot : Knight_NobleHeadshot2 {+NOBLOOD damagefactor "Ice", 0.0 damagefactor "Freeze", 0.0}
+actor FrozenBaron_Headshot : Baron_NobleHeadshot2 {+NOBLOOD damagefactor "Ice", 0.0 damagefactor "Freeze", 0.0}
+
+
+actor Ice_Blood : Brutal_Blood
+{	
+ states
+ {
+  Spawn:
+        TNT1 A 0
+		TNT1 A 0 A_CustomMissile ("BlueFlareSpawn", 7, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItemEx ("RicoChet",0,0,-5,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk1", 7, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAA 0 A_CustomMissile ("XIceChunk2", 7, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AA 0 A_CustomMissile ("XIceChunk3", 7, 0, random (0, 360), 2, random (0, 360))
+        BLOD BCD 0
+        stop
+ }
+}

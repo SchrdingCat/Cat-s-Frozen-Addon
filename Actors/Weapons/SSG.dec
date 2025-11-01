@@ -1,0 +1,1157 @@
+ACTOR SSG : BrutalWeapon
+{
+	Game Doom
+	SpawnID 33
+	Weapon.Kickback 50
+	Weapon.AmmoType1 "AmmoShell"
+	Weapon.AmmoType2 "SSGAmmo"
+	Weapon.SelectionOrder 400
+	-INVENTORY.UNDROPPABLE
+	Inventory.PickupSound "SSG/Draw"
+	Inventory.PickupMessage "$BDGOTSHOTGUN2"
+	Obituary "$OBBD_SHOTGUN2"
+	Tag "$TAGBD_SSG"
+	States
+	{
+	Inspect:
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristWarningManual")
+		SHT2 A 0 A_JumpIfInventory("DoInspect",1,"ContinueInspect")
+		SHT2 A 0 A_JumpIfInventory("FiredSecondary",1,"ContinueInspect")
+		SHT2 A 6 A_WeaponReady(WRF_ALLOWZOOM)
+		SHTN A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		SHT2 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		SHT2 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		SHT2 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		SHT2 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		SHT2 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		SHT2 A 0 A_JumpIfInventory("Unloading",1,"Unload")
+		SHT2 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" "#" 0 A_JumpIfInventory("StartDualWield",1,"WeapSpecial")
+		SHT2 A 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		SHT2 A 0 A_GiveInventory("DoInspect",1)
+		SHT2 A 1 A_WeaponReady(WRF_ALLOWRELOAD|WRF_ALLOWZOOM)
+		SHT2 A 0 A_TakeInventory("DoInspect",1)
+		Goto Ready3
+
+	ContinueInspect:
+		TNT1 AA 0
+		SHT2 A 0 A_PlaySound("SSG/Lever2", 1)
+		SHTN A 0 A_TakeInventory("DoInspect",1)
+		SHTZ AAB 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWZOOM)
+		SHZ2 A 0 A_PlaySound("weapons/sshoto", 5)
+		SHZ2 KLMN 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWZOOM)
+		SHZ2 O 3 A_WeaponReady(WRF_NOBOB|WRF_ALLOWZOOM|WRF_NOFIRE)
+		TNT1 A 0 A_GiveInventory("HoldInspect",1)
+	Inspect2:
+		SHZ2 O 2 A_WeaponReady(WRF_ALLOWRELOAD|WRF_NOFIRE)
+		TNT1 A 0 A_TakeInventory("HoldInspect",1)
+		SHZ2 A 0 A_PlaySound("weapons/sshotc", 5)
+		SHZ2 NMLK 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWZOOM|WRF_NOFIRE)
+		TNT1 A 0 A_PlaySound("SSG/Lever1", 1)
+		SHTZ BAA 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWZOOM)
+		SHT2 A 0 A_TakeInventory("Reloading",1)
+		Goto Ready
+
+	KickFlash: 
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristKickFlash")
+		SHT2 STUV 1
+		SHT2 W 10
+		SHT2 VUTS 1
+		stop
+	SlideFlash: 
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristSlideFlash")
+		SHT2 STUV 1
+		SHT2 W 35
+		stop
+	SlideFlashEnd: 
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristSlideFlashEnd")
+		SHT2 W 5
+		SHT2 VUTS 1
+		stop
+	SlideFlashEndEarly: 
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristSlideFlashEndEarly")
+		SHT2 W 2
+		SHT2 VUTS 1
+		stop
+
+	Spawn:
+		SGN2 A -1
+		Stop
+		
+	SelectFromOtherShell:
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_TakeInventory("SSGCryo", 1,AAPTR_PLAYER1)
+		TNT1 A 0 A_TakeInventory("SSGPyro", 1,AAPTR_PLAYER1)
+		TNT1 A 0 A_TakeInventory("SSGGold", 1,AAPTR_PLAYER1)
+		TNT1 A 0 A_GiveInventory("TokenCleaner")
+		TNT1 A 0 A_SetCrosshair( CallACS("GetCrosshair", 1) )
+		TNT1 AAAAAAAA 0 A_Raise
+		SHT2 A 0 A_Takeinventory("SwitchShells",1)
+		TNT1 A 0 A_PlaySound("SSG/Draw", 5)
+		"####" AAAAAAA 0 A_Raise
+		SHT2 A 0 A_JumpIfInventory("HasCryoSSG", 1, "SwitchUnloadCryo")
+		SHT2 A 0 A_JumpIfInventory("HasPyroSSG", 1, "SwitchUnloadPyro")
+		SHT2 A 0 A_JumpIfInventory("HasGoldSSG", 1, "SwitchUnloadGold")
+	SwitchUnloadCryo:
+		TNT1 AAAAAA 0
+		TNT1 A 0 A_JumpIfInventory("CryoSSGAmmo",1,3)
+		Goto RemoveShellsAnim
+		TNT1 AAAA 0
+		TNT1 A 0 A_Takeinventory("CryoSSGAmmo",1)
+		SHT2 A 0 A_Takeinventory("SSGAlt",1)
+		SHTZ A 0 A_TakeInventory("SSGLoaded",1)
+		TNT1 A 0 A_Giveinventory("CryoAmmoShell",1)
+		Goto SwitchUnloadCryo
+	SwitchUnloadPyro:
+		TNT1 AAAAAA 0
+		TNT1 A 0 A_JumpIfInventory("PyroSSGAmmo",1,3)
+		Goto RemoveShellsAnim
+		TNT1 AAAA 0
+		TNT1 A 0 A_Takeinventory("PyroSSGAmmo",1)
+		SHT2 A 0 A_Takeinventory("SSGAlt",1)
+		SHTZ A 0 A_TakeInventory("SSGLoaded",1)
+		TNT1 A 0 A_Giveinventory("PyroAmmoShell",1)
+		Goto SwitchUnloadPyro
+	SwitchUnloadGold:
+		TNT1 AAAAAA 0
+		TNT1 A 0 A_JumpIfInventory("GoldSSGAmmo",1,3)
+		Goto RemoveShellsAnim
+		TNT1 AAAA 0
+		TNT1 A 0 A_Takeinventory("GoldSSGAmmo",1)
+		SHT2 A 0 A_Takeinventory("SSGAlt",1)
+		SHTZ A 0 A_TakeInventory("SSGLoaded",1)
+		TNT1 A 0 A_Giveinventory("GoldAmmoShell",1)
+		Goto SwitchUnloadGold
+	RemoveShellsAnim:
+		TNT1 AAA 0
+		SHT2 A 0 A_Takeinventory("Zoomed",1)
+		SHT2 A 0 A_GiveInventory ("Pumping", 1)
+		SHT2 A 0 A_Takeinventory("Unloading",1)
+		SHTZ AAB 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ C 1 A_PlaySound("SSG/Lever2", 5)
+		SHTZ DEFGHIIIHJ 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT7 K 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ L 2 A_PlaySound("weapons/sshoto", 5)
+		SHT2 A 0 A_GiveInventory("HasUnloadedSSG", 1)
+		SHTZ MNN 3 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ O 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT2 A 0 A_PlaySound("weapons/sshotc", 5)
+		//SHZ2 BCDEFFGHI 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		//SHZ2 J 1 A_PlaySound("SSG/Lever1", 5)
+		//SHTZ BAA 1
+		SHTZ A 0 A_TakeInventory("Reloading",1)		
+		SHTZ A 0 A_TakeInventory("Unloading",1)
+		Goto SwitchReload
+		
+	SwitchReload:
+		VSHZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"Ready")
+		SHT2 A 0 A_TakeInventory("SSGAlt", 1)
+		//SHTZ AA 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		//SHZ3 G 1
+		//SHZ3 H 1 A_PlaySound("SSG/Lever2", 5)
+		//SHZ3 IJ 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		//SHZ9 A 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT2 A 0 A_GiveInventory ("Pumping", 1)
+		//SHT2 A 0 A_PlaySound("weapons/sshoto", 5)
+		SHT2 A 0 A_JumpIfInventory("HasUnloadedSSG", 1, 3)
+		SHTZ A 0 A_FireCustomMissile("SSGCaseSpawner",0,0,-10, -20)
+		TNT1 A 0 A_GunFlash("ReloadSmoke2",GFF_NOEXTCHANGE)
+		SHTZ P 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ QR 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ S 2 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ TUV 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM) //removed u frame
+		SHT2 A 0 A_TakeInventory("HasUnloadedSSG", 1)
+		SHZ2 A 0 A_playsound("weapons/sshotl", 5)
+		SHTZ A 0 A_GiveInventory("SSGAmmo", 2)
+		SHTZ A 0 A_GiveInventory("SSGLoaded",1)
+		SHTZ A 0 A_TakeInventory("HasCryoSSG",1)
+		SHTZ A 0 A_TakeInventory("HasPyroSSG",1)
+		SHTZ A 0 A_TakeInventory("HasGoldSSG",1)
+		SHTZ A 0 A_GiveInventory("HasNormalSSG",1)
+		SHTZ A 0 A_JumpIfInventory("NoReloading",1,2)
+		SHTZ A 0 A_TakeInventory("AmmoShell", 2,TIF_NOTAKEINFINITE)
+		SHTZ WXYZ 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		TNT1 A 3 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ Z 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT2 A 0 A_PlaySound("weapons/sshotc", 5)
+		SHZ2 ABCDEFFFGHI 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHZ2 J 1 A_PlaySound("SSG/Lever1")
+		SHTZ A 0 A_TakeInventory("Reloading",1)
+		SHTZ B 1
+		SHTZ AA 1 A_ReFire
+		Goto Ready
+	
+	
+	Select:
+		TNT1 A 0 A_JumpIfInventory("SwitchShells", 1, "SelectFromOtherShell")
+		TNT1 A 0 A_Giveinventory("GoSpecial",1)
+		TNT1 A 0 A_GiveInventory("TokenCleaner")
+		SHT2 A 0 A_Giveinventory("SSGSelected",1)
+		TNT1 A 0 A_SetCrosshair( CallACS("GetCrosshair", 4) )
+		SHT2 A 0 A_JumpIfInventory("IsRunning", 1, "StartSprint")
+		SHT2 A 0 A_GunFlash
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1, 3)
+		TNT1 A 0 A_JumpIfInventory("NoAutoReload", 1, 5)
+		SHT2 A 0 A_JumpIfInventory("SSGAmmo", 1, 4)
+		SHT2 A 0 A_JumpIfInventory("SSGLoaded", 1, 3)
+		TNT1 AA 0 A_WeaponReady(WRF_NOFIRE)
+		Goto RaiseReloading
+		TNT1 AAA 0
+	ResumeNormalRaise:
+		TNT1 A 0 A_GiveInventory ("Pumping", 1)
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"RaiseNoAmmo")		
+		TNT1 A 0 A_JumpIfInventory("SSGAmmo",1,1)
+		Goto RaiseNoAmmo
+		SHZ2 A 1 Offset(25, 56)
+		SHZ2 A 1 Offset(2, 33)
+		//Goto FinishNormalRaise
+		SHT2 A 0 A_PlaySound("weapons/sshotc", 5)
+		SHZ2 ABCDGIJ 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWZOOM)
+		SHZ2 A 0 A_PlaySound("SSG/Lever1", 5)
+		SHTZ BA 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWZOOM)
+		Goto Ready
+
+	RaiseNoAmmo:	
+		SHT2 A 0 A_PlaySound("SSG/Draw", 5)
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"SelectPurist")
+		SHT2 KLMN 1 A_WeaponReady(WRF_NOFIRE)
+		Goto Ready
+
+	SelectAnimation:
+	Ready:
+	Ready3:
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		SHT2 A 0
+		"####" A 1 A_WeaponReady//(WRF_ALLOWRELOAD)
+		SHTN A 0 A_JumpIfInventory("ExecuteDownedEnemy", 1, "DoExecution")
+		SHT2 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		SHT2 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		SHT2 A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		SHT2 A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		SHT2 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		SHT2 A 0 A_JumpIfInventory("Unloading",1,"Unload")
+		SHT2 A 0 A_JumpIfInventory("StartDualWield",1,"WeapSpecial")
+		SHT2 A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		SHT2 A 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		Loop
+
+	Deselect:
+		SHT2 A 0 A_Takeinventory("Zoomed",1)
+		TNT1 A 0 A_JumpIfInventory("SwitchShells", 1, "DeselectInstant")
+		SHT2 A 0 A_ZoomFactor(1.0)
+		TNT1 A 0 A_tAKEINVENTORY("HoldInspect",1)
+		SHT2 A 0 A_TakeInventory("TossGrenade", 1)
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"DeselectPurist")
+		SHT2 OPQR 1
+		TNT1 AAAAAAAAAAAAAAAAAA 0 A_Lower
+		TNT1 A 1 A_Lower
+		Wait
+
+	Fire:
+		VSSG A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		SHT2 A 0
+		"####" A 0 A_TakeInventory("Reloading",1)
+		"####" A 0 A_JumpIfInventory("SSGAmmo", 2, 3)
+		"####" A 0 A_JumpIfInventory("SSGAmmo",1,"AltFire")
+		"####" A 0 A_JumpIfInventory("SSGAlt",1,"AltFire")
+		Goto NoAmmo
+		"####" A 0 A_TakeInventory("SSGAmmo", 2)
+		"####" A 0 A_JumpIfInventory("NoReloading",1,"NoReload")
+		Goto ResumeFireFrame
+
+	NoReload:
+		"####" A 0 A_JumpIfInventory("AmmoShell", 2, 3)
+		"####" A 0 A_JumpIfInventory("AmmoShell", 1, "NoReload2")
+		Goto NoAmmo
+		"####" AA 0 
+		"####" A 0 A_TakeInventory("AmmoShell", 2,TIF_NOTAKEINFINITE)
+	ResumeFireFrame:
+		"####" A 0
+		"####" A 0 A_TakeInventory("SSGAlt",1)
+		"####" A 0 A_AlertMonsters
+		"####" A 0 A_ZoomFactor(1.6)
+		"####" A 0 A_JumpIfInventory("PowerStrength", 1, 2)
+		"####" A 0 A_Recoil(2)
+		"####" A 0
+		"####" A 0 A_FireCustomMissile("DistantFireSoundSSG", random(-1,1), 0, 0, -12, 0, random(-1,1))
+		"####" A 0 A_firebullets (0,0,1,40,"shotpuff",FBF_NORANDOM,300)
+		"####" A 0 BRIGHT A_playsound("SSG/Fire", 1)
+		"####" AAAAAAAAAAA 0 A_FireCustomMissile("DecorativeTracer", random(-10,10), 0, 0, -12, 0, random(-5,5))
+		"####" AAAAAAAAAAAAAAAAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-19,19), 0, -1, 0, 0, random(-9,9))
+		"####" AAAAAAAAAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles2", random(-19,19), 0, -1, 0, 0, random(-9,9))
+		"####" A 0 A_SpawnItemEx("PlayerMuzzle2",30,5,27)
+		"####" A 0 A_FireBullets (10, 1, 9, 13, "ShotgunPuff", FBF_NORANDOM)
+		"####" A 0 A_FireBullets (6, 3, 9, 13, "ShotgunPuff", FBF_NORANDOM)
+		"####" A 0 A_JumpIfInventory("IsNOTTacticalClass", 1, 3)//Tactical Mode deals extra damage
+		"####" A 0 A_FireBullets (11, 3, 10, 13, "ShotgunPuff2", FBF_NORANDOM)
+		"####" A 0 A_SetPitch(pitch-20)
+		"####" AA 0
+		"####" BC 1 BRIGHT A_SetPitch(pitch-0.5)
+		"####" "#" 0 A_Quake(4,5,0,12,"")
+		"####" A 0 A_SetPitch(pitch-11)
+		"####" A 0 A_ZoomFactor(1.00)
+		"####" A 0 A_TakeInventory("SSGLoaded",1)
+		"####" A 0 A_TakeInventory("Reloading",1)
+		"####" DEEF 1 A_SetPitch(pitch+2)
+		"####" GHIJ 1 A_SetPitch(pitch+1)
+		"####" A 0 A_JumpIfInventory("IsNOTTacticalClass", 1, 15)//Tactical Mode takes more time
+		"####" AAAAAAAAAA 1 A_SetPitch(pitch+0.5)
+		"####" AA 1 A_WeaponReady(WRF_NOFIRE | WRF_NOBOB)
+		"####" AAA 1 A_JumpIfInventory("Reloading",1,"Reload")
+		"####" A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		"####" A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		"####" A 0 A_JumpIfInventory("Salute1", 1, "Salute")
+		"####" A 0 A_JumpIfInventory("Salute2", 1, "Salute")
+		"####" A 0 A_JumpIfInventory("TossGrenade",1,"TossGrenade")
+		"####" A 0 A_JumpIfInventory("IsRunning",1,"StartSprint")
+		"####" A 1 A_WeaponReady(WRF_NOFIRE | WRF_NOBOB)
+		"####" A 0 A_JumpIfInventory("IsPlayingAsPurist", 1, 2)
+		"####" A 0 A_JumpIfInventory("NoAutoReload", 1, "Ready")
+		"####" AA 0
+		"####" A 0 A_JumpIfInventory("AmmoShell",1,"Reload")
+		Goto Ready
+
+	ReloadSmoke:
+		SHZ3 LMNOP 1
+		stop
+
+	ReloadSmoke2:
+		SHZ3 QRSTU 1
+		stop
+
+	AltFire:
+		SHT2 A 0 A_TakeInventory("Reloading",1)
+		VSHZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristWarning")
+		SHT2 A 0 A_JumpIfInventory("SSGAmmo", 1, 2)
+		Goto NoAmmo
+		SHT2 AA 0 
+		SHT2 A 0 A_JumpIfInventory("NoReloading",1,"NoReload2")
+		SHT2 A 0 A_JumpIfInventory("SSGAmmo",2,"ResumeFire2Frame")
+		Goto AltFire2
+
+	NoReload2:
+		SHT2 A 0 A_JumpIfInventory("AmmoShell", 1, 2)
+		Goto NoAmmo
+		SHT2 AA 0 
+		SHT2 A 0 A_TakeInventory("AmmoShell", 1,TIF_NOTAKEINFINITE)
+	ResumeFire2Frame:
+		TNT1 AAAAA 0
+		SHT2 A 0 A_JumpIfInventory("SSGAlt",1,"AltFire2")
+		SHT2 A 0 A_TakeInventory("SSGAmmo", 1)
+		SHT2 A 0 A_PlaySound("SSG/AltFire", 1)
+		SHT2 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+		SHT2 A 0 A_FireCustomMissile("DistantFireSoundShotgun", random(-1,1), 0, 0, -12, 0, random(-1,1))
+		SHT2 A 0 A_ALertMonsters
+		"####" "#" 0 A_Quake(3,4,0,12,"")
+		"####" "#" 0 A_FireBullets (5, 3, 9, 13, "ShotgunPuff", FBF_NORANDOM)
+		SHT2 A 0 A_TakeInventory("SSGLoaded",1)
+		
+		SHT2 A 0 offset(-1,32) A_GiveInventory("SSGAlt",1)
+		TNT1 AAAAAAAAA 0 A_FireCustomMissile("ShotgunParticles", random(1,12), 0, -1, 0, 0, random(-9,9))
+		TNT1 AAA 0 A_FireCustomMissile("ShotgunParticles2", random(1,12), 0, -1, 0, 0, random(-9,9))
+		SHT2 A 0 A_FireCustomMissile("DistantFireSoundShotgun", random(-1,1), 0, 0, -12, 0, random(-1,1))
+		TNT1 AAAAA 0 A_FireCustomMissile("DecorativeTracer", random(-5,5), 0, 0, -12, 0, random(-5,5))
+		SHT2 X 1 BRIGHT
+		SHT2 A 0 A_JumpIfInventory("IsNOTTacticalClass", 1, 3)//Tactical Mode deals extra damage
+		SHTN A 0 A_FireBullets (6, 3, 5, 13, "ShotgunPuff2", FBF_NORANDOM)
+		SHT2 A 0 A_SetPitch(pitch-7)
+		SHT2 A 0
+		SHT2 A 0 A_SetPitch(-5.0 + pitch)
+		SHT2 GHIJA 1 A_SetPitch(+1.0 + pitch)
+		SHT2 A 0
+		Goto Ready
+		
+		
+	AltFire2:
+		SHT2 A 0 A_TakeInventory("SSGAmmo", 1)
+		SHT2 A 0 A_PlaySound("SSG/AltFire", 1)
+		SHT2 A 0 A_SpawnItemEx("PlayerMuzzle1",30,5,30)
+		SHT2 A 0 A_FireCustomMissile("DistantFireSoundShotgun", random(-1,1), 0, 0, -12, 0, random(-1,1))
+		SHT2 A 0 A_ALertMonsters
+		"####" "#" 0 A_Quake(3,4,0,12,"")
+		"####" "#" 0 A_FireBullets (5, 3, 9, 13, "ShotgunPuff", FBF_NORANDOM)
+		SHT2 A 0 A_TakeInventory("SSGLoaded",1)
+	
+		SHT2 A 0 offset(1,32) A_TakeInventory("SSGAlt",1)
+		TNT1 AAAAAAAAA 0 A_FireCustomMissile("ShotgunParticles", random(-1,-12), 0, -1, 0, 0, random(-9,9))
+		TNT1 AAA 0 A_FireCustomMissile("ShotgunParticles2", random(-1,-12), 0, -1, 0, 0, random(-9,9))
+		TNT1 AAAAA 0 A_FireCustomMissile("DecorativeTracer", random(-5,5), 0, 0, -12, 0, random(-5,5))
+		SHT2 Y 1 BRIGHT 
+		SHT2 A 0 A_JumpIfInventory("IsNOTTacticalClass", 1, 3)//Tactical Mode deals extra damage
+		SHTN A 0 A_FireBullets (6, 3, 5, 13, "ShotgunPuff2", FBF_NORANDOM)
+		SHT2 A 0 A_SetPitch(pitch-7)
+		SHT2 A 0
+		SHT2 A 0 A_SetPitch(-5.0 + pitch)
+		SHT2 GHIJA 1 A_SetPitch(+1.0 + pitch)
+		SHT2 A 0 A_JumpIfInventory("NoAutoReload", 1, 2)
+		Goto Reload
+		SHT2 AA 0
+		Goto NoAmmo//Ready
+
+	StartSprint:
+		SHT2 A 0 A_JumpIfInventory("UsedStamina", 40, "StopSprintTired")
+		SHT2 STUV 1 A_WeaponReady(WRF_NOFIRE)
+		SHT2 A 0 A_Takeinventory("Zoomed",1)
+		SHT2 A 0 A_Takeinventory("ADSmode",1)
+		SHT2 A 0 A_ZoomFactor(1.0)	
+	Sprinting:
+		SHT2 V 0 offset(-9,32)
+		//SHT2 A 0 offset(-9,32) A_JumpIfInventory("IsStandingStill", 1, "Ready3")
+		SHT2 A 0 offset(-9,32) A_JumpIfInventory("UsedStamina", 0, "StopSprint")
+		PLAY A 0 offset(-9,32) ACS_ExecuteAlways(852, 0, 0, 0, 0)//Makes player faster.
+		SHT2 A 0 offset(-9,32) A_JumpIfInventory("PowerStrength", 1, 2)
+		SHT2 A 0 offset(-9,32) A_GiveInventory("UsedStamina", 6)
+		SHT2 A 0 offset(-9,32)
+		SHT2 V 1 offset(-9,34) A_SetPitch(pitch -0.5)
+		SHT2 V 1 offset(-6,36) A_SetPitch(pitch -0.5)
+		SHT2 V 1 offset(-3,38) A_SetPitch(pitch -0.5)
+		SHT2 V 1 offset(0,38) A_SetPitch(pitch -0.5)
+		SHT2 V 1 offset(3,36) A_SetPitch(pitch -0.5)
+		SHT2 V 1 offset(6,34) A_SetPitch(pitch -0.5)
+		SHT2 V 1 offset(9,32) A_SetPitch(pitch -0.5)
+		SHT2 A 0 offset(9,32) A_WeaponReady(WRF_NOBOB)
+		SHT2 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		SHT2 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		SHT2 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		SHT2 A 0 offset(-9,32) A_GiveInventory("UsedStamina", 6)
+		SHT2 A 0 offset(9,33) A_SpawnItemEx("FootStep", 0, 0, 2, 0, 0, -4)
+		SHT2 V 1 offset(9,34) A_SetPitch(pitch +0.5)
+		SHT2 V 1 offset(6,36) A_SetPitch(pitch +0.5)
+		SHT2 V 1 offset(3,38) A_SetPitch(pitch +0.5)
+		SHT2 V 1 offset(0,38) A_SetPitch(pitch +0.5)
+		SHT2 V 1 offset(-3,36) A_SetPitch(pitch +0.5)
+		SHT2 V 1 offset(-6,34) A_SetPitch(pitch +0.5)
+		SHT2 V 1 offset(-9,32) A_SetPitch(pitch +0.5)
+		SHT2 A 0 offset(-9,32) A_WeaponReady(WRF_NOBOB)
+		SHT2 A 0 offset(-9,32) A_JumpIfInventory("IsRunning", 1, "Sprinting")
+		Goto StopSprint
+
+	StopSprint:
+		SHT2 VUTS 1
+		SHT2 A 0 A_JumpIfInventory("UsedStamina", 60, "StopSprintTired")
+		PLAY A 0 ACS_ExecuteAlways(853, 0, 0, 0, 0)//Makes player slower.
+		Goto Ready
+	
+	Reload:
+		"####" A 0 A_TakeInventory("Reloading",1)
+		VSHZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,3)
+		SHTZ A 0 A_JumpIfInventory("HoldInspect",1,"Inspect2")
+		"####" A 0 A_JumpIfInventory("SSGAmmo", 2, "Inspect")
+		"####" A 0 A_JumpIfInventory("SSGLoaded", 1, "Ready")
+		"####" A 0 A_JumpIfInventory("AmmoShell", 1, 1)//Check if has any ammo left to reload
+		Goto Ready
+		//"####" A 0 A_JumpIfInventory("SSGAmmo", 1, "Reload2")//Check if still has a shell on left barrel
+		"####" A 0 A_JumpIfInventory("SSGAlt", 1, "Reload2")//Check if still has a shell on left barrel
+		"####" A 0 A_JumpIfInventory("AmmoShell", 2, 2)//Check if has ammo to reload 2 shells
+		Goto Reload2
+		//Reload 2 barrels
+		SHTZ AA 0
+		VSHZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		SHTZ A 0
+		"####" AAB 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" C 1 A_PlaySound("SSG/Lever2", 5)
+		"####" DEFGHIIIHJK 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+	RaiseReloading:
+		VSHZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		SHTZ A 0
+		"####" A 0 A_JumpIfInventory("AmmoShell", 1, 1)//Check if has any ammo left to reload
+		Goto ResumeNormalRaise
+		"####" A 0 A_JumpIfInventory("AmmoShell", 2, 1)//Check if has ammo to reload 2 shells
+		Goto Reload2
+		"####" A 0 A_GiveInventory ("Pumping", 1)
+		"####" A 0 A_PlaySound("weapons/sshoto", 5)
+		"####" A 0 A_JumpIfInventory("HasUnloadedSSG",1,5)
+		"####" A 0 A_JumpIfInventory("SSGReloadToken",1,4)
+		"####" AA 0 A_FireCustomMissile("SSGCaseSpawner",0,0,-10, -20)
+		"####" A 0 A_GunFlash("ReloadSmoke",GFF_NOEXTCHANGE)
+		"####" AA 0 
+		"####" A 0 A_GiveInventory("SSGReloadToken", 1)
+		"####" LM 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" "[" 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" N 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" OPQSTTU 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)	//removed u frame
+		"####" A 0 A_TakeInventory("HasUnloadedSSG", 1)
+		"####" A 0 A_playsound("weapons/sshotl", 5)
+		"####" A 0 A_GiveInventory("SSGLoaded",1)
+		"####" A 0 A_GiveInventory("SSGAmmo", 2)
+		//"####" A 0 A_JumpIfInventory("IsPlayingAsPurist",1,3)
+		"####" A 0 A_JumpIfInventory("NoReloading",1,2)
+		"####" A 0 A_TakeInventory("AmmoShell", 2,TIF_NOTAKEINFINITE)
+		"####" A 0 A_TakeInventory("SSGReloadToken", 1)
+		"####" VWXY 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		TNT1 A 4 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		VSHZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		SHTZ A 0
+		"####" Z 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" A 0 A_PlaySound("weapons/sshotc", 5)
+		V5HZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		SHZ2 A 0
+		"####" ABCDEFFGHI 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		"####" J 1 A_PlaySound("SSG/Lever1", 5)
+		"####" A 0 A_TakeInventory("Reloading",1)
+		VSHZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,2)
+		SHTZ A 0
+		"####" B 1
+		"####" AA 1 A_ReFire
+		Goto Ready
+
+	Reload2:
+		VSHZ A 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"Ready")
+		SHT2 A 0 A_TakeInventory("SSGAlt", 1)
+		SHTZ AA 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHZ3 G 1
+		SHZ3 H 1 A_PlaySound("SSG/Lever2", 5)
+		SHZ3 IJK 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT2 A 0 A_GiveInventory ("Pumping", 1)
+		SHT2 A 0 A_PlaySound("weapons/sshoto", 5)
+		SHT2 A 0 A_JumpIfInventory("HasUnloadedSSG", 1, 3)
+		SHTZ A 0 A_FireCustomMissile("SSGCaseSpawner",0,0,-10, -20)
+		TNT1 A 0 A_GunFlash("ReloadSmoke2",GFF_NOEXTCHANGE)
+		SHZ2 PQR 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHZ2 S 2 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHZ2 TUVW 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM) //removed u frame
+		SHZ2 XXYY 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT2 A 0 A_TakeInventory("HasUnloadedSSG", 1)
+		SHZ2 A 0 A_playsound("weapons/sshotl", 5)
+		SHTZ A 0 A_GiveInventory("SSGAmmo", 1)
+		SHTZ A 0 A_GiveInventory("SSGLoaded",1)
+		SHTZ A 0 A_JumpIfInventory("NoReloading",1,2)
+		SHTZ A 0 A_TakeInventory("AmmoShell", 1,TIF_NOTAKEINFINITE)
+		SHZ2 Z 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHZ3 ABCDE 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		TNT1 A 3 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ Z 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT2 A 0 A_PlaySound("weapons/sshotc", 5)
+		SHZ2 ABCDEFFFGHI 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHZ2 J 1 A_PlaySound("SSG/Lever1")
+		SHTZ A 0 A_TakeInventory("Reloading",1)
+		SHTZ B 1
+		SHTZ AA 1 A_ReFire
+		Goto Ready
+
+	User2:
+	Unload:
+		SHT2 A 0 A_ZoomFactor(1.0)
+		SHT2 A 0 A_Takeinventory("Unloading",1)
+		SHT2 A 0 A_Takeinventory("ADSmode",1)
+		SHT2 A 0 A_Takeinventory("Zoomed",1)
+		SHT2 A 0 A_TakeInventory("SSGAlt",1)
+		SHT2 A 0 A_JumpIfInventory("NoReloading",1,"Ready")
+		SHT2 A 0 A_JumpIfInventory("SSGAmmo",1,3)
+		Goto Ready
+		TNT1 AAA 0
+		SHT2 A 0 A_Takeinventory("Zoomed",1)
+		SHT2 A 0 A_GiveInventory ("Pumping", 1)
+		SHT2 A 0 A_Takeinventory("Unloading",1)
+		SHTZ AAB 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ C 1 A_PlaySound("SSG/Lever2", 5)
+		SHTZ DEFGHIIIHJ 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT7 K 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHZ3 F 1 A_PlaySound("weapons/sshoto", 5)
+	RemoveBullets:
+		TNT1 AAAA 0
+		SHT2 A 0 A_JumpIfInventory("SSGAmmo",1,3)
+		Goto FinishUnload
+		TNT1 AAAAAA 0
+		SHT2 A 0 A_Takeinventory("SSGAmmo",1)
+		SHT2 A 0 A_Takeinventory("SSGAlt",1)
+		SHTZ A 0 A_TakeInventory("SSGLoaded",1)
+		SHT2 A 0 A_Giveinventory("AmmoShell",1)
+		Goto RemoveBullets
+
+	FInishUnload:
+		SHT2 A 0 A_GiveInventory("HasUnloadedSSG", 1)
+		TNT1 A 16 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHTZ Z 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHT2 A 0 A_PlaySound("weapons/sshotc", 5)
+		SHZ9 A 1
+		SHZ2 BCDEFFGHI 1 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_ALLOWZOOM)
+		SHZ2 J 1 A_PlaySound("SSG/Lever1", 5)
+		SHTZ BAA 1
+		SHTZ A 0 A_TakeInventory("Reloading",1)
+		SHTZ A 0 A_TakeInventory("Unloading",1)
+		Goto Ready
+	
+	User3:
+	WeapSpecial:
+		"####" "#" 0 A_Takeinventory("StartDualWield",1)
+		"####" "#" 0 A_JumpIfInventory("CryoAmmoShell", 1,"GetWeapSpecialCryo")
+		"####" "#" 0 A_JumpIfInventory("PyroAmmoShell", 1,"GetWeapSpecialPyro")
+		"####" "#" 0 A_JumpIfInventory("GoldAmmoShell", 1,"GetWeapSpecialGold")
+		goto AmmoWarning
+		"####" "#" 0 A_JumpIfInventory("IsPlayingAsPurist", 1,"PuristWarning")
+	GetWeapSpecialCryo:
+		"####" A 0 A_Takeinventory("Zoomed",1)
+		"####" A 0 A_Takeinventory("ADSmode",1)
+		"####" A 0 A_TakeInventory("TossGrenade", 1)
+		"####" A 0 A_TakeInventory("Kicking",1)
+		"####" A 0 A_TakeInventory("Taunting",1)
+		"####" A 0 A_TakeInventory("Reloading",1)
+		"####" A 0 A_TakeInventory("Unloading",1)
+		"####" A 0 A_TakeInventory("Salute1", 1)
+		"####" A 0 A_TakeInventory("Salute2", 1)
+		"####" A 0 A_ZoomFactor(1.0)
+		"####" A 0 A_GiveInventory("SwitchShells",1)
+		"####" A 0 A_GiveInventory("SSGCryo",1)
+		"####" A 0 A_SelectWeapon("SSGCryo")
+		Goto Ready
+		
+	GetWeapSpecialPyro:
+		"####" A 0 A_Takeinventory("Zoomed",1)
+		"####" A 0 A_Takeinventory("ADSmode",1)
+		"####" A 0 A_TakeInventory("TossGrenade", 1)
+		"####" A 0 A_TakeInventory("Kicking",1)
+		"####" A 0 A_TakeInventory("Taunting",1)
+		"####" A 0 A_TakeInventory("Reloading",1)
+		"####" A 0 A_TakeInventory("Unloading",1)
+		"####" A 0 A_TakeInventory("Salute1", 1)
+		"####" A 0 A_TakeInventory("Salute2", 1)
+		"####" A 0 A_ZoomFactor(1.0)
+		"####" A 0 A_GiveInventory("SwitchShells",1)
+		"####" A 0 A_GiveInventory("SSGPyro",1)
+		"####" A 0 A_SelectWeapon("SSGPyro")
+		Goto Ready	
+		
+	GetWeapSpecialGold:
+		"####" A 0 A_Takeinventory("Zoomed",1)
+		"####" A 0 A_Takeinventory("ADSmode",1)
+		"####" A 0 A_TakeInventory("TossGrenade", 1)
+		"####" A 0 A_TakeInventory("Kicking",1)
+		"####" A 0 A_TakeInventory("Taunting",1)
+		"####" A 0 A_TakeInventory("Reloading",1)
+		"####" A 0 A_TakeInventory("Unloading",1)
+		"####" A 0 A_TakeInventory("Salute1", 1)
+		"####" A 0 A_TakeInventory("Salute2", 1)
+		"####" A 0 A_ZoomFactor(1.0)
+		"####" A 0 A_GiveInventory("SwitchShells",1)
+		"####" A 0 A_GiveInventory("SSGGold",1)
+		"####" A 0 A_SelectWeapon("SSGGold")
+		Goto Ready
+		
+	AmmoWarning:
+		"####" "#" 0 A_TakeInventory("FiredSecondary",1)
+		"####" "#" 0 A_TakeInventory("Reloading",1)
+		"####" "#" 0 A_TakeInventory("Unloading",1)
+		"####" "#" 0 A_Print("You haven't got any other ammo.",3)
+		"####" "##" 0
+		"####" "#" 1 A_Raise
+		Goto Ready		
+	}
+}
+
+ACTOR PuristSSG : SSG { -WEAPON.NOAUTOAIM +WEAPON.CHEATNOTWEAPON }
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////																	  			////////
+/////////						CASINGS													////////
+/////////																				////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ACTOR PyroShotgunCasing : EmptyBrass
+{
+	Scale 0.25
+	DeathSound "weapons/shell"
+	BounceSound "weapons/shell"
+	States
+	{
+	Spawn:
+		C462 AABBCCDDEEFFGGHHAABBCCDDEEFFGGHH 1 A_CustomMissile("CasingSmoke", 0, 0, random(0, 360), 2, random(85, 90))
+		Stop
+
+	Death:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckJanitor")//Check Effects
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckJanitor2")//Check Effects
+		TNT1 A 0 A_SpawnItem("MicroSmokeColumn")
+		LCPJ A 0 A_Jump(256,"Rest1","Rest2","Rest3","Rest4","Rest5","Rest6","Rest7","Rest8")
+		Goto Rest1
+
+	Rest1:
+		C462 I 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest2:
+		C462 J 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest3:
+		C462 K 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest4:
+		C462 L 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest5:
+		C462 M 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest6:
+		C462 I 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest7:
+		C462 J 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest8:
+		C462 K 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Stoping:
+		TNT1 A 0
+		Stop
+	}
+}
+ACTOR PyroShotCaseSpawn : RifleCaseSpawn
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 1 A_CustomMissile("PyroShotgunCasing",0,0,random(-80,-100),2,random(40,60))
+		Stop
+	}
+}
+Actor PyroSSGCaseSpawner : ShotcaseSpawn
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 Thing_ChangeTID(0,390)
+		TNT1 A 1
+		Goto Death
+
+	Death:
+		TNT1 A 0 A_CustomMissile("PyroShotgunCasing",0,0,random(80,100),2,random(50,70))
+		Stop
+	}
+}
+
+
+ACTOR GoldShotgunCasing : EmptyBrass
+{
+	Scale 0.25
+	DeathSound "weapons/shell"
+	BounceSound "weapons/shell"
+	States
+	{
+	Spawn:
+		C472 AABBCCDDEEFFGGHHAABBCCDDEEFFGGHH 1 A_CustomMissile("CasingSmoke", 0, 0, random(0, 360), 2, random(85, 90))
+		Stop
+
+	Death:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckJanitor")//Check Effects
+		TNT1 A 0 ACS_NamedExecuteAlways("BDCheckJanitor2")//Check Effects
+		TNT1 A 0 A_SpawnItem("MicroSmokeColumn")
+		LCPJ A 0 A_Jump(256,"Rest1","Rest2","Rest3","Rest4","Rest5","Rest6","Rest7","Rest8")
+		Goto Rest1
+
+	Rest1:
+		C472 I 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest2:
+		C472 J 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest3:
+		C472 K 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest4:
+		C472 L 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest5:
+		C472 M 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest6:
+		C472 I 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest7:
+		C472 J 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Rest8:
+		C472 K 200
+		TNT1 A 0 A_JumpIfInventory("LowGraphicsMode", 1, "Stoping")
+		Loop
+
+	Stoping:
+		TNT1 A 0
+		Stop
+	}
+}
+ACTOR GoldShotCaseSpawn : RifleCaseSpawn
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 1 A_CustomMissile("GoldShotgunCasing",0,0,random(-80,-100),2,random(40,60))
+		Stop
+	}
+}
+Actor GoldSSGCaseSpawner : ShotcaseSpawn
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 Thing_ChangeTID(0,390)
+		TNT1 A 1
+		Goto Death
+
+	Death:
+		TNT1 A 0 A_CustomMissile("GoldShotgunCasing",0,0,random(80,100),2,random(50,70))
+		Stop
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////																	  			////////
+/////////						AMMUNITIONS												////////
+/////////																				////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////// CRYO //////////////////////////////////////////////////////
+
+ACTOR CryoAmmoShell : Ammo
+{
+	//$Category Ammunition
+	//$Sprite SHELA0
+	//$Title "Shells"
+	Game Doom
+	SpawnID 12
+	Inventory.PickupMessage "Picked up \ca4 Cryo Shells"
+	Inventory.Amount 4
+	Inventory.MaxAmount 25
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 50
+	Inventory.Icon "SH3LA0"
+	Inventory.Pickupsound "SHELPK1"
+	Scale 0.9
+	+FORCEXYBILLBOARD
+	-CANNOTPUSH
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("NoRandomSprites") // i need this more than you) why are you calling this twice?
+		SH3L A 2
+		TNT1 A 0  A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+		TNT1 A 0 A_Jump(256,"S1","S2","S3","S4")
+	S1:
+	NORANDOM:
+		SH3L A -1
+	S2:
+		SH3L B -1
+	S3:
+		SH3L C -1
+	S4:
+		SH3L D -1
+		Stop
+	}
+}
+
+// Cryo Shell box ---------------------------------------------------------------
+
+ACTOR CryoAmmoShellBox : CryoAmmoShell
+{
+	//$Category Ammunition
+	//$Sprite SBOXA0
+	//$Title "Shell box"
+	Game Doom
+	SpawnID 143
+	Inventory.PickupMessage "Picked up a \cabox of cryo Shells"
+	Inventory.Amount 16
+	Inventory.Pickupsound "SHELPK2"
+	Scale 0.9
+	+FORCEXYBILLBOARD
+	-CANNOTPUSH
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("NoRandomSprites") // i need this more than you) why are you calling this twice?
+		SB0X A 2
+		TNT1 A 0 A_Jump(256,"S1","S2","S3","S4")
+	S1:
+		SB0X A -1
+	S2:
+		TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+	NoRandom:
+		SB0X B -1
+	S3:
+		TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+		SB0X C -1
+	S4:
+		SB0X D -1
+		Stop
+	}
+}
+
+Actor CryoAmmoShellBoxEZ: CryoAmmoShellBox
+{
+	Inventory.Amount 20
+}
+
+ACTOR CryoSSGAmmo : Ammo
+{
+	Inventory.Amount 0
+	Inventory.MaxAmount 2
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 2
+	Inventory.Icon "SGN2A0"
+}
+
+
+ACTOR CryoShotgunAmmo : Ammo
+{
+	Inventory.Amount 0
+	Inventory.MaxAmount 9
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 9
+	Inventory.Icon "SHTCA0"
+}
+
+//////////////////////////////////// PYRO //////////////////////////////////////////////////////
+
+
+ACTOR PyroAmmoShell : Ammo
+{
+	//$Category Ammunition
+	//$Sprite SHELA0
+	//$Title "Shells"
+	Game Doom
+	SpawnID 12
+	Inventory.PickupMessage "Picked up \ca4 Pyro Shells"
+	Inventory.Amount 4
+	Inventory.MaxAmount 25
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 50
+	Inventory.Icon "SH4LA0"
+	Inventory.Pickupsound "SHELPK1"
+	Scale 0.9
+	+FORCEXYBILLBOARD
+	-CANNOTPUSH
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("NoRandomSprites") // i need this more than you) why are you calling this twice?
+		SH4L A 2
+		TNT1 A 0  A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+		TNT1 A 0 A_Jump(256,"S1","S2","S3","S4")
+	S1:
+	NORANDOM:
+		SH4L A -1
+	S2:
+		SH4L B -1
+	S3:
+		SH4L C -1
+	S4:
+		SH4L D -1
+		Stop
+	}
+}
+
+// Pyro Shell box ---------------------------------------------------------------
+
+ACTOR PyroAmmoShellBox : PyroAmmoShell
+{
+	//$Category Ammunition
+	//$Sprite SBOXA0
+	//$Title "Shell box"
+	Game Doom
+	SpawnID 143
+	Inventory.PickupMessage "Picked up a \cabox of pyro Shells"
+	Inventory.Amount 16
+	Inventory.Pickupsound "SHELPK2"
+	Scale 0.9
+	+FORCEXYBILLBOARD
+	-CANNOTPUSH
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("NoRandomSprites") // i need this more than you) why are you calling this twice?
+		SB1X A 2
+		TNT1 A 0 A_Jump(256,"S1","S2","S3","S4")
+	S1:
+		SB1X A -1
+	S2:
+		TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+	NoRandom:
+		SB1X B -1
+	S3:
+		TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+		SB1X C -1
+	S4:
+		SB1X D -1
+		Stop
+	}
+}
+
+Actor PyroAmmoShellBoxEZ: PyroAmmoShellBox
+{
+	Inventory.Amount 20
+}
+
+ACTOR PyroSSGAmmo : Ammo
+{
+	Inventory.Amount 0
+	Inventory.MaxAmount 2
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 2
+	Inventory.Icon "SGN2A0"
+}
+
+
+ACTOR PyroShotgunAmmo : Ammo
+{
+	Inventory.Amount 0
+	Inventory.MaxAmount 9
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 9
+	Inventory.Icon "SHTCA0"
+}
+
+//////////////////////////////////// GOLD //////////////////////////////////////////////////////
+
+
+ACTOR GoldAmmoShell : Ammo
+{
+	//$Category Ammunition
+	//$Sprite SHELA0
+	//$Title "Shells"
+	Game Doom
+	SpawnID 12
+	Inventory.PickupMessage "Picked up \ca4 gold shells\r, have fun !"
+	Inventory.Amount 4
+	Inventory.MaxAmount 25
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 50
+	Inventory.Icon "SH5LA0"
+	Inventory.Pickupsound "SHELPK1"
+	Scale 0.9
+	+FORCEXYBILLBOARD
+	-CANNOTPUSH
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("NoRandomSprites") // i need this more than you) why are you calling this twice?
+		SH5L A 2
+		TNT1 A 0  A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+		TNT1 A 0 A_Jump(256,"S1","S2","S3","S4")
+	S1:
+	NORANDOM:
+		SH5L A -1
+	S2:
+		SH5L B -1
+	S3:
+		SH5L C -1
+	S4:
+		SH5L D -1
+		Stop
+	}
+}
+
+// Gold Shell box ---------------------------------------------------------------
+
+ACTOR GoldAmmoShellBox : GoldAmmoShell
+{
+	//$Category Ammunition
+	//$Sprite SBOXA0
+	//$Title "Shell box"
+	Game Doom
+	SpawnID 143
+	Inventory.PickupMessage "Picked up a \cabox of gold Shells\r, have fun !"
+	Inventory.Amount 16
+	Inventory.Pickupsound "SHELPK2"
+	Scale 0.9
+	+FORCEXYBILLBOARD
+	-CANNOTPUSH
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("NoRandomSprites") // i need this more than you) why are you calling this twice?
+		SB2X A 2
+		TNT1 A 0 A_Jump(256,"S1","S2","S3","S4")
+	S1:
+		SB2X A -1
+	S2:
+		TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+	NoRandom:
+		SB2X B -1
+	S3:
+		TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+		SB2X C -1
+	S4:
+		SB2X D -1
+		Stop
+	}
+}
+
+Actor GoldAmmoShellBoxEZ: GoldAmmoShellBox
+{
+	Inventory.Amount 20
+}
+
+ACTOR GoldSSGAmmo : Ammo
+{
+	Inventory.Amount 0
+	Inventory.MaxAmount 2
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 2
+	Inventory.Icon "SGN2A0"
+}
+
+ACTOR GoldShotgunAmmo : Ammo
+{
+	Inventory.Amount 0
+	Inventory.MaxAmount 9
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 9
+	Inventory.Icon "SHTCA0"
+}

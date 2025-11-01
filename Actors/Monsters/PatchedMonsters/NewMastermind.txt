@@ -1,0 +1,25 @@
+ACTOR NewMastermind : TheSpiderMastermind Replaces TheSpiderMastermind
+{
+	PainChance "Freeze", 255
+	States
+	{
+
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0
+		TNT1 A 0 A_BossDeath
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_KillChildren
+		TNT1 A 0 A_SpawnItem("FrozenMastermind")
+		Stop	
+	}
+}
+
+ACTOR MastermindDamaged : NewMastermind
+{
+	Health 80
+	Speed 2
+	-COUNTKILL
+}

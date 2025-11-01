@@ -1,0 +1,577 @@
+//Weapons/Items spawners
+
+actor NewChaingunSpawnerReplacer : BasicWeaponPickup Replaces Chaingun
+{
+	//$Category Weapons
+	//$Sprite MGUNA0
+	//$Title "Tweakable chaingun spawner"
+	//$Arg0 What weapon to spawn
+	//$Arg0Tooltip Select the weapon to spawn.
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Configurable by user (DEFAULT)"; 1 = "Force chaingun"; 2 = "Force SMG"; 3 = "Force Rifle"; }
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIf(args[0] == 1, "Spawn1")
+		TNT1 A 0 A_JumpIf(args[0] == 2, "ForceSpawn2")
+		TNT1 A 0 A_JumpIf(args[0] == 3, "Spawn3")
+		TNT1 A 0 A_JumpIf(args[0] == 4, "Spawn4")
+		TNT1 A 0 ACS_NamedExecuteAlways("NewBDDisableMinigunSpawner", 0, 0, 0, 0)
+		TNT1 A 5
+		TNT1 A 0 A_Jump(64, "Spawn2")
+	Vanilla:
+	Spawn1:
+		TNT1 A -1 A_SpawnItemEx ("ChaingunSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+
+	Spawn2:
+		TNT1 A 0 A_JumpIf( CallACS("CheckGamemode",0,0,0,0) != 0, "ForceSpawn2")
+		TNT1 A 0 A_JumpIfInventory("MiniGun",1,"ForceSpawn2",AAPTR_PLAYER1)
+		Goto Vanilla
+	ForceSpawn2:
+		TNT1 A -1 A_SpawnItemEx ("SMGSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	Spawn4:
+		TNT1 A 0 A_JumpIfInventory("ModPistol",1,"SpawnModule",AAPTR_PLAYER1)
+		TNT1 A -1 A_SpawnItemEx ("ModPistolSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	SpawnModule:
+		TNT1 A 0 A_Jump(128, "SpawnModule2")
+		TNT1 A 0 A_JumpIfInventory("ElectroModPistol",1,"Spawn",AAPTR_PLAYER1)
+		TNT1 A -1 A_SpawnItemEx ("ElectroUpgrader",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	SpawnModule2:	
+		TNT1 A 0 A_JumpIfInventory("LaserSightModule",1,"Spawn",AAPTR_PLAYER1)
+		TNT1 A -1 A_SpawnItemEx ("LaserUpgrader",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	Spawn3:
+		TNT1 A -1 A_SpawnItemEx ("RifleSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	}
+}
+
+
+
+actor NewPlasmagunReplacer : BasicWeaponPickup Replaces PLasmaRifle
+{
+	States
+	{
+    Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIf(args[0] == 1, "Spawn1")
+		TNT1 A 0 A_JumpIf(args[0] == 2, "ForceSpawn2")
+		TNT1 A 0 A_JumpIf(args[0] == 3, "ForceSpawn3")
+		TNT1 A 0 ACS_NamedExecuteAlways("BDDisablePlasmaRifleSpawnerNew", 0, 0, 0, 0)
+		TNT1 A 5
+		TNT1 A 0 A_Jump(128, "Spawn3")
+		TNT1 A 0 A_Jump(48, "Spawn2")
+	Vanilla:
+	Spawn1:
+		TNT1 A -1 A_SpawnItemEx ("PLasmagunSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	Spawn2:
+		TNT1 A 0 A_JumpIf( CallACS("CheckGamemode",0,0,0,0) != 0, "ForceSpawn2")
+		TNT1 A 0 A_JumpIfInventory("Plasma_Gun",1,"ForceSpawn2",AAPTR_PLAYER1)
+		Goto Vanilla
+	ForceSpawn2:
+		TNT1 A -1 A_SpawnItemEx ("RailgunSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		stop
+	Spawn3:
+		TNT1 A 0 A_JumpIf( CallACS("CheckGamemode",0,0,0,0) != 0, "ForceSpawn3")
+		TNT1 A 0 A_JumpIfInventory("Plasma_Gun",1,"ForceSpawn3",AAPTR_PLAYER1)
+		Goto Vanilla
+	ForceSpawn3:
+		TNT1 A -1 A_SpawnItemEx ("CryoRifleSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		stop	
+	}
+}
+
+
+actor NewBFGReplacer : BasicWeaponPickup Replaces BFG9000
+{
+	//$Category Weapons
+	//$Sprite TNT1A0
+	//$Title "Tweakable BFG spawner"
+	//$Arg0 What weapon to spawn
+	//$Arg0Tooltip Select the weapon to spawn.
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Configurable by user (DEFAULT)"; 1 = "Force BFG9000"; 2 = "Force BFG10K"; 3 = "Force Unmaker"; 4 = "Force Flamethrower"; 2 = "Force MG42";}
+	
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIf(args[0] == 1, "Spawn1")
+		TNT1 A 0 A_JumpIf(args[0] == 2, "BFG10K")
+		TNT1 A 0 A_JumpIf(args[0] == 3, "Unmaker")
+		TNT1 A 0 A_JumpIf(args[0] == 4, "Flamethrower")
+		TNT1 A 0 A_JumpIf(args[0] == 5, "MG42")
+		TNT1 A 0 A_JumpIf(args[0] == 6, "Freezer")
+		TNT1 A 0 Thing_ChangeTID(0,736)
+		TNT1 A 2
+		TNT1 A 0 A_JumpIfInventory("NaziVerificate1", 1, "MG42")
+		TNT1 A 0 ACS_NamedExecuteAlways("BDDisableBFGSPAWNERNew", 0, 0, 0, 0)
+		TNT1 A 0 ACS_NamedExecuteAlways("D64D2_Unmaker_Patch", 0, 0, 0, 0)
+		TNT1 A 3
+		TNT1 A 0 A_Jump(48, "BFG10K")
+		TNT1 A 0 A_Jump(48, "CatsFreezer")
+		TNT1 A 0 A_Jump(4, "Unmaker")
+		Goto Vanilla
+
+	IdontwantafuckingMG42:
+		TNT1 A 2
+		TNT1 A 0 ACS_NamedExecuteAlways("BDDisableBFGSPAWNERNew", 0, 0, 0, 0)
+		TNT1 A 3
+		TNT1 A 0 A_Jump(48, "BFG10K")
+				TNT1 A 0 A_Jump(48, "CatsFreezer")
+		TNT1 A 0 A_Jump(4, "Unmaker")
+	Vanilla:
+	Spawn1:
+	TNT1 A 1
+		TNT1 A -1 A_SpawnItemEx ("BFG9000Spawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+
+	BFG10K:
+		TNT1 A 0 A_JumpIf( CallACS("CheckGamemode",0,0,0,0) != 0, "ForceSpawn2")
+		TNT1 A 0 A_JumpIfInventory("BIG_FUCKING_GUN",1,"ForceSpawn2",AAPTR_PLAYER1)
+		Goto Vanilla
+	ForceSpawn2:
+		TNT1 A -1 A_SpawnItemEx ("BFG10KSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+	
+	CatsFreezer:
+		TNT1 A 0 A_JumpIf( CallACS("CheckGamemode",0,0,0,0) != 0, "ForceSpawn3")
+		TNT1 A 0 A_JumpIfInventory("BIG_FUCKING_GUN",1,"ForceSpawn3",AAPTR_PLAYER1)
+		Goto Vanilla
+	ForceSpawn3:
+		TNT1 A -1 A_SpawnItemEx ("FreezerSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+
+	Unmaker:
+		TNT1 A 0 A_JumpIf( CallACS("CheckGamemode",0,0,0,0) != 0, "IsD64D2")
+		TNT1 A 0 A_JumpIfInventory("BIG_FUCKING_GUN",1,"IsD64D2",AAPTR_PLAYER1)
+		Goto Vanilla
+	IsD64D2:
+		TNT1 A -1 A_SpawnItemEx ("UnmakerSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+
+	Flamethrower:
+		TNT1 A -1 A_SpawnItemEx ("Flamethrower2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG ,0)
+		Stop
+
+	MG42:
+		TNT1 A 0 ACS_NamedExecuteAlways("OhNoNomg42", 0, 0, 0, 0)
+		TNT1 A 2
+		TNT1 A 0 A_SpawnItemEx("MG42", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS | SXF_TRANSFERAMBUSHFLAG)
+		Stop
+	}
+}
+
+
+Actor NewCapturedMarine Replaces Blursphere
+{
+	//$Category Powerups
+	//$Sprite CAPTA0
+	//$Title "Captured marine spawner (blursphere replacer)"
+	Radius 24
+	Height 48
+	Speed 0
+	+THRUACTORS
+	+NOBLOCKMAP
+	+INVISIBLE
+	RenderStyle "none"
+	//$Arg0 What weapon to spawn
+	//$Arg0Tooltip Select the weapon to spawn.
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Random (DEFAULT)"; 1 = "Force rifle marine"; 2 = "Force shotgun marine"; 3 = "Force chaingun marine"; 4 = "Force plasma marine"; 5 = "Blursphere";  }
+	States
+	{
+	Spawn:
+		CAPT A 0
+		TNT1 A 0 A_JumpIf(args[0] == 1, "RifleMarine")
+		TNT1 A 0 A_JumpIf(args[0] == 2, "ShotgunMarine")
+		TNT1 A 0 A_JumpIf(args[0] == 3, "MinigunMarine")
+		TNT1 A 0 A_JumpIf(args[0] == 4, "PlasmaMarine")
+		TNT1 A 0 A_JumpIf(args[0] == 5, "Invisibility")
+		CAPT A 0 ACS_NamedExecuteAlways("BDDisableFriendlyMarines")
+		CAPT A 4 ACS_NamedExecuteAlways("CheckIfDM", 0, 0, 0, 0)//Check if Coop
+		CAPT A 2
+		TNT1 A 0 A_JumPIfInventory("Clip2", 1, "Invisibility")
+		TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_SetScale(-scalex,scaley)
+		TNT1 A 0 A_Jump(255, "Freezebot", "RifleMarine", "ShotgunMarine", "MinigunMarine", "PlasmaMarine")
+	RifleMarine:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEX("CapturedMarineBase",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		Stop
+
+	ShotgunMarine:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEX("CapturedMarineShotgun",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		Stop
+
+	MinigunMarine:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEX("CapturedMarineMinigun",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		Stop
+
+	PlasmaMarine:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEX("CapturedMarinePlasma",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		Stop
+	
+	Freezebot:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEX("FreezebotAmmo",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		Stop
+		
+	/*RocketMarine:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEX("CapturedMarineRocket",0,0,0,0,0,0,0,SXF_TRANSFERSCALE)
+		Stop*/
+
+	DM:
+	Invisibility:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag("NOBLOCKMAP", 1)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_SpawnItem("SuperBlursphere")
+		TNT1 A 1
+		Stop
+	}
+}
+
+ACTOR FreezerSpawner: BDWeaponSpawner
+{
+	Inventory.PickupSound "BFG/Draw"
+	Inventory.PickupMessage "You've got the Freezer !"
+	States
+	{
+	Spawn:
+		FRZR A 0
+		FRZR A 3
+		FRZR A 0 A_ChangeFlag("THRUACTORS", 0)
+		FRZR AA 0 ACS_NamedExecuteAlways("NoRandomSprites")
+		FRZR A 5
+		FRZR A 0 A_Jump(128,2)
+		FRZR A 0 A_SetScale(-scalex,scaley)
+	NoRandom:
+		FRZR ABCB 3
+		Loop
+
+	Pickup:
+		FRZR A 0
+		FRZR A 0 A_GiveInventory("CatsFreezer", 1)
+		FRZR A 0 A_GiveInventory("AmmoCell", 100)
+		Stop
+	}
+}
+
+ACTOR CryoRifleSpawner: BDWeaponSpawner
+{
+	//$Category Weapons
+	//$Sprite PRAA0
+	//$Title "Plasmagun spawner"
+	Inventory.PickupSound "Plasma/Draw"
+	Inventory.PickupMessage "You've got the Cryo Rifle !"
+	States
+	{
+	Spawn:
+		CRYR A 0
+		CRYR A 3
+		CRYR A 0 A_ChangeFlag("THRUACTORS", 0)
+		CRYR AA 0 ACS_NamedExecuteAlways("NoRandomSprites")
+		CRYR A 5
+		CRYR A 0 A_Jump(128,2)
+		CRYR A 0 A_SetScale(-scalex,scaley)
+	NoRandom:
+		CRYR A -1
+		Loop
+
+	Pickup:
+		CRYR C 0
+		CRYR C 0 A_JumpIfInventory("CryoRifle", 1, "AmmoOnly")
+	PickupNormal:
+		CRYR C 0 A_GiveInventory("CryoRifle", 1)
+		CRYR C 0 A_GiveInventory("AmmoCell", 50)
+		CRYR C 0 A_GiveInventory("CryoAmmo", 20)
+		Stop
+
+	AmmoOnly:
+		CRYR C 0 A_GiveInventory("AmmoCell", 50)
+		CRYR C 0 A_GiveInventory("CryoAmmo", 20)
+		Stop
+	}
+}
+
+
+ACTOR CryoASGSpawner: BDWeaponSpawner
+{
+	Inventory.PickupSound "ASG/Draw"
+	Inventory.PickupMessage "You've got the Cryo AutoShotgun !"
+	Scale 0.8
+	States
+	{
+	Spawn:
+		412P A 0
+		412P A 3
+		412P A 0 A_ChangeFlag("THRUACTORS", 0)
+		412P AA 0 ACS_NamedExecuteAlways("NoRandomSprites")
+		412P A 5
+		412P A 0 A_Jump(128,2)
+		412P A 0 A_SetScale(-scalex,scaley)
+	NoRandom:
+		412P A -1
+		Loop
+
+	Pickup:
+		412P C 0
+		412P C 0 A_JumpIfInventory("CryoASG", 1, "AmmoOnly")
+	PickupNormal:
+		412P C 0 A_GiveInventory("CryoASG", 1)
+		412P C 0 A_GiveInventory("AmmoShell", 16)
+		412P C 0 A_GiveInventory("CryoASGAmmo", 16)
+		Stop
+
+	AmmoOnly:
+		412P C 0 A_GiveInventory("AmmoShell", 16)
+		412P C 0 A_GiveInventory("CryoASGAmmo", 16)
+		Stop
+	}
+}
+
+ACTOR ElectroRifleSpawner: BDWeaponSpawner
+{
+	//$Category Weapons
+	//$Sprite PRAA0
+	//$Title "Plasmagun spawner"
+	Inventory.PickupSound "Plasma/Draw"
+	Inventory.PickupMessage "You've got the electro rifle!"
+	Scale 1.0
+	States
+	{
+	Spawn:
+		IRIF A 0
+		IRIF A 3
+		IRIF A 0 A_ChangeFlag("THRUACTORS", 0)
+		IRIF AA 0 ACS_NamedExecuteAlways("NoRandomSprites")
+		IRIF A 5
+		IRIF A 0 A_Jump(128,2)
+		IRIF A 0 A_SetScale(-scalex,scaley)
+	NoRandom:
+		IRIF A -1
+		Loop
+
+	Pickup:
+		IRIF C 0
+		IRIF C 0 A_JumpIfInventory("ElectroRifle", 1, "AmmoOnly")
+	PickupNormal:
+		IRIF A 0 A_GiveInventory("ElectroRifle", 1)
+		IRIF A 0 A_GiveInventory("Clip2", 50)
+		IRIF A 0 A_GiveInventory("ElecRifleAmmo", 40)
+		Stop
+
+	AmmoOnly:
+		IRIF A 0 A_GiveInventory("Clip2", 50)
+		IRIF A 0 A_GiveInventory("ElecRifleAmmo", 40)
+		Stop
+	}
+}
+
+
+ACTOR NewRocketLauncherSpawner : BDWeaponSpawner replaces RocketLauncherSpawner
+{
+	//$Category Weapons
+	//$Sprite RLAUA0
+	//$Title "Rocket Launcher spawner"
+	Inventory.PickupSound "rocket/reload2"
+	Inventory.PickupMessage "$BDGOTLAUNCHER"
+	States
+	{
+	Spawn:
+		RLAU A 0
+		RLAU A 3
+		RLAU A 0 A_ChangeFlag("THRUACTORS", 0)
+		RLAU AA 0 ACS_NamedExecuteAlways("NoRandomSprites")
+		RLAU A 5
+		RLAU A 0 A_Jump(128,"Stay2")
+	NoRandom:
+	Stay:
+		RLAU A -1
+		Loop
+
+	Stay2:
+		RLAU C -1
+		Loop
+	Pickup:
+		RLAU C 0
+		RLAU C 0 A_JumpIfInventory("PuristRocket_Launcher", 1, "AmmoOnly")
+		RLAU C 0 A_JumpIfInventory("GRocket_Launcher", 1, "AmmoOnly")
+		RLAU C 0 A_JumpIfInventory("Rocket_Launcher", 1, "AmmoOnly")
+	PickupNormal:
+		RLAU C 0 A_GiveInventory("Rocket_Launcher", 1)
+		RLAU C 0 A_GiveInventory("AmmoRocket", 2)
+		Stop
+	AmmoOnly:
+		RLAU C 0 A_GiveInventory("AmmoRocket", 2)
+		Stop
+	}
+}
+
+ACTOR NewShotgunSpawner: BDWeaponSpawner replaces ShotgunSpawner
+{
+	//$Category Weapons
+	//$Sprite SHTCA0
+	//$Title "Shotgun spawner"
+	Inventory.PickupMessage "$BDGOTSHOTGUN"
+	Inventory.PickupSound "Shotgun/Pump1"
+	States
+	{
+	Spawn:
+		SHTC A 0
+		SHTC A 3
+		SHTC A 0 A_ChangeFlag("THRUACTORS", 0)
+		SHTC AA 0 ACS_NamedExecuteAlways("NoRandomSprites")
+		SHTC A 5
+		SHTC A 0 A_Jump(128,"Stay2")
+	NoRandom:
+	Stay:
+		SHTC A -1
+		Loop
+
+	Stay2:
+		SHTC C -1
+		Loop
+	Pickup:
+		SGN2 C 0 A_JumpIfInventory("Shot_Gun", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("ShotgunCryo", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("ShotgunPyro", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("ShotgunGold", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("PuristShot_Gun", 1, "AmmoOnly")	
+	PickupNormal:
+		SHTC A 0
+		SHTC A 0 A_GiveInventory("Shot_Gun", 1)
+		SHTC A 0 A_GiveInventory("AmmoShell", 8)
+		Stop
+	AmmoOnly:
+		SGN2 A 0 A_GiveInventory("AmmoShell", 8)
+		Stop
+	}
+}
+
+ACTOR NewSSGSpawner: BDWeaponSpawner replaces SSGSpawner
+{
+	//$Category Weapons
+	//$Sprite SGN2A0
+	//$Title "SSG spawner"
+	Inventory.PickupMessage "$BDGOTSHOTGUN2"
+	Inventory.PickupSound "SSG/Draw"
+	States
+	{
+	Spawn:
+		SGN2 A 0
+		SGN2 AA 0 ACS_NamedExecuteAlways("NoRandomSprites")
+		SGN2 A 10
+		SGN2 A 0 A_Jump(128,2)
+		SGN2 A 0 A_SetScale(-scalex,scaley)
+	NoRandom:
+		SGN2 A 0 A_ChangeFlag("THRUACTORS", 0)
+		SGN2 A -1
+		Stop
+
+	Pickup:
+		SGN2 C 0 A_JumpIfInventory("SSG", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("SSGCryo", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("SSGPyro", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("SSGGold", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("PuristSSG", 1, "AmmoOnly")	
+	PickupNormal:
+		SGN2 A 0
+		SGN2 A 0 A_GiveInventory("SSG", 1)
+		SGN2 A 0 A_GiveInventory("AmmoShell", 8)
+		Stop	
+	AmmoOnly:
+		SGN2 A 0 A_GiveInventory("AmmoShell", 8)
+		Stop
+	}
+}
+
+ACTOR ModPistolSpawner: BDWeaponSpawner
+{
+	Inventory.PickupMessage "\cNYou've got the \cGModular Pistol\cN !"
+	Inventory.PickupSound "Pistol/Draw"
+	States
+	{
+	Spawn:
+		MODP B 0
+		MODP B 1
+		MODP B 0 A_ChangeFlag("THRUACTORS", 0)
+	Stay:
+		MODP B -1
+		Stop
+
+	Pickup:
+		MODP A 0
+		MODP A 0 A_JumpIfInventory("ModPistol", 1, "AmmoOnly")
+	PickupNormal:
+		MODP A 0 A_GiveInventory("ModPistol", 1)
+		MODP A 0 A_GiveInventory("Clip1", 10)
+		Stop
+	AmmoOnly:
+		P3ST A 0
+		P3ST A 0 A_GiveInventory("Clip1", 10)
+		Stop
+	}
+}
+
+
+
+ACTOR AmmoSuply2 : AmmoSuply  Replaces Backpack
+{
+	States
+	{
+	Spawn:
+		BPAK A 0
+		TNT1 A 0 ACS_NamedExecuteAlways("InventoryItemsSupply", 0, 0, 0, 0)
+	Spawn2:
+		TNT1 A 0 A_JumpIf(args[0] == 1, "BDV22Style")
+		BPAK A 0 ACS_NamedExecuteAlways("AmmoSupplyChecker", 0, 0, 0, 0)
+		BPAK A 2
+	Vanilla:
+	Spawn1:
+	Stay:
+		BPAK A 0
+		BPAK A -1
+		Stop
+	InventorySupply:
+	FlameTurret:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(196,"TeslaTurret")
+		TNT1 A 1 A_SpawnItemEx("FlameTurretBox", random(-12, 12), random(-12, 12), 0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERSPECIAL,0)
+	TeslaTurret:	
+		TNT1 A 0
+		TNT1 A 0 A_Jump(196,"HoloDevice")
+		TNT1 A 1 A_SpawnItemEx("TeslaTurretBox", random(-12, 12), random(-12, 12), 0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERSPECIAL,0)
+	HoloDevice:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(196,"IceWallSpawner")
+		TNT1 A 1 A_SpawnItemEx("HoloDeviceInv", random(-12, 12), random(-12, 12), 0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERSPECIAL,0)
+	IceWallSpawner:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(196,"FreezeMines")
+		TNT1 A 1 A_SpawnItemEx("IceWallSpawnerInv", random(-12, 12), random(-12, 12), 0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERSPECIAL,0)
+	FreezeMines:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(196,"Spawn2")	
+		TNT1 A 1 A_SpawnItemEx("FreezeMineInv", random(-12, 12), random(-12, 12), 0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERSPECIAL,0)
+		TNT1 A 1 A_SpawnItemEx("FreezeMineInv", random(-12, 12), random(-12, 12), 0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERSPECIAL,0)
+		TNT1 A 1 A_SpawnItemEx("FreezeMineInv", random(-12, 12), random(-12, 12), 0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERSPECIAL,0)
+		Goto Spawn2
+	BDV22Style:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItemEx("NewGunsSpawner", random(-12, 12), random(-12, 12), 0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERSPECIAL,0)
+		Goto Stay
+
+	}
+}

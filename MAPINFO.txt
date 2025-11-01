@@ -1,0 +1,15 @@
+GameInfo
+{
+    AddEventHandlers = "BloodSampleEvent"
+	AddEventHandlers = "MonsterDetectionEvent"	
+
+	menufontcolor_title = "CYAN"
+	menufontcolor_label = "LIGHTBLUE"
+	menufontcolor_value = "LIGHTBLUE"	
+	menufontcolor_action = "LIGHTBLUE"
+	menufontcolor_header = "LIGHTBLUE"
+	menufontcolor_highlight = "CYAN"
+	menufontcolor_selection = "CYAN"
+	MenuSliderColor = "CYAN"
+
+}

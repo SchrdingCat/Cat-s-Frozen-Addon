@@ -1,0 +1,18 @@
+addslotdefault 2 ModPistol
+
+addslotdefault 3 ShotgunCryo
+addslotdefault 3 ShotgunPyro
+addslotdefault 3 ShotgunGold
+addslotdefault 3 SSGCryo
+addslotdefault 3 SSGPyro
+addslotdefault 3 SSGGold
+addslotdefault 3 CryoASG
+
+addslotdefault 4 ElectroRifle
+addslotdefault 6 Cryorifle
+addslotdefault 5 GRocket_Launcher
+addslotdefault 7 CatsFreezer
+addslotdefault 9 CryoCannon
+addslotdefault 0 SnowCasterWeapon
+addslotdefault 0 HandFreezebot
+addslotdefault 0 Freezenades

@@ -1,0 +1,109 @@
+
+ACTOR PurpleMorphTrail
+{
+  +NOINTERACTION
+  +CLIENTSIDEONLY
+  +NOTIMEFREEZE
+  Renderstyle Add
+  States
+  {
+  Spawn:
+    UNBL AAABBB 1 Bright A_FadeOut(0.1)
+    Loop
+	}
+}
+
+Actor PurpleMorphSmoke
+{
+  Scale 0.8
+  +NOINTERACTION
+  +CLIENTSIDEONLY
+  +NOTIMEFREEZE
+  +BRIGHT
+  Renderstyle Add
+  alpha 0.6
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_Jump(256,1,2,3)
+	UNFG ABC 0 A_Jump(256,"Spawn2")
+  Spawn2:
+	"----" A 1 Bright A_FadeOut(0.06)
+	Wait	 
+	}
+}
+
+Actor PurpleMorphSmoke2 : PurpleMorphSmoke { Scale 1.0 }
+
+Actor PurpleMorphExplosionSmoke : PurpleMorphSmoke
+{
+  Scale 1.2
+  States
+  {
+  Spawn:
+	UNB3 ABCDEF 3 Bright A_FadeOut(0.1)
+	TNT1 A 0 A_PlaySOund("Decrep", 0, 1.0,0,ATTN_NONE)
+	Stop	 
+	}
+}
+ 
+Actor PurpleMorphParticle
+{
+  RenderStyle Add
+  Scale 0.1
+  +NOINTERACTION
+  +CLIENTSIDEONLY
+  +NOTIMEFREEZE
+  States
+  {
+  Spawn:
+	UNPA A 1 bright A_FadeOut(0.02,1)
+	Loop
+  Death:
+	TNT1 A 1
+	Stop
+	}
+}
+
+ACTOR PurpleMorphShockwave : GreenShockwave 
+{
+  +NOTIMEFREEZE
+  Scale 2.5
+  States
+  {
+  Spawn:
+	USHC ABCDEFGHIJKLMNOPQR 1 Bright A_FadeOut(0.06)
+	Stop
+	}
+}
+
+ACTOR PurpleMorphBigExplosion : PurpleMorphShockwave
+{
+  Scale 0.5
+  Renderstyle Add
+  States
+  {
+  Spawn:
+	UNLX ABCDEFGHIJKLMNOPQRS 2 Bright A_FadeOut(0.02)
+	Stop
+	}
+}
+
+ACTOR PurpleMorphFX
+{
+  +CLIENTSIDEONLY
+  +NOINTERACTION
+  +NOTIMEFREEZE
+  var int user_loop;
+  States
+  {
+ Spawn:
+	TNT1 A 0 A_JumpIf(user_loop >= 3,"Null")	 
+	TNT1 A 0 A_SetUserVar("user_loop",user_loop+1)
+	TNT1 AAAAAAAAA 0 A_SpawnItemEx("PurpleMorphParticle",random(0,50),0,random(-20,20),frandom(10,30),0,frandom(-10,10),random(0,360))
+	TNT1 AAAAAAA 0 A_SpawnItemEx("PurpleMorphExplosionSmoke",0,0,0,frandom(-20,20),frandom(-20,20),frandom(-10,10))
+	TNT1 AAAAAA 0 A_SpawnItemEx("PurpleMorphSmoke2",0,0,0,frandom(-20,20),frandom(-20,20),frandom(-10,10))
+	Loop
+	}
+}
+

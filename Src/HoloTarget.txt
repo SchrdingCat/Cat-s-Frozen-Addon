@@ -1,0 +1,27 @@
+#library "HoloTarget.acs"
+#include "zcommon.acs"
+int GiveTID = -32767;
+function int HoloTID (void)
+{
+    for ( ; GiveTID < 0; GiveTID++)
+    {
+        if (!ThingCount (T_NONE, GiveTID))
+            return GiveTID;
+    }
+    return 0;
+}
+
+Script "HoloTarget" (void)
+{
+  Thing_Hate(0, 666661, 4);
+}
+
+Script "HoloTID" (void)
+{
+        Thing_ChangeTID (0, 666661);
+}
+
+Script "HoloTIDEnd" (void)
+{
+  Thing_ChangeTID(666661, 0);
+}

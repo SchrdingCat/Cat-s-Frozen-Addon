@@ -1,0 +1,529 @@
+///////////////////////////////////////////////////////
+////											   ////
+////					RAVEN					   ////
+////											   ////
+///////////////////////////////////////////////////////
+
+Actor RavenMonster : MorphedMonster
+{
+	Health 20
+	Radius 16
+	Height 32
+	Mass 50
+	Speed 12
+	DeathHeight 4
+	Monster
+	+FRIENDLY
+	Damage (random(15,15))
+	-COUNTKILL
+	+DONTMORPH
+	+FLOORCLIP
+	+FLOAT +NOGRAVITY +DONTFALL +NOICEDEATH
+	+FORCEXYBILLBOARD
+	PainChance "Lightning", 255
+	//SeeSound "Rat/Pain"
+	//AttackSound "Rat/Attack"
+	//PainSound "Rat/Pain"
+	//DeathSound "Rat/Death"
+	//ActiveSound "Rat/Active"
+	Obituary "$OB_RAVEN"
+	States
+	{
+	Spawn:
+		RVPL ABCD 4 A_Look
+		Loop
+	See:
+		TNT1 A 0
+		TNT1 A 0 A_TakeInventory("MaxLostSoulRange", 30)
+		RVPL A 2 A_Chase("", "")
+		TNT1 A 0 A_JumpIfCloser(120, "Retreat")
+		RVPL B 2 A_Chase
+		TNT1 A 0 A_JumpIfCloser(120, "Retreat")
+		RVPL C 2 A_Chase
+		TNT1 A 0 A_JumpIfCloser(120, "Retreat")
+		RVPL D 2 A_Chase
+		TNT1 A 0 A_JumpIfCloser(120, "Retreat")
+		Loop
+	Retreat:
+		RVPL A 1 A_FaceTarget
+		TNT1 A 0 A_Recoil(3)
+		RVPL B 1 A_FaceTarget
+		TNT1 A 0 A_Recoil(3)
+		RVPL C 1 A_FaceTarget
+		TNT1 A 0 A_Recoil(3)
+		//RVPL D 1 A_FaceTarget
+		//TNT1 A 0 A_Recoil(3)
+	    Goto See
+	Missile:
+		RVPL ABC 1 A_FaceTarget
+		RVPL D 0 A_SkullAttack
+		RVPL BC 2
+		RVPL DA 2
+		TNT1 A 0 A_JumpIfInventory("MaxLostSoulRange", 10, "See")
+		TNT1 A 0 A_giveInventory("MaxLostSoulRange", 1)
+		Goto Missile+3
+	//See:
+		//RVPL ABCD 3 A_Chase
+		//Loop
+	Melee:
+		RVPL A 8 A_FaceTarget
+		RVPL B 8 A_CustomMeleeAttack(Random[Rat](1,4), "Rat/Hit", "Rat/Attack")
+		Goto See
+	Pain:
+		RVPL D 2 A_Feathers
+		RVPL C 2 A_Pain
+		Goto See
+	Pain.Lightning:		
+		TNT1 A 0 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-4, 4),  random (5, 20), 0, 0)
+		RVPL C 3 A_Pain
+		RVPL CCC 3 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-12, 12),  random (5, 20), 0, 0, 0, random(0, 360))
+		RVPL C 3 A_Pain
+		RVPL CCC 3 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-12, 12),  random (5, 15), 0, 0, 0, random(0, 360))
+		RVPL C 3 A_Pain
+		Goto See
+	Death:
+		RVPL F 3 A_Scream	
+		TNT1 A 0 A_ChangeFlag("FLOAT", 0)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		TNT1 A 0 A_ChangeFlag("DONTFALL", 0)
+		TNT1 A 0 bright A_CustomMissile ("SuperGoreMistTiny", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_CustomMissile ("BloodMistSmall", 12, 0, random (0, 360), 2, random (40, 90))
+		RVPL G 3 A_NoBlocking
+		RVPL HI 3
+		RVPL JK 3
+		RVPL L -1
+		Stop
+	Death.Fire:
+        TNT1 A 0
+		TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItemEx("BurningRaven", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS, 0, tid)
+        Stop
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItemEx("FrozenRaven", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS, 0, tid)
+		Stop
+	}
+}
+
+
+ACTOR BurningRaven: BurningZombieMan
+{
+	+FLOORCLIP
+	+FLOAT +NOGRAVITY +DONTFALL +NOICEDEATH
+	+FORCEXYBILLBOARD
+    RenderStyle "Stencil"
+	StencilColor "Black"
+	
+	States
+    {
+	Spawn:
+        TNT1 A 0 A_PlaySound("chicken/pain")
+		Goto Suffer
+	Suffer:
+        RVPL AAA 1 BRIGHT A_Wander
+		TNT1 A 0 A_Feathers
+		TNT1 A 0 A_Recoil(-1)
+		TNT1 A 0 A_playsound ("chicken/pain")
+        RVPL B 0 A_CustomMissile("BurnParticles", 15, 0, random (0, 360), 2, random (50, 130))
+		RVPL B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        RVPL BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        RVPL B 0 A_CustomMissile("BurnParticles", 15, 0, random (0, 360), 2, random (50, 130))
+		RVPL B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		RVPL CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        RVPL B 0 A_CustomMissile("BurnParticles", 15, 0, random (0, 360), 2, random (50, 130))
+		RVPL B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        RVPL DDD 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        RVPL B 0 A_CustomMissile("BurnParticles", 15, 10, random (0, 360), 2, random (50, 130))
+		RVPL B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 7, "Death")
+		Loop
+	Death:
+		TNT1 A 0 A_Die
+		TNT1 A 0 A_ChangeFlag("FLOAT", 0)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		TNT1 A 0 A_ChangeFlag("DONTFALL", 0)
+		TNT1 A 0 A_NoBlocking
+		TNT1 AA 0 A_CustomMissile("BurnParticles", 15, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile("FlamethrowerBurningStuff", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_SpawnItem ("FriedChicken")
+		TNT1 A 0 A_ChangeFlag("THRUACTORS", 1)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 AA 5 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		Stop
+		
+	XDeath:
+	Death.SSG:
+	Death.Explosive:
+	Death.ExplosiveImpact:
+		TNT1 A 0 A_SpawnItem("MeatDeathSmall")
+		TNT1 A 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_CustomMissile ("BloodMist", 12, 0, random (0, 360), 2, random (40, 90))
+		Stop
+    }
+}
+
+
+Actor BlackFeather 
+{
+	Radius 2
+	Height 4
+	+MISSILE +DROPOFF
+	+NOTELEPORT +CANNOTPUSH
+	+WINDTHRUST +DONTSPLASH
+	Gravity 0.125
+	
+	States
+	{
+	Spawn:
+		RVPL MNOPQPON 3
+		Loop
+	Death:
+		RVPL N 6
+		Stop
+	}
+}
+
+///////////////////////////////////////////////////////
+////											   ////
+////					RAT						   ////
+////											   ////
+///////////////////////////////////////////////////////
+
+Actor RatMonster2 : MorphedMonster
+{
+	Health 20
+	Radius 10
+	Height 20
+	Mass 40
+	Speed 10
+	Monster
+	-COUNTKILL
+	+DONTMORPH
+	+FLOORCLIP
+	PainChance "Lightning", 255
+	SeeSound "Rat/Pain"
+	AttackSound "Rat/Attack"
+	PainSound "Rat/Pain"
+	DeathSound "Rat/Death"
+	ActiveSound "Rat/Active"
+	Obituary "$OB_RAT"
+	+FRIENDLY
+	States
+	{
+	Spawn:
+		RATS AA 10 A_Look
+		Loop
+	See:
+		RATS ABC 3 A_Chase
+		Loop
+	Melee:
+		RATS A 8 A_FaceTarget
+		RATS B 8 A_CustomMeleeAttack(Random[Rat](1,4), "Rat/Hit", "Rat/Attack")
+		Goto See
+	Pain.Lightning:		
+		TNT1 A 0 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-4, 4),  random (5, 20), 0, 0)
+		RATS A 5 A_Pain
+		RATS AAAAA 3 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-12, 12),  random (5, 20), 0, 0, 0, random(0, 360))
+		RATS A 5 A_Pain
+		RATS AAAAA 3 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-12, 12),  random (5, 15), 0, 0, 0, random(0, 360))
+		RATS A 5 A_Pain
+		Goto See
+	Death:
+		RATS D 6 A_Scream
+		//TNT1 A 0 A_SpawnItem("MeatDeathSmall")
+		TNT1 A 0 bright A_CustomMissile ("SuperGoreMistTiny", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_CustomMissile ("BloodMistSmall", 12, 0, random (0, 360), 2, random (40, 90))
+		RATS E 6 A_NoBlocking
+		RATS F 6
+		TNT1 A -1
+		Stop
+	Death.Fire:
+        TNT1 A 0
+		TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItemEx("BurningRat", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS, 0, tid)
+        Stop
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItemEx("FrozenRat", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS, 0, tid)
+		Stop
+	}
+}
+
+///////////////////////////////////////////////////////
+////											   ////
+////					CHICKEN					   ////
+////											   ////
+///////////////////////////////////////////////////////
+
+Actor NewChicken : Chicken replaces Chicken
+{
+	Health 30
+	+FRIENDLY
+	States
+	{
+	See:
+		TNT1 A 0 A_JumpIfInventory("LayTimer", 30, "IsLaying")
+		CHKN AB 3 A_Chase
+		TNT1 A 0 A_Jump(196,"see")
+		TNT1 A 0 A_GiveInventory("LayTimer",1)
+		Loop
+	IsLaying:
+		CHKP A 24 A_TakeInventory("LayTimer")
+		CHKP A 4 A_Pain
+		TNT1 A 0 A_SpawnItem ("EggBonus")
+		Goto See
+	Death:
+		CHKN E 4 A_Scream
+		//TNT1 A 0 A_SpawnItem("MeatDeathSmall")
+		TNT1 A 0 bright A_CustomMissile ("SuperGoreMistTiny", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_CustomMissile ("BloodMistSmall", 12, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AAA 0 A_Feathers
+		CHKN F 4 
+		CHKN G 4
+		CHKN H 4 A_NoBlocking
+		CHKN IJK 4
+		CHKN L -1
+		Stop
+	Pain.Lightning:		
+		TNT1 A 0 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-4, 4),  random (5, 20), 0, 0)
+		CHKN C 5 A_Pain
+		TNT1 A 0 A_Feathers
+		CHKN DDDDD 3 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-12, 12),  random (5, 20), 0, 0, 0, random(0, 360))
+		CHKN C 5 A_Pain
+		TNT1 A 0 A_Feathers
+		CHKN DDDDD 3 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-12, 12),  random (5, 15), 0, 0, 0, random(0, 360))
+		CHKN C 5 A_Pain
+		Goto See
+	Death.Fire:
+        TNT1 A 0
+		TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItemEx("BurningChicken", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS, 0, tid)
+        Stop
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItemEx("FrozenChicken", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS, 0, tid)
+		Stop
+	}
+}
+
+ACTOR BurningChicken: BurningZombieMan
+{
+    States
+    {
+	Spawn:
+        TNT1 A 0 A_PlaySound("chicken/pain")
+		Goto Suffer
+	Suffer:
+        BCKN CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Feathers
+		TNT1 A 0 A_Recoil(-1)
+		TNT1 A 0 A_playsound ("chicken/pain")
+        BCKN B 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		BCKN B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BCKN BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BCKN B 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		BCKN B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		BCKN CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BCKN B 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		BCKN B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BCKN BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BCKN B 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		BCKN B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 7, "Death")
+		Loop
+	Death:
+		TNT1 A 0 A_Die
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_CustomMissile("FlamethrowerBurningStuff", 0, random (-32, 32), random (-32, 32), 2, random (-32, 32))
+		TNT1 A 0 A_SpawnItem ("FriedChicken")
+		TNT1 A 0 A_ChangeFlag("THRUACTORS", 1)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 AA 5 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		Stop
+		
+	XDeath:
+	Death.SSG:
+	Death.Explosive:
+	Death.ExplosiveImpact:
+		TNT1 A 0 A_SpawnItem("MeatDeathSmall")
+		TNT1 A 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_CustomMissile ("BloodMist", 12, 0, random (0, 360), 2, random (40, 90))
+		Stop
+    }
+}
+
+Actor RedFlareSmallItem : RedFlare
+{
+alpha 0.5
+Xscale 0.18
+YScale 0.065
++FORCEXYBILLBOARD
+}
+
+Actor FriedChicken : HealthPlus
+{
+	Inventory.Amount 15
+	Inventory.MaxAmount 300
+	scale 0.6
+	+THRUACTORS
+	-COUNTITEM
+	States
+	{
+	Spawn:
+		FRCK A 0 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		FRCK A 0 A_CustomMissile ("PlasmaSmoke", 25, 0, random (0, 360), 2, random (70, 110))
+	Stay:	
+		FRCK A 2 A_SpawnItem("RedFlareSmallItem",0,7)
+		TNT1 A 0 A_ChangeFlag("THRUACTORS", 0)
+		loop
+	}
+}
+
+Actor EggBonus : HealthPlus
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 300
+	scale 0.6
+	+THRUACTORS
+	-COUNTITEM
+	States
+	{
+	Spawn:
+		EGGG A 2 A_SpawnItem("RedFlareSmallItem",0,-2)
+		TNT1 A 0 A_ChangeFlag("THRUACTORS", 0)
+		loop
+	}
+}
+
+actor LayTimer : Inventory
+{
+Inventory.maxamount 200
+}
+///////////////////////////////////////////////////////
+////											   ////
+////					PIG						   ////
+////											   ////
+///////////////////////////////////////////////////////
+Actor NewPig : Pig replaces Pig
+{
+	Health 40
+	+FRIENDLY	
+	States
+	{
+	Death:
+		PIGY E 4 A_Scream
+		PIGY F 3 A_NoBlocking
+		PIGY G 4 A_QueueCorpse
+		PIGY H 1
+		PIGY H 1 A_SpawnItem("MeatDeathSmall")
+		PIGY H 1 bright A_CustomMissile ("SuperGoreMistTiny", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_CustomMissile ("BloodMistSmall", 12, 0, random (0, 360), 2, random (40, 90))
+		PIGY IJK 4
+		PIGY L -1
+		Stop
+	Pain.Lightning:		
+		TNT1 A 0 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-4, 4),  random (5, 20), 0, 0)
+		PIGY D 5 A_Pain
+		PIGY AAAAA 3 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-12, 12),  random (5, 20), 0, 0, 0, random(0, 360))
+		PIGY D 5 A_Pain
+		PIGY AAAAA 3 A_SpawnItemEx ("StunLightnings", random (-4, 4), random (-12, 12),  random (5, 15), 0, 0, 0, random(0, 360))
+		PIGY D 5 A_Pain
+		Goto See
+	Death.Fire:
+        TNT1 A 0
+		TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItemEx("BurningPig", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS, 0, tid)
+        Stop
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItemEx("FrozenPig", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERAMBUSHFLAG | SXF_TRANSFERPOINTERS, 0, tid)
+		Stop
+	}
+}
+
+
+ACTOR BurningPig: BurningZombieMan
+{
+	RenderStyle "Stencil"
+	StencilColor "Black"
+	
+    States
+    {
+	Spawn:
+        TNT1 A 0 A_PlaySound("PigPain")
+		Goto Suffer
+	Suffer:
+        PIGY AAA 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		TNT1 A 0 A_playsound ("PigPain")
+        PIGY B 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		PIGY B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        PIGY BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        PIGY B 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		PIGY B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		PIGY CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        PIGY B 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		PIGY B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        PIGY DDD 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        PIGY B 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		PIGY B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 7, "Death")
+		Loop
+	Death:
+		TNT1 A 0 A_Die
+		PIGY H 2 A_NoBlocking
+		TNT1 AA 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		PIGY I 1 A_ChangeFlag("THRUACTORS", 1)
+		PIGY JKL 2 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 AA 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		PIGY L -1
+		Stop
+		
+	XDeath:
+	Death.SSG:
+	Death.Explosive:
+	Death.ExplosiveImpact:
+		TNT1 A 0 A_SpawnItem("MeatDeathSmall")
+		TNT1 A 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_CustomMissile ("BloodMist", 12, 0, random (0, 360), 2, random (40, 90))
+		Stop
+    }
+}

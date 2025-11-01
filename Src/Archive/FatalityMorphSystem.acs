@@ -1,0 +1,24 @@
+#library "FatalityMorphSystem"
+#include "zcommon.acs"
+
+
+script "FalalityMorpher" ENTER
+{
+str PlayerClasse =  GetActorClass(0);
+
+while(true)
+	{
+		int hasCryoFatality	= CheckInventory("CryoFatality");
+		if(hasCryoFatality == 1)
+		{
+			MorphActor(0, "FatalityDoomer", "", 1048576, 0, "", "");
+			delay(80);
+			MorphActor(0, PlayerClasse, "", 1048576, 0, "", "");
+			SetWeapon("Melee_Attacks");		
+		}
+		else
+		{
+		}
+		delay(2);
+	}
+}
