@@ -680,3 +680,58 @@ BrightMap Sprite T2LTL0
 	DisableFullBright
 }
 
+// copied from IronLich frost ball
+pointlight CRYO_FROSTBALL
+{
+    color 0.4 0.4 1.0
+    size 72
+	attenuate 1
+}
+
+pointlight CRYO_FROSTBALL_X1
+{
+    color 0.4 0.4 1.0
+    size 96
+	attenuate 1
+}
+
+pointlight CRYO_FROSTBALL_X2
+{
+    color 0.2 0.2 0.7
+    size 84
+	attenuate 1
+}
+
+pointlight CRYO_FROSTBALL_X3
+{
+    color 0.1 0.1 0.4
+    size 72
+	attenuate 1
+}
+
+pointlight CRYO_FROSTBALL_X4
+{
+    color 0.0 0.0 0.2
+    size 60
+	attenuate 1
+}
+
+object Cryotron_Ball
+{
+    frame ICEB { light CRYO_FROSTBALL }
+}
+
+object Cryotron_Big_Ball
+{
+    frame ICEB { light CRYO_FROSTBALL }
+}
+
+object Cryotron_Flash 
+{
+    frame ICEFA { light CRYO_FROSTBALL_X2 }
+	frame ICEFB { light CRYO_FROSTBALL_X1 }
+	frame ICEFC { light CRYO_FROSTBALL_X2 }
+	frame ICEFD { light CRYO_FROSTBALL_X3 }
+	frame ICEFE { light CRYO_FROSTBALL_X4 }
+	frame ICEFF { light CRYO_FROSTBALL_X4 }
+}

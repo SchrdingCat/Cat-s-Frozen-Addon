@@ -12,6 +12,7 @@ int CFzA_RewardOption;
 int CFzA_InventoryItems;
 int CFzA_StayFrozen;
 int CFzA_RewardRate;
+int CFzA_DisableCryotron;
 
 script "RewardRate" (void)
 {
@@ -27,6 +28,7 @@ script "ServerCVars_CFzA" ENTER
 	CFzA_DisableCryocubus = GetCvar("CFzA_DisableCryocubus");
 	CFzA_DisableFrostbrain = GetCvar("CFzA_DisableFrostbrain");
 	CFzA_DisableFrostbaron = GetCvar("CFzA_DisableFrostbaron");
+	CFzA_DisableCryotron = GetCVar("CFzA_DisableCryotron");
 	CFzA_RewardOption = GetCvar("CFzA_RewardOption");
 	CFzA_InventoryItems = GetCvar("CFzA_InventoryItems");
 	CFzA_StayFrozen = GetCVar("CFzA_StayFrozen");
@@ -145,6 +147,32 @@ Script "CheckScientist2" (VOID)
         SetActorState(0, spawnType[CFzA_DisableFrostbrain - 1]);
     }
 }
+
+ Script "CFzA_DisableCryotron" (VOID)
+{
+    CFzA_DisableCryotron = GetCvar("CFzA_DisableCryotron");
+	static str spawntype[2] = { "Arachnotron", "Cryotron" };
+    delay(1);
+
+    if (CFzA_DisableCryotron == 0)
+    {
+        int roll = Random(0, 255); // Generate a number between 0 and 255
+
+        if (roll <= 222)
+        {
+            SetActorState(0, "Arachnotron");
+        }
+		else 
+        {
+            SetActorState(0, "Cryotron");
+        }
+    }
+    else if (CFzA_DisableCryotron >= 1 && CFzA_DisableCryotron <= 2)
+    {
+        SetActorState(0, spawnType[CFzA_DisableCryotron - 1]);
+    }
+}
+
 
  Script "CFzA_DisableFrostBaron" (VOID)
 {

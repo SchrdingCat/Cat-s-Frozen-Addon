@@ -27,13 +27,22 @@ code : Sergeant_Mark_IV, Ice projectiles from CryoBow (by Bloax, ZZrionTheInsect
 sprites : TypicalSF (cryo rifle base sprite, new pistol sprite), Eriance/Amuscaria, IDDQD_1337, SchrödingCat,  id Software
 			TommyGalano5 (hl scientist), Electro7777 (Frost Baron fatality), 3D Realms
 
-cryocubus
+cryocubus:
 Code: Thanuris, Ganbare-Lucifer, DeVloek (Zscript), Edit : SchrodingCat
 Sounds: id Software, valve
 Sprites: id Software
 Sprite Edit: 00_Zombie_00 & Eriance (death animation), DeVloek, SchrodingCat(Gibs, gore, new death animation)
 
+Cryotron: 
+Code: Captain Toenail, Rifleman, Gothic
+Sounds: DukeNukem3D, wrw.wad, Volition, TheDarkArchon
+Sprites: Amuscaria, Doom, DukeNukem3D, wrw.wad
+Sprite Edit: Captain Toenail
+Idea Base: Mr Freeze from Batman & Robin film, Duke Nukem 3D's FreezeThrower, 
+			Xim's FreezeRifle
+
 Changelog for 2.6
+	- New Ennemy : Cryotron
 	- New inventory items : Flame turret, Tesla Turret, Holographic device, Ice wall gererator, Freeze mines
 	- Balance changes...
 

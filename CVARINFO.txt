@@ -3,6 +3,7 @@ server bool CFzA_DisableAltShells = false;
 server int  CFzA_DisableCryocubus = 0;
 server int  CFzA_DisableFrostbrain = 0;
 server int  CFzA_DisableFrostBaron = 0;
+server int  CFzA_DisableCryotron = 0;
 server int  CFzA_RewardOption = 0;
 server int  CFzA_InventoryItems = 1;
 server int  CFzA_StayFrozen = 0;

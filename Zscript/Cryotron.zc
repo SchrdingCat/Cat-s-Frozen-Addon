@@ -1,0 +1,284 @@
+class Cryotron : Arachnotron
+{
+	//$Category Monsters
+
+	Default
+	{		
+		Obituary "%o was iced by a Cryotron.";
+		Tag "Cryotron";
+		DamageFactor "Ice", 0.0;
+		DamageFactor "Freeze", 0.0;
+		+MISSILEMORE
+		+NOICEDEATH
+	}
+	
+	// only spawn icy vapour cloud if monster not dead, frozen or morphed
+	bool morphed;
+	
+	override void PreMorph(Actor mo, bool current)
+    {
+        if(!current)
+        {
+            morphed = true;
+        }
+    }
+
+	override void PostUnMorph(Actor mo, bool current)
+    {
+        if(current)
+        {
+            morphed = false;
+        }
+    }
+
+    override void Tick()
+    {
+        super.Tick();
+        if(!isFrozen() && !bCORPSE && !morphed)
+        {
+            A_SpawnItemEx("Cryotron_Vapour", random(0,32), 0, random(24,40), 0, 0, frandom(0.0,0.3), random(0,360), 0, 128);
+        }
+    }
+
+
+	States
+	{
+	Spawn:
+		1CEA AB 10 A_Look;
+		Loop;
+	See:
+		1CEA A 20;
+		1CEA A 3 A_BabyMetal;
+		1CEA ABBCC 3 A_Chase;
+		1CEA D 3 A_BabyMetal;
+		1CEA DEEFF 3 A_Chase;
+		Goto See+1;
+	MissileSlaughterFest:
+	Missile:
+		1CEA AA 5 BRIGHT A_FaceTarget;
+	ShootSpreadPattern:
+		1CEA G 3 BRIGHT A_SpawnProjectile ("Cryotron_Big_Ball", 22, CMF_AIMOFFSET);
+		1CEA H 3 BRIGHT A_FaceTarget;
+		1CEA G 3 BRIGHT 
+		{
+			A_SpawnProjectile ("Cryotron_Ball", 22, 0, 6, CMF_AIMOFFSET);
+			A_SpawnProjectile ("Cryotron_Ball", 22, 0, -6, CMF_AIMOFFSET);
+		}
+		1CEA H 3 BRIGHT A_FaceTarget;
+		1CEA G 3 BRIGHT 
+		{
+			A_SpawnProjectile ("Cryotron_Ball", 22, 0, 12, CMF_AIMOFFSET);
+			A_SpawnProjectile ("Cryotron_Ball", 22, 0, -12, CMF_AIMOFFSET);
+		}
+		1CEA H 3 BRIGHT A_FaceTarget;
+		1CEA G 3 BRIGHT 
+		{
+			A_SpawnProjectile ("Cryotron_Ball", 22, 0, 18, CMF_AIMOFFSET);
+			A_SpawnProjectile ("Cryotron_Ball", 22, 0, -18, CMF_AIMOFFSET);
+		}
+		Goto See;
+	Pain:
+		1CEA I 3;
+		1CEA I 3 A_Pain;
+		Goto See+1;
+	Death:
+		1CEA J 20 A_Scream;
+		1CEA J 0 A_RemoveChildren (true, RMVF_MISC);
+		1CEA K 7 A_NoBlocking;
+		1CEA LMNO 7;
+		1CEA P -1 A_BossDeath;
+		Stop;
+    Raise:
+		1CEA P 5;
+		1CEA ONMLKJ 5;
+		Goto See+1;
+	}
+}
+
+
+// rebounding ice projectile - ice damage on impact
+// stops bouncing after 2 seconds
+// very dangerous in tight areas
+class Cryotron_Ball : ArachnotronPlasma
+{
+	int shotTimer;
+
+	Default
+	{
+		Radius 3;
+		Height 6;
+		Damage 3;
+		RenderStyle "Add";
+		Speed 25;
+		Alpha 1.0;
+		Scale 0.15;
+		BounceType "Hexen";
+		BounceFactor 1;
+		WallBounceFactor 1;
+		BounceCount 0;
+		DamageType "Ice";
+		Decal "IceHit";
+		ReactionTime 70;
+		Translation "0:255=%[0.00,0.00,0.00]:[1.01,1.01,2.00]";
+		SeeSound "Cryotron/Attack";
+		BounceSound "Cryotron/Hit";
+		DeathSound "Cryotron/Hit";
+		+ALLOWBOUNCEONACTORS
+		+BOUNCEONACTORS
+		+SPAWNSOUNDSOURCE
+		+USEBOUNCESTATE
+		+CANBOUNCEWATER
+		+DONTBOUNCEONSKY
+		+ICESHATTER
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_StartSound ("Cryotron/Loop", 5, CHANF_LOOPING);
+	Spawn2:
+		ICEB AABBCCDD 1 BRIGHT 
+		{
+			shotTimer++;
+			A_SpawnItemEx ("Cryotron_Vapour_Trail", 0, 0, 0, 0, 0, frandom(0.0, 1.0), 0, 0, 128);
+			A_SpawnParticle ("7891ff", SPF_FULLBRIGHT|SPF_RELATIVE, 35, 3, 0, -20, 0, 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0));
+			A_SpawnParticle ("004dff", SPF_FULLBRIGHT|SPF_RELATIVE, 35, 3, 0, -20, 0, 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0));
+			A_SpawnParticle ("6495ED", SPF_FULLBRIGHT|SPF_RELATIVE, 35, 3, 0, -20, 0, 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0));
+			if (shotTimer >= 70) // projectile bounces continuously until 2 seconds have elapsed
+			{
+				BounceCount = 1;
+			}
+		}
+		Loop;
+	Bounce:
+		ICEB # 0 BRIGHT A_SpawnItem ("Cryotron_Flash");
+		Goto Spawn2;
+	Death:
+		TNT1 A 1 
+		{
+			A_StopSound (5);
+			A_SpawnItem ("Cryotron_Flash");
+		}
+		Stop;
+	}
+}
+
+// central projectile - bigger and more damage
+class Cryotron_Big_Ball : Cryotron_Ball
+{
+	Default
+	{
+		Radius 6;
+		Height 12;
+		Damage 6;
+		Scale 0.25;
+	}
+}
+
+
+// bits of ice spawned on impact
+class Cryotron_Ice_Bits : Actor
+{
+	Default
+	{
+		Radius 2;
+		Height 4;
+		Gravity 0.8;
+		RenderStyle "Add";
+		Alpha 0.9;
+		Translation "0:255=%[0.00,0.00,0.00]:[1.01,1.01,2.00]";
+		Scale 0.1;
+		ReactionTime 50;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay
+			{
+				scale = default.scale * frandom(0.5, 1.5);
+			}
+		Spawn2:
+			ICEN A 3 
+			{
+				bXFLIP = random (0, 1);
+			}
+			ICEN B 3
+			{
+				bYFLIP = random (0, 1);
+			}
+			ICEN B 0 A_CheckFloor ("Death");
+			ICEN B 0 A_CountDown ();
+			Loop;
+		Death:
+			ICEN # 35 A_Stop;
+		FadeAway:
+			ICEN # 1 A_FadeOut (0.025);
+			Loop;	
+	}
+}
+
+
+// projectile impact and bounce flash
+class Cryotron_Flash : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		+NOINTERACTION
+		Scale 0.6;
+		Translation "Ice";
+	}
+	
+	States
+	{
+	Spawn:
+		TNT1 AAAAA 0 NoDelay A_SpawnItemEx ("Cryotron_Ice_Bits", 0, 0, 0, random(2, 6), 0, random(2, 8), random(0, 360), SXF_NOCHECKPOSITION);
+		ICEF ABCDEF 2 BRIGHT;
+		Stop;
+	}
+}
+
+
+// icy vapour cloud
+class Cryotron_Vapour : Actor
+{
+	Default
+	{
+		+NOINTERACTION;
+		RenderStyle "Add";
+		Translation "Ice";
+		Alpha 0.2;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay
+			{
+				bSPRITEFLIP = random(0, 1);
+			}
+			CMST ABCDEFGHIJKLMNOPQRSTUVWXYZ 2;
+			Stop;
+	}
+}
+
+
+// cloud left behind by projectile
+class Cryotron_Vapour_Trail : Cryotron_Vapour
+{
+	Default
+	{
+		Alpha 0.1;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay
+			{
+				bSPRITEFLIP = random(0, 1);
+			}
+			CMST ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
+			Stop;
+	}
+}

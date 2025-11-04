@@ -22,7 +22,8 @@ ACTOR Cryocubus : Fatso
 	PainChance "Ice", 0
 	DamageFactor "SSG", 0.1
 	DamageFactor "Head", 1.2
-	damagefactor "Ice", 0.1
+	damagefactor "Ice", 0.0
+	damagefactor "Freeze", 0.0
 	DamageFactor "Fire", 2.0
 	Radius 48//24
 	Height 60//64

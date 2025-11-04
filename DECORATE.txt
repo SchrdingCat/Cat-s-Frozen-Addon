@@ -44,6 +44,7 @@
 #include "Actors/Monsters/PatchedMonsters/NewAstralCaco.txt"
 
 #include "Actors/Monsters/FrostBaron.dec"
+#include "Actors/Monsters/Cryotron.dec"
 #include "Actors/Monsters/Cryocubus.txt"
 #include "Actors/Monsters/Frostbrain.dec"
 #include "Actors/Monsters/Scientist.dec"

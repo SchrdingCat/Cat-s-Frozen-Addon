@@ -169,6 +169,7 @@ Title "Frozen Addon Gameplay Options"
   Option "Cryocubus Spawning", "CFzA_DisableCryocubus", "DisableCryocubusValue"
   Option "Frostbrain Spawning", "CFzA_DisableFrostbrain", "DisableFrostbrainValue"
   Option "Frost Baron Spawning", "CFzA_DisableFrostBaron", "DisableFrostBaronValue"
+  Option "Cryotron Spawning", "CFzA_DisableCryotron", "DisableCryotronValue"
   Option "Monsters stay frozen", "CFzA_StayFrozen", "YesNo"
   StaticText " "
   StaticText "------------------------------------------- Weapons ----------------------------------------------------"
@@ -196,6 +197,13 @@ OptionValue "DisableCryocubusValue"
 	0, "Random"
 	1, "Mancubus Only"
 	2, "Cryocubus Only"
+}
+
+OptionValue "DisableCryotronValue"
+{
+	0, "Random"
+	1, "Arachnotron Only"
+	2, "Cryotron Only"
 }
 
 OptionValue "DisableFrostbrainValue"

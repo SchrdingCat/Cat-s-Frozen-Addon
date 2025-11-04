@@ -1,0 +1,662 @@
+ACTOR Cryotron1: Cryotron
+{
+	Monster
+	+FLOORCLIP
+	+BOSSDEATH
+	GibHealth 20
+	Radius 36
+	damagefactor "Crush", 10.0
+	damagefactor "Avoid", 0.0
+	damagefactor "GibRemoving", 0.0 PainChance "HangingHook", 0
+	SeeSound "baby/sight"
+	PainSound "SPIPAIN2"
+	DeathSound "baby/death"
+	ActiveSound "baby/active"
+	DamageFactor "Explosive", 1.10 //To make sure the arachnotron will always die in three rockets as otherwise it would survive with few hitpoints left.Let's leave this kind of stupid crap to vanilla doom.
+	DamageFactor "Explosive.Impact", 1.10
+	damagefactor "TeleportRemover", 0.0
+	DamageFactor "CauseSplash", 0.0 DamageFactor "CauseObjectsToSplashSlime", 0.0 DamageFactor "CauseObjectsToSplashNukage", 0.0
+	DamageFactor "CauseObjectsToSplashBlood", 0.0 DamageFactor "CauseObjectsToSplashLava", 0.0
+	DamageFactor "Fire", 2.0
+	Obituary "$OB_SPIDER"
+	BloodType "ArachnotronBlood", "ArachnotronSawBlood", "ArachnotronBlood"
+	//MaxStepHeight 24
+	DropItem "Berserker" 5
+	//MaxDropOffHeight 24 This will 100% break a custom map out there. 
+	PainChance "Kick", 255
+	damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+	Damage 25
+	Speed 7
+	Species "Spider"
+	+DONTHURTSPECIES
+	Scale 1.1
+	Health 750
+	DeathHeight 4
+	BurnHeight 0
+	+USEKILLSCRIPTS
+	States
+	{
+	Death.KillMe:
+	Death.Taunt:
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("Arachnotron1")
+		Stop
+
+	Spawn:
+		1CEA G 1 NODELAY ACS_NamedExecuteAlways("WadChecker",0,0,0,0)
+		1CEA G 1
+		TNT1 A 0 ACS_NamedExecuteAlways("SlaughtermapCheck")
+		1CEA G 2
+		1CEA G 0 A_RadiusGive("SlaughterCounter", 2000, RGF_MONSTERS, 4)
+	Stand:
+		1CEA G 25 A_Look
+		Loop
+
+	Alieni:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+		TNT1 A 0 A_ChangeFlag("THRUACTORS", 1)
+		TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+		TNT1 A 0 A_ChangeFlag("NOBLOCKMAP", 1)
+		TNT1 A 0 A_SpawnItemEx("AASpider", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERPOINTERS | SXF_TRANSFERAMBUSHFLAG)
+		Stop 
+
+	Pain.Killme:
+	Pain.Taunt:
+		TNT1 A 0
+		TNT1 A 0 HealThing(1)
+		Goto Missile
+
+	See:
+	See2:
+		1CEA A 1 A_PlaySound("baby/walk", 1)
+		1CEA AABBBCCC 1 A_Chase("", "")
+		1CEA D 1
+		1CEA DDDEEEFFF 1 A_Chase
+		Loop
+
+	SeeNeverSeen:
+		1CEA A 1 A_PlaySound("baby/walk", 1)
+		1CEA AABBBCCC 1 A_Chase("", "")
+		1CEA D 1
+		1CEA DDDEEEFFF 1 A_Chase
+		Loop
+
+	ForgetTarget:
+	SearchPlayer:
+	Idle:
+		1CEA AA 10 A_Look
+		TNT1 A 0 A_SetAngle(angle - 40)
+		1CEA AA 10 A_Look
+		TNT1 A 0 A_SetAngle(angle + 40)
+		1CEA AA 10 A_Look
+		1CEA A 0 A_PlaySound("baby/walk", 1)
+		1CEA A 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA B 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA C 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA A 0 A_PlaySound("baby/walk", 1)
+		1CEA D 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA E 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA F 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA DDEEFF 1 A_Wander
+		TNT1 A 0 A_Jump(128, "SearchPlayer")
+		1CEA A 0 A_PlaySound("baby/walk", 1)
+		1CEA A 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA B 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA C 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA A 0 A_PlaySound("baby/walk", 1)
+		1CEA D 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA E 3 A_Look
+		TNT1 AA 0 A_Wander
+		1CEA F 3 A_Look
+		TNT1 AA 0 A_Wander
+		Goto SearchPlayer
+	Pain:
+		1CEA I 3
+		1CEA I 3 A_Pain
+		TNT1 A 0 A_TakeInventory("ArachnotronChasisLastHit")
+		Goto See2
+
+	Pain.Kick:
+		TNT1 A 0 A_FaceTarget
+		1CEA I 6
+		1CEA I 6 A_Pain
+		Goto See2
+
+	Death:
+		1CEA I 4 A_Scream
+		TNT1 A 0 A_JumpIfInventory("SlaughterCounter", 15, "Death.SFestBullet")//If its a slaughterfest map, spawn less effects on projectiles
+		TNT1 A 0 A_JumpIfInventory("ArachnotronChasisHits", 4, "CheckXDeath")
+		Goto NormalDeath
+
+	CheckXDeath:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ArachnotronChasisLastHit", 2, "NormalDeath")
+	NormalDeath:
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("SmallBrainPiece", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("BloodMist", 50, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AAA 0 A_CustomMissile ("XDeathSpiderNew1", 42, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AA 0 A_CustomMissile ("XDeathSpiderNew2", 42, 0, random (0, 360), 2, random (40, 90))
+		TNT1 A 0 A_SpawnItem("BigBloodSpot")
+		1CEA K 6 A_NoBlocking
+		1CEA LMNO 6
+		1CEA P 1 A_BossDeath
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItem ("XDeadCryotron", 1)
+		Stop
+
+	Death.SFestBullet:
+	Death.SFestFireball:
+		TNT1 AAA 0 A_CustomMissile ("BloodMistBig", 42, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AA 0 A_CustomMissile ("XDeathSpiderNew1", 42, 0, random (0, 360), 2, random (40, 90))
+		TNT1 A 0 A_CustomMissile ("XDeathSpiderNew2", 42, 0, random (0, 360), 2, random (40, 90))
+		1CEA K 6 A_NoBlocking
+		1CEA LMNO 6
+		1CEA P 1 A_BossDeath
+		TNT1 A 0 A_SpawnItem ("XDeadCryotron", 1)
+		Stop
+
+	Death.SFestExplode:
+		TNT1 A 0
+		TNT1 AA 0 A_CustomMissile ("SpiderLeg3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("BloodMistBig", 42, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AAA 0 A_CustomMissile ("BloodMistExtraBig", 50, 0, random (0, 360), 2, random (40, 90))
+		XBSP A 6 A_NoBlocking
+		XBSP BCD 6
+		XBSP D 1 A_BossDeath
+		TNT1 A 0 A_SpawnItem ("XDeadCryotron", 1)
+		Stop
+		
+	Death.Nuke:
+		TNT1 A 0
+		XBSP A 6 A_NoBlocking
+		XBSP BCD 6
+		XBSP D 1 A_BossDeath
+		TNT1 A 0 A_SpawnItem ("XDeadCryotron", 1)
+		Stop		
+
+	Death.SuperPlasma:
+	Death.Plasma: 
+	Death.Plasma2:
+		TNT1 A 0 A_BossDeath
+		TNT1 A 0 A_BossDeath
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat3", 32, 0, random (0, 360), 2, random (0, 160))
+		EXPL AAAAAA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+		CARB QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ 7 A_CustomMissile ("PlasmaSmoke", 15, 0, random (0, 360), 2, random (70, 110))
+		CARB Q -1
+		Stop
+
+	Death.Fire: 
+	Death.LavaSplash:
+		TNT1 A 0
+		TNT1 A 0 A_BossDeath
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		TNT1 AAA 0 A_CustomMissile ("PEPart2", 32, 0, random (0, 360), 2, random (0, 160))
+		1CEA LLLL 2 A_CustomMissile ("FlameTrails", 45, 0, random (0, 360), 2, random (50, 130))
+		1CEA MMMM 2 A_CustomMissile ("FlameTrails", 30, 0, random (0, 360), 2, random (50, 130))
+		1CEA NNNN 2 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		1CEA OOOO 2 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Playsound("props/redfire")
+		Goto Burns
+
+	Burns:
+		TNT1 A 0
+		TNT1 A 0 A_GiveInventory("BrutalCounter")
+		CARB QQ 2 A_SpawnItem("YellowFlare",0,20)
+		ID22 F 0 A_CustomMissile ("FlameTrails", 20, 0, random (0, 360), 2, random (70, 110))
+		CARB QQ 2 A_SpawnItem("YellowFlare",0,20)
+		ID22 F 0 A_CustomMissile ("FlameTrails", 20, 0, random (0, 360), 2, random (70, 110))
+		ID22 F 0 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_JumpIfInventory("BrutalCounter", 30, "Smokes")
+		Loop
+		
+	Smokes:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("BrutalCounter", 60, "Rest")
+		TNT1 A 0 A_GiveInventory("BrutalCounter")
+		CARB Q 5 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		Loop
+
+	Rest:
+		CARB Q -1
+		Stop
+
+	Death.Fatality:
+		TNT1 A 0
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_JumpIfIntargetInventory("FistsSelected", 1, 1)
+		Goto Death
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("Cell", 0, 0, 40, 0, 0, 0, 0, 0, 128)
+		TNT1 A 0 A_SpawnItemEx("HealthPlusFatalityBonus", 0, 0, 20, random (-1, 1), random (-1, 1), 8)
+		TNT1 AA 0 A_SpawnItemEx("ArmorShardFatalityBonus", 0, 0, 20, random (-1, 1), random (-1, 1), 8)
+		TNT1 A 0 A_GiveToTarget("GoFatality", 1)
+		TNT1 A 0 A_GiveToTarget("CryotronFatality", 1)
+		TNT1 A 1 A_BossDeath
+		TNT1 A 0 
+		Stop
+	
+	Death.Saw:
+	Death.Tear:
+		TNT1 AAAAA 0 A_CustomMissile ("Guts2", 14, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("CeilBloodLauncher", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAA 0 A_CustomMissile ("XDeath1", 10, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("XDeath2", 10, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("PlayerFlyingBlood", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("XDeathCryotronHead2", 50, 0, random (0, 360), 2, random (40, 130))
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		1CEC X 16
+		1CEC YZ 8
+		TNT1 A 0 A_Jump(64, 3)
+		TNT1 A 0 A_SpawnItemEx("NoLegsSpider3", 0, 1, 1, 1, 1)
+		Stop
+		TNT1 AAA 0
+		TNT1 A 0 A_SpawnItemEx("CryotronTurretFrame2", 0, 1, 1, 1, 1)
+		Stop
+
+	Death.Crush:
+	Death.BlackHole:
+	Death.QuadBlast:
+	XDeath:
+		1CEA J 4
+		TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("BarrelKaboom",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_Jump(64, "XDeathRare")
+		TNT1 AAAAA 0 A_CustomMissile ("SuperGoreSpawner", 10, 0, random (0, 360), 2, random (0, 180))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner", 0, 0, random (0, 180), 2, random (0, 180))
+		TNT1 AA 0 A_CustomMissile ("SpiderLeg3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAA 0 A_CustomMissile ("Guts", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("SmallBrainPiece", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SpiderPart1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SpiderPart2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("PEPart2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 32, 0, random (0, 360), 2, random (0, 160))
+		1CEA Q 6 A_NoBlocking
+		1CEA RSTUV 6
+		1CEA W 1 A_BossDeath
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItem ("XDeadCryotron", 1)
+		Goto XBurns
+
+	XBurns:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("BrutalCounter", 20, "XSmokes")
+		TNT1 A 0 A_GiveInventory("BrutalCounter")
+		TNT1 WW 2 A_SpawnItem("YellowFlare",0,20)
+		ID22 F 0 A_CustomMissile ("FlameTrails", 20, 0, random (0, 360), 2, random (70, 110))
+		TNT1 WW 2 A_SpawnItem("YellowFlare",0,20)
+		1CEA W 0 A_CustomMissile ("FlameTrails", 20, 0, random (0, 360), 2, random (70, 110))
+		1CEA W 0 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		Loop
+
+	XSmokes:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("BrutalCounter", 100, "XRest")
+		TNT1 A 0 A_GiveInventory("BrutalCounter")
+		TNT1 W 5 A_CustomMissile ("PlasmaSmoke", 40, 0, random (0, 360), 2, random (70, 110))
+		Loop
+
+	XRest:
+		TNT1 A 0
+		Stop
+
+	Raise:
+		1CEA P 5
+		1CEA ONMLKJ 5
+		Goto See+1
+
+	XDeathRare:
+		TNT1 A 0 A_CustomMissile ("XDeathCryotronHead", 50, 0, random (0, 360), 2, random (40, 130))
+		TNT1 AA 0 A_CustomMissile ("SpiderLeg3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		1CEA Q 6 A_NoBlocking
+		1CEA RSTUV 6
+		1CEA W 1 A_BossDeath
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItem ("XDeadCryotron", 1)
+		Goto XBurns
+	}
+}
+
+
+Actor NoLegsSpider3: DeadSpider
+{
++NOBLOOD
+Health 999999999999
+States{
+Spawn:
+	1CE2 A -1
+	Stop
+}}
+
+Actor DeadCryotron: CurbstompedMarine
+{
+	Radius 20
+	Height 12
+	Scale 1.0
+	+SHOOTABLE
+	+NOTELEPORT
+	+MOVEWITHSECTOR
+	+CORPSE
+	-SOLID
+	+THRUACTORS
+	damagefactor "Crusher", 50.0
+	Mass 1000
+	Health 250
+	damagefactor "Blood", 0.0
+	damagefactor "Trample", 0.0
+	States
+	{
+	Spawn:
+		1CEA P -1
+		Stop
+
+	Raise:
+		TNT1 A 2 A_CustomMissile ("RealFlameTrailsSmall", 6, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("PentagramSpawner", 0, 60)
+		TNT1 A 2 A_CustomMissile ("RealFlameTrailsSmall", 6, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("PentagramSpawner", 0, 60)
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItem ("Cryotron1")
+		Stop
+
+	Death.Cut:
+	Death.Cutless:
+	Death:
+		TNT1 A 0 A_SpawnItemEx ("GibsZ",-3,-3)
+		TNT1 A 0 A_SpawnItemEx ("GibsZ",3,3)
+		TNT1 AAA 0 A_CustomMissile ("SpiderPart1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("SpiderPart2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeathSpiderNew1", 32, 0, random (0, 360), 2, random (60, 90))
+		TNT1 AAA 0 A_CustomMissile ("SpiderLeg3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath2", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath3", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath4", 5, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+Actor DeadCryotron2: DeadCryotron
+{
+	States
+	{
+	Spawn:
+		1CEA W -1
+		Stop
+	}
+}
+
+Actor DeadCryotron3: DeadCryotron
+{
+	States
+	{
+	Spawn:
+		1C3C p -1
+		Stop
+	}
+}
+
+Actor DeadCryotron4: DeadCryotron
+{
+	States
+	{
+	Spawn:
+		1C3C W -1
+		Stop
+	}
+}
+
+Actor XDeadCryotron: DeadCryotron
+{
+	States
+	{
+	Spawn:
+		1C3C W -1
+		Stop
+	}
+}
+
+ACTOR CryotronTurretFrame2
+{
+	Radius 32
+	Height 60
+	Health 20
+	Scale 1.3
+	DamageFactor "Fatality", 2.0
+	+SHOOTABLE
+	-SOLID
+	+FLOORCLIP
+	+NOTELEPORT
+	+MOVEWITHSECTOR
+	+CORPSE
+	States
+	{
+	Spawn:
+		1CE2 B 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce", 0, 15)
+		TNT1 A 0 A_SpawnItem ("ShoqueAzul", 0, 17)
+		1CEA X 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		1CEA XX 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce", 0, 15)
+		TNT1 A 0 A_SpawnItem ("ShoqueAzul", 0, 17)
+		1CEA X 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		1CE2 BB 2 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce", 0, 15)
+		TNT1 A 0 A_SpawnItem ("ShoqueAzul", 0, 17)
+		1CEA X 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		1CE2 BB 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce", 0, 15)
+		TNT1 A 0 A_SpawnItem ("ShoqueAzul", 0, 17)
+		1CEA X 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		1CE2 BB 4 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce", 0, 15)
+		TNT1 A 0 A_SpawnItem ("ShoqueAzul", 0, 17)
+		1CE2 B 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		1CEA XX 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce", 0, 15)
+		TNT1 A 0 A_SpawnItem ("ShoqueAzul", 0, 17)
+		1CEA X 6 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		1CE2 BB 2 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce", 0, 15)
+		TNT1 A 0 A_SpawnItem ("ShoqueAzul", 0, 17)
+		1CEA X 1 A_CustomMissile ("PlasmaSmoke", 30, 0, random (0, 360), 2, random (70, 110))
+		Goto Death
+
+	Death:
+		1CEA Z 6
+		TNT1 A 0 A_SpawnItemEx("NoLegsSpider3", 0, 1, 1, 1, 1)
+		stop
+	}
+}
+
+Actor RapedCryotron: DeadSpider
+{
+	Scale 1.0 //sprite already scaled
+	Health 200 
+	States
+	{
+	Spawn:
+		ARF5 N -1
+		Stop 
+	}
+}
+
+ACTOR SpiderLeg3
+{
+	Radius 8
+	Height 8
+	Speed 12
+	Mass 1
+	+NOBLOCKMAP
+	+MISSILE
+	+NOTELEPORT
+	+DONTSPLASH
+	+DOOMBOUNCE
+	+MOVEWITHSECTOR
+	+CLIENTSIDEONLY
+	SeeSound "misc/xdeath4"
+	DeathSound "misc/xdeath3"
+	BounceFactor 0.3
+	BounceCount 3
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+		XD19 ABCDEFGH 2
+		Loop
+
+	Death:
+		XD19 I 9009
+		Stop
+	}
+}
+ACTOR XDeathCryotronHead: XDeath1
+{
+	Speed 12
+	Gravity 0.9
+	+DONTSPLASH
+	DeathSound "dsempty"
+	SeeSound "dsempty"
+	+SKYEXPLODE
+	Decal none
+	Scale 1.0
+	States
+	{
+	Spawn:
+		I1HB ABCDEFGH 4
+		Loop
+
+	Death:
+		TNT1 A 0
+		//TNT1 A 0 A_Jump(128, "CleanDeath")
+		TNT1 A 0 A_SpawnItem("CrawlingDyingCryotron")
+		Stop
+
+	CleanDeath:
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SmallBrainPiece", 10, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath1", 10, 0, random (0, 360), 2, random (0, 160))
+		I1HD IJKLMN 5
+		I1HD N -5
+		Stop
+	}
+}
+ACTOR XDeathCryotronHead2: XDeath1
+{
+	Speed 12
+	Gravity 0.9
+	+DONTSPLASH
+	DeathSound "dsempty"
+	SeeSound "dsempty"
+	+SKYEXPLODE
+	Decal none
+	Scale 1.0
+	States
+	{
+	Spawn:
+		I1HB ABCDEFGH 4
+		Loop
+
+	Death:
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SmallBrainPiece", 10, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath1", 10, 0, random (0, 360), 2, random (0, 160))
+		I1HD IJKLMN 5
+		I1HD N -5
+		Stop
+	}
+}
+
+
+
+ACTOR CrawlingDyingCryotron
+{
+	Radius 12
+	Height 24
+	Speed 9
+	Health 100
+	PainSound "grunt/pain"
+	damagefactor "Kick", 0.1
+	damagefactor "Melee", 0.1
+	damagefactor "SuperPunch", 0.1
+	damagefactor "SuperKick", 0.1
+	damagefactor "Extremepunches", 0.1 damagefactor "ExtremeKicks", 0.1
+	PainChance "Kick", 255
+	PainChance "SuperKick", 255
+	PainChance "SuperPunch", 255
+	PainChance "Extremepunches", 255 PainChance "ExtremeKicks", 255
+	PainChance 255
+	damagefactor "trample", 2.0
+	+SHOOTABLE
+	+FLOORCLIP
+	//+NOBLOCKMAP
+	+LOOKALLAROUND
+	+FRIGHTENED
+	+SOLID
+	States
+	{
+	Spawn:
+		I1HD B 1 A_Look
+		Goto See
+
+	See:
+		I1HD ABCD 10 A_Chase
+		I1HD A 0 A_Pain
+		TNT1 A 0 A_SpawnItemEx("Brutal_FlyingBlood", 0, 0, 10, 0, 0)
+		TNT1 A 0 A_GiveInventory("DeathTimer1", 1)
+		TNT1 A 0 A_JumpIfInventory("DeathTimer1", 12, "GotoDeath")
+		Loop
+
+	GotoDeath:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFlag("NOPAIN", 1)
+		I1HD EFGH 5
+		I1HD H -1
+		Stop
+
+	Death:
+		TNT1 A 0 A_NoBlocking
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SmallBrainPiece", 10, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("XDeath1", 10, 0, random (0, 360), 2, random (0, 160))
+		I1HD IJKLMN 5
+		I1HD N -5
+		Stop
+
+	Pain.SuperPunch:
+	Pain.SuperKick:
+	Pain.Kick:
+	Pain.ExtremeKicks:
+	Pain.Extremepunches:
+		TNT1 A 0 A_FaceTarget
+		I1HB A 1 A_Pain
+		TNT1 A 0 ThrustThing(angle*256/360+128, 5, 0, 0)
+	Pain.ExplosiveImpact:
+		TNT1 A 0 ThrustThingZ(0,50,0,1)
+		I1HB A 2 A_FaceTarget
+		Goto Fly
+
+	Fly:
+		I1HB ABCDEFGH 3 A_CheckFloor("See")
+		NULL A 0 A_JumpIf (momz == 0, "See")
+		TNT1 A 0
+		Loop
+	}
+}

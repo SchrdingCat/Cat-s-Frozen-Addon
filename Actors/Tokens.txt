@@ -28,6 +28,7 @@ actor SwitchRockets : bd_Token {}
 actor SwitchShells : bd_Token {}
 actor CryoFatality : bd_Token {}
 actor FrostBaronFatality : bd_Token {}
+actor CryotronFatality : bd_Token {}
 actor HasPyroSSG : bd_Token {}
 actor HasGoldSSG : bd_Token {}
 actor HasCryoSSG : bd_Token {}
