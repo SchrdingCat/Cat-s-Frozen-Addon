@@ -49,7 +49,7 @@ ACTOR Doomer : PlayerPawn Replaces DoomPlayer
 	damagefactor "HelperMarineFatallity", 0.0 damagefactor "Leg", 0.0 damagefactor "Limb", 0.0
 	DamageFactor "KillMeBot", 0.0
 	DamageFactor "plasma2", 0.0
-	Player.ColorRange 112, 127
+	Player.ColorRange 0, 0
 	Player.StartItem "NormalWeaponStarter"
 	Player.StartItem "Melee_Attacks"
 	Player.StartItem "Clip", 60
