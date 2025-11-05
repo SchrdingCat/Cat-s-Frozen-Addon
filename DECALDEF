@@ -19,3 +19,33 @@ decal IceScorchS
 	randomflipy
 	
 }
+
+
+fader IceGoAway
+{
+	DecayTime		3.0
+}
+
+stretcher IceStretcher
+{
+	StretchTime		6.0
+	GoalX			0.25
+	GoalY			0.25
+}
+
+combiner IceMelter
+{
+	IceGoAway
+	IceStretcher
+}
+
+decal IceHit
+{
+	pic ICEHIT
+	translucent 0.5
+	x-scale 0.5
+	y-scale 0.5
+	randomflipx
+	randomflipy
+	animator IceMelter
+}

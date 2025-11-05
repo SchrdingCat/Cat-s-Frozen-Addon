@@ -132,7 +132,7 @@ Actor HologramBabe
 	+DONTSPLASH
 	+BRIGHT
 	+FLOORCLIP
-	+WINDTHRUST
+	+DONTTHRUST
 	+NOBLOCKMONST
 	+SLIDESONWALLS
 	+NOBLOOD
@@ -196,8 +196,9 @@ Actor HologramBabe
 			TNT1 A 0 A_Jump(128,"See")
 			Goto See
 		Pain:
-			B4BH G 4
-			B4BH G 4
+			TNT1 A 0 A_Jump(64,"showboobs")
+			B4BH C 4
+			B4BH D 4
 			TNT1 A 0 A_Warp(AAPTR_MASTER)
 			Goto See
 		Vanish:

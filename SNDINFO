@@ -203,3 +203,9 @@ statics2 "sounds/Weapons/ElectroRifle/static2.wav"
 statics4 "sounds/Weapons/ElectroRifle/static2.wav"
 statics3 "sounds/Weapons/ElectroRifle/static3.wav"
 $random statics {statics1 statics2 statics4 statics3}
+
+Cryotron/Attack	CRYOSHOT
+$limit	Cryotron/Attack	0
+Cryotron/Hit	CRYOHIT
+$limit	Cryotron/Hit	0
+Cryotron/Loop	CRYOLOOP
