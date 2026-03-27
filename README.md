@@ -7,3 +7,7 @@ This is an addon for BrutalDoom v22 test 5. It adds new weapons, new enemies, ne
 //2.6.2
 
 * Option for changing the reward rate
+
+//2.7.0
+
+* Updated for BD22test6
