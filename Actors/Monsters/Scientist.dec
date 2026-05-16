@@ -25,7 +25,7 @@ ACTOR Scientist : SwitchableDecoration
 	PainChance "Kick", 255
 	PainChance "Lightning", 0
 	Monster
-	Species "Scientist"
+	Species "Marines"
 	Scale 0.90
 	+FLOORCLIP
 	+QUICKTORETALIATE

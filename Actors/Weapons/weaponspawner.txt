@@ -460,6 +460,34 @@ ACTOR NewShotgunSpawner: BDWeaponSpawner replaces ShotgunSpawner
 	}
 }
 
+ACTOR NewShotgunSpawnerDroped: ShotgunSpawner replaces ShotgunSpawnerDroped
+{
+	States
+	{
+	Spawn:
+		SHTC A 0
+		SHTC A 2
+		SHTC A 0 A_ChangeFlag("THRUACTORS", 0)
+	Stay:
+		SHTC A -1
+		Loop
+	Pickup:
+		SGN2 C 0 A_JumpIfInventory("Shot_Gun", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("ShotgunCryo", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("ShotgunPyro", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("ShotgunGold", 1, "AmmoOnly")
+		SGN2 C 0 A_JumpIfInventory("PuristShot_Gun", 1, "AmmoOnly")	
+	PickupNormal:
+		SHTC A 0
+		SHTC A 0 A_GiveInventory("Shot_Gun", 1)
+		SHTC A 0 A_GiveInventory("AmmoShell", 8)
+		Stop
+	AmmoOnly:
+		SGN2 A 0 A_GiveInventory("AmmoShell", 8)
+		Stop
+	}
+}
+
 ACTOR NewSSGSpawner: BDWeaponSpawner replaces SSGSpawner
 {
 	//$Category Weapons

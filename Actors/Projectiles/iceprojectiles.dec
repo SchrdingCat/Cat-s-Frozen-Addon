@@ -734,13 +734,13 @@ Damage (random(70,90))
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Actor SnowParticle2 : SnowParticle
+Actor SnowParticle2 : NewSnowParticle
 {
 	Speed 5
 	Damage 6
 }
 
-Actor SnowParticle3 : SnowParticle
+Actor SnowParticle3 : NewSnowParticle
 {
 	Damage 4
 }
@@ -785,12 +785,12 @@ Actor SnowSpawner
 	{
 	Spawn:
 		TNT1 AAAAAAAAAA 1 A_SpawnItemEx ("Snowcloud", Random(-400, 400), Random(-400, 400), -30, random(-1,1), random(-1,1), 0, 0, 0, 0)
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
 		TNT1 AAAAAAAAAA 1 A_SpawnItemEx ("Snowcloud", Random(-400, 400), Random(-400, 400), -30, random(-1,1), random(-1,1), 0, 0, 0, 0)
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
 		TNT1 AAAAAAAAAA 1 A_SpawnItemEx ("Snowcloud", Random(-400, 400), Random(-400, 400), -30, random(-1,1), random(-1,1), 0, 0, 0, 0)
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
 		Stop
 		}
 }
@@ -810,19 +810,19 @@ Actor SnowSpawnerIcespike
 	{
 	Spawn:
 		TNT1 AAAAAAAAAA 1 A_SpawnItemEx ("Snowcloud", Random(-400, 400), Random(-400, 400), -30, random(-1,1), random(-1,1), 0, 0, 0, 0)
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
 		TNT1 A 2 A_SpawnItemEX ("IceSpikeb", random(-180,180), random(-180,180), -30, random(-2, 2), random(-2, 2),random(-90,-30))
 		TNT1 AAAAAAAAAA 1 A_SpawnItemEx ("Snowcloud", Random(-400, 400), Random(-400, 400), -30, random(-1,1), random(-1,1), 0, 0, 0, 0)
 		TNT1 A 2 A_SpawnItemEX ("IceSpikeb", random(-180,180), random(-180,180), -30, random(-2, 2), random(-2, 2),random(-90,-30))
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
 		TNT1 AAA 3 A_SpawnItemEX ("IceSpikeb", random(-180,180), random(-180,180), -30, random(-2, 2), random(-2, 2),random(-90,-30))
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
 		TNT1 A 2 A_SpawnItemEX ("IceSpikeb", random(-180,180), random(-180,180), -30, random(-2, 2), random(-2, 2),random(-90,-30))
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
 		TNT1 AA 3 A_SpawnItemEX ("IceSpikeb", random(-180,180), random(-180,180), -30, random(-2, 2), random(-2, 2),random(-90,-30))
 		TNT1 AAAAAAAAAA 1 A_SpawnItemEx ("Snowcloud", Random(-400, 400), Random(-400, 400), -30, random(-1,1), random(-1,1), 0, 0, 0, 0)
 		TNT1 A 2 A_SpawnItemEX ("IceSpikeb", random(-180,180), random(-180,180), -30, random(-2, 2), random(-2, 2),random(-90,-30))
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("SnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("NewSnowParticle", Random(-400, 400), Random(-400, 400), -60, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, SXF_TRANSFERPOINTERS, 0)
 		Stop
 		}
 }	
